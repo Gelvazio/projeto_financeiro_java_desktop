@@ -201,7 +201,6 @@ public class ConfiguracaoBancoDados extends JFrame {
         jLabel5 = new javax.swing.JLabel();
         btnPesquisa = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -234,7 +233,7 @@ public class ConfiguracaoBancoDados extends JFrame {
         });
         jPanel1.add(btnGravarIni, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 240, 119, 30));
 
-        btnTestarConexao.setText("Testar Conexão");
+        btnTestarConexao.setText("Testar Conexao");
         btnTestarConexao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTestarConexaoActionPerformed(evt);
@@ -273,13 +272,10 @@ public class ConfiguracaoBancoDados extends JFrame {
         jPanel1.add(btnPesquisa, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 200, 119, 30));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Configuração de Banco de Dados");
+        jLabel1.setText("Configura��o de Banco de Dados");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 390, 350));
-
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, 20, 350));
 
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 390, 30));
@@ -293,19 +289,16 @@ public class ConfiguracaoBancoDados extends JFrame {
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnGravarIniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGravarIniActionPerformed
-        // TODO add your handling code here:
         if (verificaConexaoTela()) {
             gravarIniBancoDados();
         }
     }//GEN-LAST:event_btnGravarIniActionPerformed
 
     private void btnAbreArquivoGravadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbreArquivoGravadoActionPerformed
-        // TODO add your handling code here:
         carregaArquivoEmTexto();
     }//GEN-LAST:event_btnAbreArquivoGravadoActionPerformed
 
     private void btnTestarConexaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTestarConexaoActionPerformed
-        // TODO add your handling code here:
         if (verificaCamposTela()) {
             if (verificaConexaoTela()) {
                 JOptionPane.showMessageDialog(null, "Conexão ok!");
@@ -316,7 +309,6 @@ public class ConfiguracaoBancoDados extends JFrame {
     }//GEN-LAST:event_btnTestarConexaoActionPerformed
 
     private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
-        // TODO add your handling code here:
         selecionaBancoDados();
     }//GEN-LAST:event_btnPesquisaActionPerformed
 
@@ -370,7 +362,6 @@ public class ConfiguracaoBancoDados extends JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 }

@@ -13,15 +13,13 @@ public class ConexaoPostgreSQL {
 
     private static final String LOCALHOST = "Conexao.ini";//Aqruivo ini a ser lido
     private static final String driver = "org.postgresql.Driver"; //Classe do driver
-    private static final String banco = "";
-    private static final String str_conn = "jdbc:postgresql://localhost/sistemacomercial";//// + banco; //URL de conexão
-    private static final String usuario = "postgres"; //Usuário da base
-    private static final String senha = "postgres"; //Senha da base
+    private static final String banco = "ftgcyhzw";
+    private static final String str_conn = "jdbc:postgresql://localhost/ftgcyhzw";//// + banco; //URL de conexão
+    private static final String usuario = "ftgcyhzw"; //Usuario da base
+    private static final String senha = "Qgs5XLVecOqlU6ZkzfAbmxpi7tQcYLbI"; //Senha da base
 
     public static boolean verificagetConexao() {
         boolean verifica = false;
-        //banco = leIniBancoDados();
-        //str_conn = "jdbc:postgresql://localhost/sistemacomercial";
         Connection conn = null;
         try {
             Class.forName(driver);
@@ -32,7 +30,7 @@ public class ConexaoPostgreSQL {
             verifica = false;
             Conexao.closeAll(conn);
         } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro de Conexão! \n" + erro.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro de Conexao! \n" + erro.getMessage());
             verifica = false;
             Conexao.closeAll(conn);
         }
@@ -47,7 +45,7 @@ public class ConexaoPostgreSQL {
         } catch (ClassNotFoundException erro) {
             JOptionPane.showMessageDialog(null, "Erro de driver! \n" + erro.getMessage());
         } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro de Conexão! \n" + erro.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro de Conexao! \n" + erro.getMessage());
         }
         return conn;
     }
