@@ -234,7 +234,7 @@ public class ConsultaNCMSH extends MetodosGlobais {
         return listaNCMSH;
     }
 
-    public void ListaTodosNCMSH() {
+    private void ListaTodosNCMSH() {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("Codigo");
         modelo.addColumn("NCMSH");

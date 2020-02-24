@@ -461,7 +461,7 @@ public class ConsultaPaises extends MetodosGlobais {
     private void btnPesquisaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPesquisaMouseClicked
         ValidaCampoPesquisa();
         edtPesquisa.getText();
-        //PegaValorCamposComboboxCampo_E_Valor("");
+        PegaValorCamposComboboxCampo_E_Valor("");
     }//GEN-LAST:event_btnPesquisaMouseClicked
 
     private void edtPesquisaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtPesquisaKeyPressed

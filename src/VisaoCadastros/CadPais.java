@@ -1,18 +1,12 @@
 package VisaoCadastros;
 
 import ControleCadastro.PaisDB;
-import ModeloCadastro.Cor;
 import ModeloCadastro.Pais;
-import Principal.Conexao;
 import Principal.MetodosGlobais;
 import VisaoConsultasCadastro.ConsultaPaises;
 import java.awt.event.KeyEvent;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -25,7 +19,7 @@ public class CadPais extends MetodosGlobais {
 
     public CadPais() {
         initComponents();
-        Centro();
+        //Centro();
         HabilitaCampos(false);
     }
 

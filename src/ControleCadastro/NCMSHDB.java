@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class NCMSHDB extends MetodosGlobais {
 
-    private static final String sqlTodos = "SELECT * FROM NCMSH ";//where NCMSH.CD_CODIGO <10";
+    private static final String sqlTodos = "SELECT FIRST 100 NCMSH.*  FROM NCMSH ";//where NCMSH.CD_CODIGO <10";
     private static final String sqlInserir
             = "INSERT INTO NCMSH (CD_CODIGO, CD_NCMSH, DS_TITULO_1, DS_TITULO_2, DS_NCMSH,VL_MVA)"
             + " VALUES (?,?,?,?,?,?)";

@@ -2,15 +2,8 @@ package VisaoConsultasCadastro;
 
 import ControleCadastro.PessoaDB;
 import ModeloCadastro.Pessoa;
-import Principal.Conexao;
 import Principal.MetodosGlobais;
 import java.awt.event.KeyEvent;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Time;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -152,87 +145,8 @@ public class ConsultaTransportadora extends MetodosGlobais {
             edtPesquisa.grabFocus();
         } else {
             //Não estando Nulo o campo é chamado o Metodo abaixo que é o responsavel pela pesquisa Compelta da Tela.
-            ListaPessoasCompleto();
+            ListaTodasTransportadoras();
         }
-    }
-
-    private ArrayList SQLConsultagetTodos_Completo() {
-        //Aqui é chamado o Metodo "PegaValorCamposComboboxCampo_E_Valor("");" para pegar os valores da tela
-        //Caso nao seja repassado ele nao da certo pois nao pega nada do edtPesquisa
-        PegaValorCamposComboboxCampo_E_Valor("");
-        ArrayList listaPessoa = new ArrayList();
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-            conn = Conexao.getConexao();
-            stmt = conn.createStatement();
-            //Nessa Parte é passado po parametro os Dados da Variavel "SQLConsulta_Pessoa" que contem o sql da pesquisa.
-            rs = stmt.executeQuery(SQLConsulta_Pessoa);
-            while (rs.next()) {
-                int cd_pessoa = rs.getInt("CD_PESSOA");
-                String nm_pessoa = rs.getString("NM_PESSOA");
-                int fg_cliente = rs.getInt("fg_cliente");
-                int fg_vendedor = rs.getInt("fg_vendedor");
-                int fg_fornecedor = rs.getInt("fg_fornecedor");
-                String ds_endereco = rs.getString("ds_endereco");
-                String nr_endereco = rs.getString("nr_endereco");
-                String ds_bairro = rs.getString("ds_bairro");
-                String cd_estado = rs.getString("cd_estado");
-                int cd_cidade = rs.getInt("cd_cidade");
-                int cd_pais = rs.getInt("cd_pais");
-                String cd_cep = rs.getString("cd_cep");
-                String ds_email = rs.getString("ds_email");
-                String nr_telefone = rs.getString("nr_telefone");
-                String cd_cgccpf = rs.getString("cd_cgccpf");
-                int cd_usuario = rs.getInt("cd_usuario");
-                Date dt_alt = rs.getDate("dt_alt");
-                Time hr_alt = rs.getTime("hr_alt");
-                Date dt_cad = rs.getDate("dt_cad");
-                Time hr_cad = rs.getTime("hr_cad");
-                int cd_filial = rs.getInt("cd_filial");
-                String nr_inscricao_estadual = rs.getString("nr_inscricao_estadual");
-                int tipo_consumo = rs.getInt("tipo_consumo");
-                int regime_tributacao = rs.getInt("regime_tributacao");
-                int fg_transportador = rs.getInt("fg_transportador");
-                int fg_ativo = rs.getInt("fg_ativo");
-
-                Pessoa pessoa = new Pessoa(
-                        cd_pessoa,
-                        nm_pessoa,
-                        fg_cliente,
-                        fg_vendedor,
-                        fg_fornecedor,
-                        ds_endereco,
-                        nr_endereco,
-                        ds_bairro,
-                        cd_estado,
-                        cd_cidade,
-                        cd_pais,
-                        cd_cep,
-                        ds_email,
-                        nr_telefone,
-                        cd_cgccpf,
-                        cd_usuario,
-                        dt_alt,
-                        hr_alt,
-                        dt_cad,
-                        hr_cad,
-                        cd_filial,
-                        nr_inscricao_estadual,
-                        tipo_consumo,
-                        regime_tributacao,
-                        fg_transportador,
-                        fg_ativo
-                );
-                listaPessoa.add(pessoa);
-            }
-        } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro no sql, SQLConsultagetTodos_Completo: \n" + erro.getMessage());
-        } finally {
-            Conexao.closeAll(conn);
-        }
-        return listaPessoa;
     }
 
     private void ListaTodasTransportadoras() {
@@ -251,41 +165,6 @@ public class ConsultaTransportadora extends MetodosGlobais {
 
         PessoaDB pessoadb = new PessoaDB();
         ArrayList<Pessoa> pessoas = pessoadb.getTodasTransportadoras();
-        for (Pessoa auxPessoa : pessoas) {
-            modelo.addRow(new Object[]{
-                auxPessoa.getCd_pessoa(),
-                auxPessoa.getNm_pessoa(),
-                auxPessoa.getCd_cgccpf(),
-                auxPessoa.getCd_cep(),
-                auxPessoa.getCd_cidade(),
-                auxPessoa.getCd_estado(),
-                auxPessoa.getCd_pais(),
-                auxPessoa.getDs_bairro(),
-                auxPessoa.getDs_email(),
-                auxPessoa.getDs_endereco(),
-                auxPessoa.getNr_endereco(),
-                auxPessoa.getCd_filial()
-            });
-        }
-        tbGrid.setModel(modelo);
-    }
-
-    private void ListaPessoasCompleto() {
-        //Nesta Parte o ArrayList dos Usuarios(Que chama a Classe Usuario) recebe por parametro o Metodo "SQLConsultagetTodos_Completo()" que tera os dados da pesquisa
-        //Este Metodo Chama o ArrayList  que tera os dados e passa para a DefaultTableModel
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("Codigo");
-        modelo.addColumn("Nome");
-        modelo.addColumn("CPF");
-        modelo.addColumn("CEP");
-        modelo.addColumn("Cidade");
-        modelo.addColumn("Estado");
-        modelo.addColumn("Pais");
-        modelo.addColumn("Bairro");
-        modelo.addColumn("E-mail");
-        modelo.addColumn("Endereço");
-        modelo.addColumn("Numero Endereço");
-        ArrayList<Pessoa> pessoas = SQLConsultagetTodos_Completo();
         for (Pessoa auxPessoa : pessoas) {
             modelo.addRow(new Object[]{
                 auxPessoa.getCd_pessoa(),

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Gelvazio
+ * Copyright (C) 2015 Jessica Maria Koch
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,22 +18,14 @@ package Testes;
 
 /**
  *
- * @author Gelvazio
+ * @author Jessica Maria Koch
  */
-public class NewClass {
+public class ExecutaPedido {
 
-    private String teste;
+    public static void main(String[] args) {
 
-    public NewClass(String teste) {
-        this.teste = teste;
+        PedidoTeste30_10_2015 p = new PedidoTeste30_10_2015();
+        p.setVisible(true);
+
     }
-
-    public String getTeste() {
-        return teste;
-    }
-
-    public void setTeste(String teste) {
-        this.teste = teste;
-    }
-
 }

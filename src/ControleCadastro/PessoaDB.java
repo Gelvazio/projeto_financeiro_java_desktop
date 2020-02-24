@@ -26,9 +26,12 @@ public class PessoaDB extends MetodosGlobais {
      */
     private static final String sqlBuscaDadosPessoa = "SELECT PESSOA.CD_ESTADO,PESSOA.TIPO_CONSUMO FROM PESSOA WHERE PESSOA.CD_PESSOA=?";
 
-    private static final String sqlTodos
-            = "	SELECT * FROM	PESSOA    ORDER BY PESSOA.CD_PESSOA; ";
-        private static final String sqlBuscaDadosPessoaImpostos
+    private static final String sqlTodos= " SELECT * FROM PESSOA    ORDER BY PESSOA.CD_PESSOA; ";
+ 
+    private static final String sqlTodosFornecedores= "	SELECT * FROM	PESSOA  WHERE PESSOA.FG_FORNECEDOR =1  ORDER BY PESSOA.CD_PESSOA; ";
+      
+   private static final String sqlTodosVendedores= "SELECT * FROM	PESSOA  WHERE PESSOA.FG_VENDEDOR =1  ORDER BY PESSOA.CD_PESSOA; ";
+    private static final String sqlBuscaDadosPessoaImpostos
             = "	SELECT PESSOA.* FROM	PESSOA WHERE PESSOA.CD_PESSOA=?";
     private static final String sqlTodasTransportadoras
             = "	SELECT * FROM	PESSOA  WHERE PESSOA.FG_TRANSPORTADOR=1  ORDER BY PESSOA.CD_PESSOA; ";
@@ -232,6 +235,156 @@ public class PessoaDB extends MetodosGlobais {
             rs = stmt.executeQuery(sqlTodos);
             //OBSERVE MUITO IMPORTANTE!!!!!
             //NAO DEIXAR ESPAÇOS,POIS DA ERROS DEPOIS!!!!            
+            while (rs.next()) {
+                int cd_pessoa = rs.getInt("CD_PESSOA");
+                String nm_pessoa = rs.getString("NM_PESSOA");
+                int fg_cliente = rs.getInt("fg_cliente");
+                int fg_vendedor = rs.getInt("fg_vendedor");
+                int fg_fornecedor = rs.getInt("fg_fornecedor");
+                String ds_endereco = rs.getString("ds_endereco");
+                String nr_endereco = rs.getString("nr_endereco");
+                String ds_bairro = rs.getString("ds_bairro");
+                String cd_estado = rs.getString("cd_estado");
+                int cd_cidade = rs.getInt("cd_cidade");
+                int cd_pais = rs.getInt("cd_pais");
+                String cd_cep = rs.getString("cd_cep");
+                String ds_email = rs.getString("ds_email");
+                String nr_telefone = rs.getString("nr_telefone");
+                String cd_cgccpf = rs.getString("cd_cgccpf");
+                int cd_usuario = rs.getInt("cd_usuario");
+                Date dt_alt = rs.getDate("dt_alt");
+                Time hr_alt = rs.getTime("hr_alt");
+                Date dt_cad = rs.getDate("dt_cad");
+                Time hr_cad = rs.getTime("hr_cad");
+                int cd_filial = rs.getInt("cd_filial");
+                String nr_inscricao_estadual = rs.getString("nr_inscricao_estadual");
+                int tipo_consumo = rs.getInt("tipo_consumo");
+                int regime_tributacao = rs.getInt("regime_tributacao");
+                int fg_transportador = rs.getInt("fg_transportador");
+                int fg_ativo = rs.getInt("fg_ativo");
+
+                Pessoa pessoa = new Pessoa(
+                        cd_pessoa,
+                        nm_pessoa,
+                        fg_cliente,
+                        fg_vendedor,
+                        fg_fornecedor,
+                        ds_endereco,
+                        nr_endereco,
+                        ds_bairro,
+                        cd_estado,
+                        cd_cidade,
+                        cd_pais,
+                        cd_cep,
+                        ds_email,
+                        nr_telefone,
+                        cd_cgccpf,
+                        cd_usuario,
+                        dt_alt,
+                        hr_alt,
+                        dt_cad,
+                        hr_cad,
+                        cd_filial,
+                        nr_inscricao_estadual,
+                        tipo_consumo,
+                        regime_tributacao,
+                        fg_transportador,
+                        fg_ativo
+                );
+                listaPessoa.add(pessoa);
+            }
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "Erro no sql, getTodos(): \n" + erro.getMessage());
+        } finally {
+            Conexao.closeAll(conn);
+        }
+        return listaPessoa;
+    }
+
+    public ArrayList getTodosFornecedores() {
+        ArrayList listaPessoa = new ArrayList();
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sqlTodosFornecedores);        
+            while (rs.next()) {
+                int cd_pessoa = rs.getInt("CD_PESSOA");
+                String nm_pessoa = rs.getString("NM_PESSOA");
+                int fg_cliente = rs.getInt("fg_cliente");
+                int fg_vendedor = rs.getInt("fg_vendedor");
+                int fg_fornecedor = rs.getInt("fg_fornecedor");
+                String ds_endereco = rs.getString("ds_endereco");
+                String nr_endereco = rs.getString("nr_endereco");
+                String ds_bairro = rs.getString("ds_bairro");
+                String cd_estado = rs.getString("cd_estado");
+                int cd_cidade = rs.getInt("cd_cidade");
+                int cd_pais = rs.getInt("cd_pais");
+                String cd_cep = rs.getString("cd_cep");
+                String ds_email = rs.getString("ds_email");
+                String nr_telefone = rs.getString("nr_telefone");
+                String cd_cgccpf = rs.getString("cd_cgccpf");
+                int cd_usuario = rs.getInt("cd_usuario");
+                Date dt_alt = rs.getDate("dt_alt");
+                Time hr_alt = rs.getTime("hr_alt");
+                Date dt_cad = rs.getDate("dt_cad");
+                Time hr_cad = rs.getTime("hr_cad");
+                int cd_filial = rs.getInt("cd_filial");
+                String nr_inscricao_estadual = rs.getString("nr_inscricao_estadual");
+                int tipo_consumo = rs.getInt("tipo_consumo");
+                int regime_tributacao = rs.getInt("regime_tributacao");
+                int fg_transportador = rs.getInt("fg_transportador");
+                int fg_ativo = rs.getInt("fg_ativo");
+
+                Pessoa pessoa = new Pessoa(
+                        cd_pessoa,
+                        nm_pessoa,
+                        fg_cliente,
+                        fg_vendedor,
+                        fg_fornecedor,
+                        ds_endereco,
+                        nr_endereco,
+                        ds_bairro,
+                        cd_estado,
+                        cd_cidade,
+                        cd_pais,
+                        cd_cep,
+                        ds_email,
+                        nr_telefone,
+                        cd_cgccpf,
+                        cd_usuario,
+                        dt_alt,
+                        hr_alt,
+                        dt_cad,
+                        hr_cad,
+                        cd_filial,
+                        nr_inscricao_estadual,
+                        tipo_consumo,
+                        regime_tributacao,
+                        fg_transportador,
+                        fg_ativo
+                );
+                listaPessoa.add(pessoa);
+            }
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "Erro no sql, getTodos(): \n" + erro.getMessage());
+        } finally {
+            Conexao.closeAll(conn);
+        }
+        return listaPessoa;
+    }
+
+    public ArrayList getTodosVendedores() {
+        ArrayList listaPessoa = new ArrayList();
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sqlTodosVendedores);        
             while (rs.next()) {
                 int cd_pessoa = rs.getInt("CD_PESSOA");
                 String nm_pessoa = rs.getString("NM_PESSOA");

@@ -9,6 +9,7 @@ import ModeloCadastro.MarkupOO;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import VisaoConsultasCadastro.ConsultaGrupo;
+import VisaoConsultasCadastro.ConsultaGrupoFiscal;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -763,7 +764,7 @@ public class CadGrupoFiscal extends MetodosGlobais {
 
     private void btnConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaActionPerformed
         // TODO add your handling code here:
-        ConsultaGrupo form = new ConsultaGrupo(edtCodigo);
+        ConsultaGrupoFiscal form = new ConsultaGrupoFiscal(edtCodigo);
         this.getDesktopPane().add(form);
         form.setVisible(true);
         edtCodigo.grabFocus();

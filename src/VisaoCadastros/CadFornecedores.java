@@ -9,6 +9,7 @@ import VisaoConsultasCadastro.ConsultaPessoa;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import VisaoConsultasCadastro.ConsultaEstadoPessoa;
+import VisaoConsultasCadastro.ConsultaFornecedores;
 import VisaoConsultasCadastro.ConsultaMunicipio;
 import VisaoConsultasCadastro.ConsultaPaises;
 import java.awt.event.KeyEvent;
@@ -1502,7 +1503,7 @@ private void edtEmailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     }//GEN-LAST:event_btnExcluirKeyPressed
 
     private void btnConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaActionPerformed
-        ConsultaPessoa form = new ConsultaPessoa(edtCodigo);
+        ConsultaFornecedores form = new ConsultaFornecedores(edtCodigo);
         this.getDesktopPane().add(form);
         form.setVisible(true);
         edtCodigo.grabFocus();

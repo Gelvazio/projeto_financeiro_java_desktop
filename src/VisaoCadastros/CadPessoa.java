@@ -34,6 +34,10 @@ import javax.swing.JTextField;
  */
 public class CadPessoa extends MetodosGlobais {
 
+    public void montaTitulo(){
+        
+    }
+    
     EstadoDB estadodb = new EstadoDB();
     MunicipioDB cidadedb = new MunicipioDB();
     PaisDB paisdb = new PaisDB();
