@@ -7,17 +7,27 @@ package ModeloCadastro;
 /**
  *
  * @author Gelvazio Camargo
- *
- * Tabela Pais CREATE TABLE PAIS ( CD_PAIS INTEGER NOT NULL, NM_PAIS
- * VARCHAR(100), CD_USUARIO SMALLINT NOT NULL, DT_ALT DATE NOT NULL, HR_ALT TIME
- * NOT NULL, DT_CAD DATE NOT NULL, HR_CAD TIME NOT NULL, CD_FILIAL INTEGER NOT
- * NULL );
+ */
+/*
+ * Tabela Pais
+ CREATE TABLE PAIS (
+ CD_PAIS     INTEGER NOT NULL,
+ NM_PAIS     VARCHAR(100),
+ CD_USUARIO  SMALLINT NOT NULL,
+ DT_ALT      DATE NOT NULL,
+ HR_ALT      TIME NOT NULL,
+ DT_CAD      DATE NOT NULL,
+ HR_CAD      TIME NOT NULL,
+ CD_FILIAL   INTEGER NOT NULL
+ );
+
  */
 public class Pais {
 
-    int cd_pais;
-    String nm_pais;
-    int cd_usuario, cd_filial;
+    private int cd_pais;
+    private String nm_pais;
+    private int cd_usuario;
+    private int cd_filial;
 
     public Pais(int cd_pais, String nm_pais, int cd_usuario, int cd_filial) {
         this.cd_pais = cd_pais;

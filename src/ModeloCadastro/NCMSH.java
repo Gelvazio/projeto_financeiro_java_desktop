@@ -13,18 +13,20 @@ package ModeloCadastro;
  */
 public class NCMSH {
 
-    int cd_codigo;
-    String cd_ncmsh;
-    String ds_titulo_1;
-    String ds_titulo_2;
-    String ds_ncmsh;
+    private int cd_codigo;
+    private String cd_ncmsh;
+    private String ds_titulo_1;
+    private String ds_titulo_2;
+    private String ds_ncmsh;
+    private int vl_mva;
 
-    public NCMSH(int cd_codigo, String cd_ncmsh, String ds_titulo_1, String ds_titulo_2, String ds_ncmsh) {
+    public NCMSH(int cd_codigo, String cd_ncmsh, String ds_titulo_1, String ds_titulo_2, String ds_ncmsh, int vl_mva) {
         this.cd_codigo = cd_codigo;
         this.cd_ncmsh = cd_ncmsh;
         this.ds_titulo_1 = ds_titulo_1;
         this.ds_titulo_2 = ds_titulo_2;
         this.ds_ncmsh = ds_ncmsh;
+        this.vl_mva = vl_mva;
     }
 
     public int getCd_codigo() {
@@ -65,6 +67,14 @@ public class NCMSH {
 
     public void setDs_ncmsh(String ds_ncmsh) {
         this.ds_ncmsh = ds_ncmsh;
+    }
+
+    public int getVl_mva() {
+        return vl_mva;
+    }
+
+    public void setVl_mva(int vl_mva) {
+        this.vl_mva = vl_mva;
     }
 
 }

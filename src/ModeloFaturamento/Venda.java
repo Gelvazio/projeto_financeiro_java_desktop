@@ -17,10 +17,8 @@
 package ModeloFaturamento;
 
 //import java.util.Date;
-
 import java.sql.Date;
 import java.sql.Time;
-
 
 /**
  *
@@ -134,7 +132,7 @@ public class Venda {
     private double vl_peso_bruto;
     private double vl_tot_impostos;
 
-    public Venda(int cd_filial, int cd_movimento, int cd_vende, int cd_pagto, int cd_pessoa, Date dt_emi_doc, Date dt_sai_doc, double vl_tot_cus_doc, double vl_tot_pro_doc, double vl_acrescimo, double vl_desconto, int cd_tipo_doc, int fg_situacao, int fg_movimentou_estoque, int cd_usuario, Date dt_alt, Time hr_alt,Date dt_cad, Time hr_cad, int cfop, double vl_base_icm_total, double vl_icm_total, double vl_base_icm_sub_total, double vl_icm_sub_total, double vl_base_pis_total, double vl_pis_total, double vl_base_cofins_total, double vl_cofins_total, double vl_base_ipi_total, double vl_ipi_total, double vl_base_servico_total, double vl_servico_total, double vl_base_issqn_total, double vl_issqn_total, int cd_transportadora, String nr_placa_veiculo, int qtd_volume, int fg_emitente, double vl_tot_frete, String nm_especie, String nr_nota_nfe, String nr_chave_nfe, String nr_prot_autorizacao, String ds_inf_adicionais, double vl_tot_seguro, double vl_tot_pedido_nota, String ds_marca, int nr_numeracao, double vl_peso_liquido, double vl_peso_bruto, double vl_tot_impostos) {
+    public Venda(int cd_filial, int cd_movimento, int cd_vende, int cd_pagto, int cd_pessoa, Date dt_emi_doc, Date dt_sai_doc, double vl_tot_cus_doc, double vl_tot_pro_doc, double vl_acrescimo, double vl_desconto, int cd_tipo_doc, int fg_situacao, int fg_movimentou_estoque, int cd_usuario, Date dt_alt, Time hr_alt, Date dt_cad, Time hr_cad, int cfop, double vl_base_icm_total, double vl_icm_total, double vl_base_icm_sub_total, double vl_icm_sub_total, double vl_base_pis_total, double vl_pis_total, double vl_base_cofins_total, double vl_cofins_total, double vl_base_ipi_total, double vl_ipi_total, double vl_base_servico_total, double vl_servico_total, double vl_base_issqn_total, double vl_issqn_total, int cd_transportadora, String nr_placa_veiculo, int qtd_volume, int fg_emitente, double vl_tot_frete, String nm_especie, String nr_nota_nfe, String nr_chave_nfe, String nr_prot_autorizacao, String ds_inf_adicionais, double vl_tot_seguro, double vl_tot_pedido_nota, String ds_marca, int nr_numeracao, double vl_peso_liquido, double vl_peso_bruto, double vl_tot_impostos) {
         this.cd_filial = cd_filial;
         this.cd_movimento = cd_movimento;
         this.cd_vende = cd_vende;
@@ -596,5 +594,4 @@ public class Venda {
         this.vl_tot_impostos = vl_tot_impostos;
     }
 
-    
 }

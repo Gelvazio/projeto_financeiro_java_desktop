@@ -25,9 +25,10 @@ import VisaoFaturamento.CadCondicaoPagamento;
 import VisaoFaturamento.CadNotaEntrada;
 import VisaoFaturamento.CadTipoCobranca;
 import VisaoFaturamento.CadTipoNota;
-import VisaoFaturamento.FormularioPedido;
+import Testes.FormularioPedido;
 import VisaoFaturamento.FormularioPedidoCompleto;
-import VisaoFaturamento.TesteData;
+import Testes.TesteData;
+import VisaoFaturamento.FormularioNotaFederal;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -66,11 +67,11 @@ public class FormularioPrincipal extends JFrame {
         Menu_Produtp = new javax.swing.JMenu();
         Produto = new javax.swing.JMenuItem();
         grupoFiscal = new javax.swing.JMenuItem();
+        MenuGrupo = new javax.swing.JMenuItem();
         MenuNCMSH = new javax.swing.JMenuItem();
         Unidade_Medida = new javax.swing.JMenuItem();
-        MenuGrupo = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem15 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         Regiao = new javax.swing.JMenuItem();
         Estado = new javax.swing.JMenuItem();
@@ -201,7 +202,7 @@ public class FormularioPrincipal extends JFrame {
         });
         Menu_Pessoa.add(Transportadora);
 
-        jMenuItem11.setText("Usuario");
+        jMenuItem11.setText("Usuário");
         jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem11ActionPerformed(evt);
@@ -229,6 +230,14 @@ public class FormularioPrincipal extends JFrame {
         });
         Menu_Produtp.add(grupoFiscal);
 
+        MenuGrupo.setText("Grupo / Sub-Grupo ");
+        MenuGrupo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuGrupoActionPerformed(evt);
+            }
+        });
+        Menu_Produtp.add(MenuGrupo);
+
         MenuNCMSH.setText("NCMSH");
         MenuNCMSH.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -245,13 +254,13 @@ public class FormularioPrincipal extends JFrame {
         });
         Menu_Produtp.add(Unidade_Medida);
 
-        MenuGrupo.setText("Grupo / Sub-Grupo ");
-        MenuGrupo.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem15.setText("Marca");
+        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MenuGrupoActionPerformed(evt);
+                jMenuItem15ActionPerformed(evt);
             }
         });
-        Menu_Produtp.add(MenuGrupo);
+        Menu_Produtp.add(jMenuItem15);
 
         jMenuItem7.setText("Cor");
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
@@ -260,14 +269,6 @@ public class FormularioPrincipal extends JFrame {
             }
         });
         Menu_Produtp.add(jMenuItem7);
-
-        jMenuItem15.setText("Marca");
-        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem15ActionPerformed(evt);
-            }
-        });
-        Menu_Produtp.add(jMenuItem15);
 
         Menu_Cadastros.add(Menu_Produtp);
 
@@ -346,7 +347,7 @@ public class FormularioPrincipal extends JFrame {
         });
         jMenu2.add(Nota_Entrada);
 
-        Nota_Fiscal.setText("Nota Fiscal");
+        Nota_Fiscal.setText("Nota Fiscal Eletrônica");
         Nota_Fiscal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Nota_FiscalActionPerformed(evt);
@@ -881,9 +882,6 @@ private void Menu_FaturamentoActionPerformed(java.awt.event.ActionEvent evt) {//
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void RegiaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegiaoActionPerformed
-        JOptionPane.showMessageDialog(null,
-                "Atenção!Formulário PAIS sem Programaçao"
-                + "de INSERT,DELETE,UPDATE,Consultas!!");
         CadPais formulario = new CadPais();
         Panel_Principal.add(formulario);
         formulario.setClosable(true);
@@ -910,7 +908,13 @@ private void Menu_FaturamentoActionPerformed(java.awt.event.ActionEvent evt) {//
     }//GEN-LAST:event_grupoFiscalActionPerformed
 
     private void Nota_FiscalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nota_FiscalActionPerformed
-        // TODO add your handling code here:
+        FormularioNotaFederal formulario = new FormularioNotaFederal();
+        Panel_Principal.add(formulario);
+        formulario.setClosable(true);
+        formulario.setIconifiable(true);
+        formulario.setResizable(true);
+        formulario.setMaximizable(true);
+        formulario.setVisible(true);
     }//GEN-LAST:event_Nota_FiscalActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
@@ -948,9 +952,6 @@ private void Menu_FaturamentoActionPerformed(java.awt.event.ActionEvent evt) {//
 
     private void MenuNCMSHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuNCMSHActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(null,
-                "Atenção!Formulário NCMSH sem Programaçao"
-                + "de INSERT,DELETE,UPDATE,Consultas!!");
         CadNCMSH formulario = new CadNCMSH();
         Panel_Principal.add(formulario);
         formulario.setClosable(true);
@@ -1033,7 +1034,7 @@ private void Menu_FaturamentoActionPerformed(java.awt.event.ActionEvent evt) {//
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        CadCondicaoPagamento  formulario = new CadCondicaoPagamento();
+        CadCondicaoPagamento formulario = new CadCondicaoPagamento();
         Panel_Principal.add(formulario);
         formulario.setClosable(true);
         formulario.setIconifiable(true);
@@ -1044,7 +1045,7 @@ private void Menu_FaturamentoActionPerformed(java.awt.event.ActionEvent evt) {//
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
         // TODO add your handling code here:
-        TesteData  formulario = new TesteData();
+        TesteData formulario = new TesteData();
         Panel_Principal.add(formulario);
         formulario.setClosable(true);
         formulario.setIconifiable(true);
@@ -1054,7 +1055,7 @@ private void Menu_FaturamentoActionPerformed(java.awt.event.ActionEvent evt) {//
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
-        CadMarca  formulario = new CadMarca();
+        CadMarca formulario = new CadMarca();
         Panel_Principal.add(formulario);
         formulario.setClosable(true);
         formulario.setIconifiable(true);
@@ -1065,7 +1066,7 @@ private void Menu_FaturamentoActionPerformed(java.awt.event.ActionEvent evt) {//
 
     private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
         // TODO add your handling code here:
-        CadClienteModelo_3  formulario = new CadClienteModelo_3();
+        CadClienteModelo_3 formulario = new CadClienteModelo_3();
         Panel_Principal.add(formulario);
         formulario.setClosable(true);
         formulario.setIconifiable(true);
@@ -1087,7 +1088,7 @@ private void Menu_FaturamentoActionPerformed(java.awt.event.ActionEvent evt) {//
 
     private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
         // TODO add your handling code here:
-        CadClienteModelo_2  formulario = new CadClienteModelo_2();
+        CadClienteModelo_2 formulario = new CadClienteModelo_2();
         Panel_Principal.add(formulario);
         formulario.setClosable(true);
         formulario.setIconifiable(true);
@@ -1097,7 +1098,7 @@ private void Menu_FaturamentoActionPerformed(java.awt.event.ActionEvent evt) {//
     }//GEN-LAST:event_jMenuItem18ActionPerformed
 
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
-        CadTipoNota  formulario = new CadTipoNota();
+        CadTipoNota formulario = new CadTipoNota();
         Panel_Principal.add(formulario);
         formulario.setClosable(true);
         formulario.setIconifiable(true);
@@ -1107,7 +1108,7 @@ private void Menu_FaturamentoActionPerformed(java.awt.event.ActionEvent evt) {//
     }//GEN-LAST:event_jMenuItem16ActionPerformed
 
     private void Nota_EntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nota_EntradaActionPerformed
-        CadNotaEntrada  formulario = new CadNotaEntrada();
+        CadNotaEntrada formulario = new CadNotaEntrada();
         Panel_Principal.add(formulario);
         formulario.setClosable(true);
         formulario.setIconifiable(true);

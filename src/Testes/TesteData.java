@@ -14,10 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package VisaoFaturamento;
+package Testes;
 
 import Principal.Conexao;
 import Principal.MetodosGlobais;
+import VisaoFaturamento.FormularioPedidoCompleto;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.Date;
@@ -37,13 +38,13 @@ import javax.swing.JOptionPane;
  */
 public class TesteData extends MetodosGlobais {
 
-    private static final String sqlAlterar= "UPDATE TESTE_DATE SET NM_PESSOA = ?,"
+    private static final String sqlAlterar = "UPDATE TESTE_DATE SET NM_PESSOA = ?,"
             + "    DT_EMI_DOC = ?"
             //+ "    DT_SAI_DOC = ?,"
-           // + "    DT_ALT = ?,"
-           // + "    DT_CAD =?,"
-           // + "    HR_ALT = ?,"
-           // + "    HR_CAD = ?"
+            // + "    DT_ALT = ?,"
+            // + "    DT_CAD =?,"
+            // + "    HR_ALT = ?,"
+            // + "    HR_CAD = ?"
             + "WHERE (CD_PESSOA = ?);";
     private static final String sqlAlterarAutomatico
             = "UPDATE TESTE_DATE SET NM_PESSOA = ?,"
@@ -98,6 +99,7 @@ public class TesteData extends MetodosGlobais {
         initComponents();
         Centro();
     }
+
     private class ClasseTesteData {
 
         private int Codigo;
@@ -199,13 +201,13 @@ public class TesteData extends MetodosGlobais {
                 //String DataEmissao;
                 //DataEmissao = new Date(formatadata.format(classetestedata.getDataEmissao()));
                 //pstmt.setDate(2, classetestedata.getDataEmissao());
-              pstmt.setDate(2, classetestedata.getDataEmissao());
+                pstmt.setDate(2, classetestedata.getDataEmissao());
                 //pstmt.setDate(3, classetestedata.getDataSaida());
-               // pstmt.setDate(4, classetestedata.getDataAlteracao());
-               //pstmt.setDate(5, classetestedata.getDataCadastro());
+                // pstmt.setDate(4, classetestedata.getDataAlteracao());
+                //pstmt.setDate(5, classetestedata.getDataCadastro());
                 //pstmt.setDate(6, classetestedata.getHoraAlteracao());
                 //pstmt.setDate(7, classetestedata.getHoraCadastro());
-               // pstmt.setInt(8, classetestedata.getCodigo());
+                // pstmt.setInt(8, classetestedata.getCodigo());
                 pstmt.setInt(3, classetestedata.getCodigo());
                 pstmt.executeUpdate();
                 alterou = true;
@@ -368,17 +370,14 @@ public class TesteData extends MetodosGlobais {
         //Formatando a Data de String para Date
         //Date data=formatadata.format(auxDataEmissao).getT
         //Date dataEmissao=formatadata.format(auxDataEmissao);
-        
         //String datas= "04/04/2014";
         //SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         //java.util.Date DataEmissao;
         //DataEmissao = formatter.parse(auxDataEmissao);
-        
         //Date dataSaida=formatadata.parse(auxDataSaida);
         //Date horaEmissao=formatahora.parse(auxHoraEmissao);
         //Date horaSaida=formatahora.parse(auxHoraSaida);
         //java.sql.Date DataEmissao = new java.sql.Date(formatadata.parse(auxDataEmissao).getTime());
-        
         java.sql.Date DataSaida = new java.sql.Date(formatadata.parse(auxDataSaida).getTime());
         java.sql.Date DataAlteracao = new java.sql.Date(formatadata.parse(auxDataAlteracao).getTime());
         java.sql.Date DataCadastro = new java.sql.Date(formatadata.parse(auxDataCadastro).getTime());
@@ -386,7 +385,6 @@ public class TesteData extends MetodosGlobais {
         java.sql.Date HoraAlteracao = new java.sql.Date(formatahora.parse(auxHoraAlteracao).getDate());
 
         //String DataEmissao=auxDataEmissao.ToDatt;
-        
 // Como converter String para java.util.Date
         java.text.DateFormat formatter = new java.text.SimpleDateFormat("dd/MM/yyyy");
         formatter.setLenient(false);
@@ -407,12 +405,12 @@ public class TesteData extends MetodosGlobais {
 // Como converter java.util.Date para java.sql.Date
         java.util.Date hoje = new java.util.Date();
         java.sql.Date today = new java.sql.Date(hoje.getTime());
- 
+
 //Conversao Sistema Geo
         java.util.Date javautilDateDataEmissao = null;
-        javautilDateDataEmissao=(java.util.Date) formatter.parse(auxDataEmissao);
-        
-java.sql.Date DataEmissao = new java.sql.Date(javautilDateDataEmissao.getTime());
+        javautilDateDataEmissao = (java.util.Date) formatter.parse(auxDataEmissao);
+
+        java.sql.Date DataEmissao = new java.sql.Date(javautilDateDataEmissao.getTime());
 
         ClasseTesteData classetestedata = new ClasseTesteData(
                 codigo,
@@ -558,7 +556,7 @@ java.sql.Date DataEmissao = new java.sql.Date(javautilDateDataEmissao.getTime())
         btnSair = new javax.swing.JButton();
         btnGravar1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("TESTE DE DATAS");
 
@@ -913,51 +911,51 @@ java.sql.Date DataEmissao = new java.sql.Date(javautilDateDataEmissao.getTime())
 
     private void edtCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtCodigoKeyPressed
         // TODO add your handling code here:
-        String auxTexto=edtCodigo.getText();
-        String auxTexto1=edtCodigo.getText();
-        
+        String auxTexto = edtCodigo.getText();
+        String auxTexto1 = edtCodigo.getText();
+
         int pessoa = Integer.parseInt(auxTexto);
         int pessoa1 = Integer.parseInt(auxTexto1);
 
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if(auxTexto.equals("")){
-                mensagemErro("Pessoa vazia, preencha!");    
+            if (auxTexto.equals("")) {
+                mensagemErro("Pessoa vazia, preencha!");
                 edtCodigo.requestFocus();
-            }else{
-            //Listar os Dados
-            TesteDataDB testedatadb = new TesteDataDB();
-            if (testedatadb.getTesteData(pessoa)) {
-                ListaDados();
-            } else if (testedatadb.getTesteData(pessoa1)) {
-                ListaDados();
             } else {
-                mensagemErro("Pessoa não Cadastrada!");
-            }
+                //Listar os Dados
+                TesteDataDB testedatadb = new TesteDataDB();
+                if (testedatadb.getTesteData(pessoa)) {
+                    ListaDados();
+                } else if (testedatadb.getTesteData(pessoa1)) {
+                    ListaDados();
+                } else {
+                    mensagemErro("Pessoa não Cadastrada!");
+                }
             }
         }
     }//GEN-LAST:event_edtCodigoKeyPressed
 
     private void edtCodigo1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtCodigo1KeyPressed
         // TODO add your handling code here:
-        String auxTexto=edtCodigo.getText();
-        
+        String auxTexto = edtCodigo.getText();
+
         int pessoa = Integer.parseInt(edtCodigo.getText());
         int pessoa1 = Integer.parseInt(edtCodigo1.getText());
 
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if(auxTexto.equals("")){
-                mensagemErro("Pessoa vazia, preencha!");    
+            if (auxTexto.equals("")) {
+                mensagemErro("Pessoa vazia, preencha!");
                 edtCodigo.requestFocus();
-            }else{
-            //Listar os Dados
-            TesteDataDB testedatadb = new TesteDataDB();
-            if (testedatadb.getTesteData(pessoa)) {
-                ListaDados();
-            } else if (testedatadb.getTesteData(pessoa1)) {
-                ListaDados();
             } else {
-                mensagemErro("Pessoa não Cadastrada!");
-            }
+                //Listar os Dados
+                TesteDataDB testedatadb = new TesteDataDB();
+                if (testedatadb.getTesteData(pessoa)) {
+                    ListaDados();
+                } else if (testedatadb.getTesteData(pessoa1)) {
+                    ListaDados();
+                } else {
+                    mensagemErro("Pessoa não Cadastrada!");
+                }
             }
         }
     }//GEN-LAST:event_edtCodigo1KeyPressed

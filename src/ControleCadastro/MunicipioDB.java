@@ -27,7 +27,7 @@ public class MunicipioDB {
             + "CAST('NOW' AS TIME),"
             + "CAST('NOW' AS DATE),"
             + "CAST('NOW' AS TIME),"
-            + "?, ?)";
+            + "?, ?, ?)";
     private static final String sqlAlterar
             = "UPDATE municipio SET "
             + "ds_municipio=?,"

@@ -21,24 +21,24 @@ package ModeloCadastro;
  * @author Gelvazio Camargo
  */
 /*
-Tabela Banco de Dados
-cd_ref                  
-vl_custo                
-vl_venda                
-vl_promocao             
-vl_especial             
-vl_custo_med            
-tx_margem_lucro_venda   
-tx_margem_lucro_promocao
-tx_margem_lucro_especial
-cd_usuario              
-dt_alt                  
-hr_alt                  
-dt_cad                  
-hr_cad                  
-cd_filial               
+ Tabela Banco de Dados
+ cd_ref                  
+ vl_custo                
+ vl_venda                
+ vl_promocao             
+ vl_especial             
+ vl_custo_med            
+ tx_margem_lucro_venda   
+ tx_margem_lucro_promocao
+ tx_margem_lucro_especial
+ cd_usuario              
+ dt_alt                  
+ hr_alt                  
+ dt_cad                  
+ hr_cad                  
+ cd_filial               
 
-*/
+ */
 public class SubTabPreco {
 
     private long cd_ref;
@@ -154,5 +154,5 @@ public class SubTabPreco {
     public void setCd_filial(int cd_filial) {
         this.cd_filial = cd_filial;
     }
-    
+
 }

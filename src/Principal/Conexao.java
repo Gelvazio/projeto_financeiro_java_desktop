@@ -32,7 +32,7 @@ public class Conexao {
             conn = DriverManager.getConnection(str_conn, usuario, senha);
             verifica = true;
             //Limpa o caminho do banco
-            banco="";
+            banco = "";
         } catch (ClassNotFoundException erro) {
             JOptionPane.showMessageDialog(null, "Erro de driver! \n" + erro.getMessage());
             verifica = false;
@@ -46,11 +46,6 @@ public class Conexao {
     }
 
     public static Connection getConexao() {
-        //Aqui a variavel "banco"
-        //recebe o retorno do metodo que le o arquivo ini
-        //Sintaxe do caminho do Conexao.ini
-        //Caminho=localhost:3050/D:\Dropbox\VERSIONAMENTO\SISTEMA JAVA\SISTEMA JAVA 2.1\BANCO_DADOS\BASE_NOVA.FDB
-
         banco = leIniBancoDados();
 
         str_conn = "jdbc:firebirdsql://" + banco;

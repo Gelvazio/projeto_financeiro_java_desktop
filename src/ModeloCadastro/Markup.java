@@ -21,25 +21,24 @@ package ModeloCadastro;
  * @author Gelvazio Camargo
  */
 /*
-Tabela BAnco Dados
-cd_grupo_fiscal
-cd_estado            
-tx_icms_interno      
-tx_icms_interestadual
-cd_usuario           
-dt_cad               
-dt_alt               
-hr_cad               
-hr_alt  
-*/
-
+ Tabela BAnco Dados
+ cd_grupo_fiscal
+ cd_estado            
+ tx_icms_interno      
+ tx_icms_interestadual
+ cd_usuario           
+ dt_cad               
+ dt_alt               
+ hr_cad               
+ hr_alt  
+ */
 public class Markup {
 
-    private  int cd_grupo_fiscal;
-    private  String cd_estado;
-    private  int tx_icms_interno;
-    private  int tx_icms_interestadual;
-    private  int cd_usuario;
+    private int cd_grupo_fiscal;
+    private String cd_estado;
+    private int tx_icms_interno;
+    private int tx_icms_interestadual;
+    private int cd_usuario;
 
     public Markup(int cd_grupo_fiscal, String cd_estado, int tx_icms_interno, int tx_icms_interestadual, int cd_usuario) {
         this.cd_grupo_fiscal = cd_grupo_fiscal;
@@ -89,5 +88,4 @@ public class Markup {
         this.cd_usuario = cd_usuario;
     }
 
- 
 }

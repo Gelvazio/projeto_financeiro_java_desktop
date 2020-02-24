@@ -1,13 +1,18 @@
 package VisaoCadastros;
 
+import ControleCadastro.PaisDB;
+import ModeloCadastro.Cor;
+import ModeloCadastro.Pais;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
+import VisaoConsultasCadastro.ConsultaPaises;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,23 +21,32 @@ import javax.swing.JOptionPane;
  */
 public class CadPais extends MetodosGlobais {
 
-    private static final String sqlBuscaCor = "SELECT * FROM COR  WHERE CD_COR=?";
+    PaisDB paisdb = new PaisDB();
 
-    /**
-     * Creates new form CadUnidade_Medida
-     */
     public CadPais() {
         initComponents();
         Centro();
+        HabilitaCampos(false);
+    }
+
+    private void HabilitaCampos(boolean habilita) {
+        edtCodigo.setEnabled(!habilita);
+        edtDescricao.setEnabled(habilita);
+
+        btnGravar.setEnabled(habilita);
+        btnCancelar.setEnabled(habilita);
+        btnConsulta.setEnabled(!habilita);
+        btnExcluir.setEnabled(habilita);
+
+        if (habilita) {
+
+        } else {
+            LimpaTela();
+        }
     }
 
     private void LimpaTela() {
         edtCodigo.setText("");
-        edtDescricao.setText("");
-        edtCodigo.grabFocus();
-    }
-
-    private void LimpaTelaMenosCodigo() {
         edtDescricao.setText("");
         edtCodigo.grabFocus();
     }
@@ -42,145 +56,74 @@ public class CadPais extends MetodosGlobais {
         String auxTexto = edtCodigo.getText();
         String auxNome = edtDescricao.getText();
         if (auxTexto.equals("")) {
-            JOptionPane.showMessageDialog(null, "Favor Preencher o Código da Cor!");
+            JOptionPane.showMessageDialog(null, "Favor Preencher o Código do pais!");
             edtCodigo.grabFocus();
         } else if (auxNome.equals("")) {
-            JOptionPane.showMessageDialog(null, "Favor Preencher o nome da Cor!");
+            JOptionPane.showMessageDialog(null, "Favor Preencher o nome do pais!");
             edtDescricao.grabFocus();
         } else {
-            Gravar_Alterar_Registro();
-        }
-    }
+            int cd_pais = Integer.parseInt(auxTexto);
+            int cd_usuario = 1;
+            int cd_filial = 1;
 
-    private void Gravar_Alterar_Registro() {
-        String auxTexto = edtCodigo.getText();
-        int codigo = Integer.parseInt(auxTexto);
-        /*
-         CorDB cordb = new CorDB();
-         if (cordb.getCor(codigo)) {
-         Alterar_Registro();
-         } else {
-         Gravar_Registro();
-         }
-         */
+            Pais pais = new Pais(
+                    cd_pais,
+                    auxNome,
+                    cd_usuario,
+                    cd_filial
+            );
+            if (paisdb.getPais(cd_pais)) {
+                if (paisdb.alterarPais(pais)) {
+                    JOptionPane.showMessageDialog(null, "Registro alterado com sucesso!");
+                    HabilitaCampos(false);
+                } else {
+                    mensagemErro("Não foi possível alterar o registro!");
+                }
+            } else {
+                if (paisdb.inserirPais(pais)) {
+                    JOptionPane.showMessageDialog(null, "Registro alterado com sucesso!");
+                    HabilitaCampos(false);
+                } else {
+                    mensagemErro("Não foi possível inserir o registro!");
+                }
+            }
+        }
     }
 
     private void Excluir_Registro() {
         int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir o registro?");
         if (resposta == JOptionPane.YES_OPTION) {
-            /*
-             CorDB cordb = new CorDB();
-             int auxCodigo = Integer.parseInt(edtCodigo.getText());
-             if (cordb.excluirCor(auxCodigo)) {
-             JOptionPane.showMessageDialog(null, "Exclusão efetuada com sucesso!");
-             } else {
-             JOptionPane.showMessageDialog(null, "Não foi possivel excluir o registro!!");
-             }
-             */
-        }
-
-        LimpaTela();
-    }
-
-    private void Gravar_Registro() {
-        String auxTexto = edtCodigo.getText();
-        String auxNome = edtDescricao.getText();
-        int auxcd_usuario = 1;//= Integer.parseInt(login.getCodigo());
-        int auxcd_filial = 1;//Integer.parseInt(login.getFilial());
-/*
-         CorDB cordb = new CorDB();
-         int auxCodigo = Integer.parseInt(auxTexto);
-         Cor cor = new Cor(
-         auxCodigo,
-         auxNome,
-         auxcd_usuario,
-         auxcd_filial
-         );
-         if (cordb.inserirCor(cor)) {
-         JOptionPane.showMessageDialog(null, "Registro incluído com sucesso!");
-         LimpaTela();
-         } else {
-         JOptionPane.showMessageDialog(null, "Não foi possível incluir o registro!");
-         edtCodigo.grabFocus();
-         }
-         */
-    }
-
-    private void Alterar_Registro() {
-        String auxTexto = edtCodigo.getText();
-        String auxNome = edtDescricao.getText();
-        int auxcd_usuario = 1;//= Integer.parseInt(login.getCodigo());
-        int auxcd_filial = 1;//Integer.parseInt(login.getFilial());
-/*
-         CorDB cordb = new CorDB();
-         int auxCodigo = Integer.parseInt(auxTexto);
-         Cor cor = new Cor(
-         auxCodigo,
-         auxNome,
-         auxcd_usuario,
-         auxcd_filial
-         );
-         if (cordb.alterarCor(cor)) {
-         JOptionPane.showMessageDialog(null, "Registro alterado com sucesso!");
-         LimpaTela();
-         } else {
-         JOptionPane.showMessageDialog(null, "Não foi possível alterar o registro!");
-         edtCodigo.grabFocus();
-         }
-         */
-    }
-
-    private void ValidaCodigoGenerator() {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-            conn = Conexao.getConexao();
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT GEN_ID(CD_COR, 1) FROM RDB$DATABASE");
-            while (rs.next()) {
-                int auxCodigoGenerator = rs.getInt("GEN_ID");
-                int auxCodigo = auxCodigoGenerator + 1;
-                String a;
-                a = "" + auxCodigo;
-                edtCodigo.setText(a);
-                edtDescricao.grabFocus();
+            int auxCodigo = Integer.parseInt(edtCodigo.getText());
+            if (paisdb.excluirPais(auxCodigo)) {
+                JOptionPane.showMessageDialog(null, "Exclusão efetuada com sucesso!");
+                HabilitaCampos(false);
+            } else {
+                mensagemErro("Não foi possivel excluir o registro!!");
             }
-        } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro de conexão! \n" + erro.getMessage());
-        } finally {
-            Conexao.closeAll(conn);
         }
+
     }
 
-    private void ValidaCampoCodigoNãoNulo() {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        /*
-         CorDB cordb = new CorDB();
-         int cd_cor = Integer.parseInt(edtCodigo.getText());
-         if (cordb.getCor(cd_cor)) {
-         edtDescricao.grabFocus();
-         try {
-         conn = Conexao.getConexao();
-         pstmt = conn.prepareStatement(sqlBuscaCor);
-         pstmt.setInt(1, cd_cor);
-         rs = pstmt.executeQuery();
-         while (rs.next()) {
-         String auxDS_COR = rs.getString("ds_cor");
-         edtDescricao.setText(auxDS_COR);
-         edtDescricao.grabFocus();
-         }
-         } catch (SQLException erro) {
-         JOptionPane.showMessageDialog(null, "Erro de conexão no Método ValidaCampoCodigoNãoNulo()! " + erro.getMessage());
-         }
-         } else {
-         JOptionPane.showMessageDialog(null, "Cor não Cadastrada!");
-         LimpaTelaMenosCodigo();
-         edtDescricao.grabFocus();
-         }
-         */
+    private void ValidaCodigoNaoNulo() {
+
+        int cd_pais = Integer.parseInt(edtCodigo.getText());
+
+        if (paisdb.getPais(cd_pais)) {
+            HabilitaCampos(true);
+            ArrayList<Pais> paises = paisdb.listaPaises(cd_pais);
+            for (Pais auxPais : paises) {
+                //Passa os dados aqui neste "for" de objetos 
+                edtDescricao.setText(auxPais.getNm_pais());
+            }
+            edtDescricao.requestFocus();
+        } else {
+            int resposta = JOptionPane.showConfirmDialog(null, "País não existe! \n Deseja cadastrar o código?");
+            if (resposta == JOptionPane.YES_OPTION) {
+                HabilitaCampos(true);
+            } else {
+                HabilitaCampos(false);
+            }
+        }
     }
 
     /**
@@ -193,15 +136,18 @@ public class CadPais extends MetodosGlobais {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         edtCodigo = new javax.swing.JTextField();
         edtDescricao = new javax.swing.JTextField();
-        btnGravar = new javax.swing.JButton();
-        btnCancelar = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
-        btnConsulta = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
         btnSair = new javax.swing.JButton();
+        btnConsulta = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnGravar = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -210,67 +156,42 @@ public class CadPais extends MetodosGlobais {
         jLabel1.setText("Cadastro de Paises");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 5, 206, 24));
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         jLabel2.setText("Descrição:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, -1, -1));
 
         jLabel5.setText("Código:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(37, 120, 60, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 50, -1));
 
         edtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 edtCodigoKeyPressed(evt);
             }
         });
-        getContentPane().add(edtCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 381, 25));
+        jPanel1.add(edtCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 20, 70, 25));
 
         edtDescricao.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 edtDescricaoKeyPressed(evt);
             }
         });
-        getContentPane().add(edtDescricao, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 180, 381, 25));
+        jPanel1.add(edtDescricao, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 381, 25));
 
-        btnGravar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Valid Green.png"))); // NOI18N
-        btnGravar.setText("Gravar");
-        btnGravar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGravarActionPerformed(evt);
-            }
-        });
-        btnGravar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnGravarKeyPressed(evt);
-            }
-        });
-        getContentPane().add(btnGravar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 50, 120, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 490, 160));
 
-        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Cancel.png"))); // NOI18N
-        btnCancelar.setText("Cancelar");
-        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
-            }
-        });
-        btnCancelar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnCancelarKeyPressed(evt);
-            }
-        });
-        getContentPane().add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 100, 120, -1));
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Remove Red.png"))); // NOI18N
-        btnExcluir.setText("Excluir");
-        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+        btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Red.png"))); // NOI18N
+        btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluirActionPerformed(evt);
+                btnSairActionPerformed(evt);
             }
         });
-        btnExcluir.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnExcluirKeyPressed(evt);
-            }
-        });
-        getContentPane().add(btnExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 150, 120, -1));
+        jPanel2.add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 120, -1));
 
         btnConsulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Search.png"))); // NOI18N
         btnConsulta.setText("Consulta");
@@ -284,16 +205,52 @@ public class CadPais extends MetodosGlobais {
                 btnConsultaKeyPressed(evt);
             }
         });
-        getContentPane().add(btnConsulta, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 200, 120, -1));
+        jPanel2.add(btnConsulta, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 120, -1));
 
-        btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Red.png"))); // NOI18N
-        btnSair.setText("Sair");
-        btnSair.addActionListener(new java.awt.event.ActionListener() {
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Remove Red.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSairActionPerformed(evt);
+                btnExcluirActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 250, 120, -1));
+        btnExcluir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnExcluirKeyPressed(evt);
+            }
+        });
+        jPanel2.add(btnExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 120, -1));
+
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Cancel.png"))); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+        btnCancelar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnCancelarKeyPressed(evt);
+            }
+        });
+        jPanel2.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 120, -1));
+
+        btnGravar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Valid Green.png"))); // NOI18N
+        btnGravar.setText("Gravar");
+        btnGravar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGravarActionPerformed(evt);
+            }
+        });
+        btnGravar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnGravarKeyPressed(evt);
+            }
+        });
+        jPanel2.add(btnGravar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 120, -1));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 50, 140, 270));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 690, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -303,10 +260,13 @@ public class CadPais extends MetodosGlobais {
         String auxTexto = edtCodigo.getText();
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (auxTexto.equals("")) {
-                ValidaCodigoGenerator();
-                edtDescricao.grabFocus();
+                HabilitaCampos(true);
+                //Passa o código do generator para o campo
+                String auxCodigoGenerator = "" + paisdb.ValidaCodigoGenerator();
+                edtCodigo.setText(auxCodigoGenerator);
+                edtDescricao.requestFocus();
             } else {
-                ValidaCampoCodigoNãoNulo();
+                ValidaCodigoNaoNulo();
             }
         }
     }//GEN-LAST:event_edtCodigoKeyPressed
@@ -339,8 +299,7 @@ public class CadPais extends MetodosGlobais {
         // TODO add your handling code here:
         int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente Cancelar a Edição?");
         if (resposta == JOptionPane.YES_OPTION) {
-            LimpaTela();
-            edtCodigo.grabFocus();
+            HabilitaCampos(false);
         }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -374,13 +333,11 @@ public class CadPais extends MetodosGlobais {
     }//GEN-LAST:event_btnConsultaKeyPressed
 
     private void btnConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaActionPerformed
-        // TODO add your handling code here:
-        /*
-         ConsultaPaises form = new ConsultaPaises(edtCodigo);
-         this.getDesktopPane().add(form);
-         form.setVisible(true);
-         edtCodigo.grabFocus();
-         */
+        ConsultaPaises form = new ConsultaPaises(edtCodigo);
+        this.getDesktopPane().add(form);
+        form.setVisible(true);
+        edtCodigo.grabFocus();
+
     }//GEN-LAST:event_btnConsultaActionPerformed
 
     /**
@@ -399,19 +356,16 @@ public class CadPais extends MetodosGlobais {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadPais.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadPais.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadPais.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CadPais.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
+        //</editor-fold>
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new CadPais().setVisible(true);
             }
@@ -428,5 +382,8 @@ public class CadPais extends MetodosGlobais {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 }

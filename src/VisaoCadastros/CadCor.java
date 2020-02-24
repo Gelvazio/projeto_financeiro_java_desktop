@@ -25,7 +25,7 @@ public class CadCor extends MetodosGlobais {
         habilitaCampos(false);
     }
 
-    public void habilitaCampos(boolean habilita) {
+    private void habilitaCampos(boolean habilita) {
         edtCodigo.requestFocus();
         edtCodigo.setEnabled(!habilita);
         edtDescricao.setEnabled(habilita);
@@ -162,7 +162,7 @@ public class CadCor extends MetodosGlobais {
                 edtCodigoKeyPressed(evt);
             }
         });
-        getContentPane().add(edtCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 340, 25));
+        getContentPane().add(edtCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 80, 25));
 
         edtDescricao.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -234,7 +234,7 @@ public class CadCor extends MetodosGlobais {
                 btnSairActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 230, 120, 40));
+        getContentPane().add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 240, 120, 40));
 
         setBounds(0, 0, 686, 350);
     }// </editor-fold>//GEN-END:initComponents
@@ -341,15 +341,14 @@ public class CadCor extends MetodosGlobais {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadCor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadCor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadCor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CadCor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

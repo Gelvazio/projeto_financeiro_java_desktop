@@ -224,7 +224,7 @@ public class FormularioPedido1 extends MetodosGlobais {
             pstmt.setInt(1, codigomovimento);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                             int CD_PROD = rs.getInt("CD_PROD");
+                int CD_PROD = rs.getInt("CD_PROD");
                 String DS_PROD = rs.getString("DS_PROD");
                 int CD_GRUPO = rs.getInt("CD_GRUPO");
                 int CD_SUB_GRUPO = rs.getInt("CD_SUB_GRUPO");
@@ -238,23 +238,28 @@ public class FormularioPedido1 extends MetodosGlobais {
                 int cd_usuario = rs.getInt("cd_usuario");
                 int cd_filial = rs.getInt("cd_filial");
                 int cd_unidade_medida = rs.getInt("cd_unidade_medida");
-int qt_estoque = rs.getInt("qt_estoque");
+                int qt_estoque = rs.getInt("qt_estoque");
+                int tx_ipi = rs.getInt("tx_ipi");
+                int tx_iss = rs.getInt("tx_iss");
+
                 ProdutoSimples produto = new ProdutoSimples(
                         CD_PROD,
-                        DS_PROD, 
+                        DS_PROD,
                         CD_GRUPO,
                         CD_SUB_GRUPO,
                         FG_ATIVO,
-                        CD_COR, 
+                        CD_COR,
                         CD_FABRICA,
                         CD_MARCA,
                         CD_GP_FISCAL,
-                        CD_NCM_SH, 
-                        CD_REF, 
+                        CD_NCM_SH,
+                        CD_REF,
                         cd_usuario,
                         cd_filial,
                         cd_unidade_medida,
-                        qt_estoque
+                        qt_estoque,
+                        tx_ipi,
+                        tx_iss
                 );
                 listaProduto.add(produto);
             }
@@ -1417,9 +1422,9 @@ int qt_estoque = rs.getInt("qt_estoque");
 
     private void btnConsultaCondicaoPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaCondicaoPagamentoActionPerformed
         // TODO add your handling code here:
-       // ConsultaCondicaoPagamento form = new ConsultaCondicaoPagamento(edtCodigoCondicaoPagamento);
-       // this.getDesktopPane().add(form);
-       // form.setVisible(true);
+        // ConsultaCondicaoPagamento form = new ConsultaCondicaoPagamento(edtCodigoCondicaoPagamento);
+        // this.getDesktopPane().add(form);
+        // form.setVisible(true);
         //edtCodigoCondicaoPagamento.requestFocus();
     }//GEN-LAST:event_btnConsultaCondicaoPagamentoActionPerformed
 
@@ -1511,7 +1516,7 @@ int qt_estoque = rs.getInt("qt_estoque");
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

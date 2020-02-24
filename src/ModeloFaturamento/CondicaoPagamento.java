@@ -19,21 +19,16 @@ package ModeloFaturamento;
 /**
  *
  * @author Gelvazio
- * 
- * CREATE TABLE COND_PAG (
-    CD_COND     INTEGER NOT NULL,
-    DS_COND     VARCHAR(50) NOT NULL,
-    CD_USUARIO  SMALLINT NOT NULL,
-    DT_ALT      DATE NOT NULL,
-    HR_ALT      TIME NOT NULL,
-    DT_CAD      DATE NOT NULL,
-    HR_CAD      TIME NOT NULL
-);
+ *
+ * CREATE TABLE COND_PAG ( CD_COND INTEGER NOT NULL, DS_COND VARCHAR(50) NOT
+ * NULL, CD_USUARIO SMALLINT NOT NULL, DT_ALT DATE NOT NULL, HR_ALT TIME NOT
+ * NULL, DT_CAD DATE NOT NULL, HR_CAD TIME NOT NULL );
  */
 public class CondicaoPagamento {
-    private  int cd_cond;
-    private  String ds_cond;
-    private  int cd_usuario;
+
+    private int cd_cond;
+    private String ds_cond;
+    private int cd_usuario;
 
     public CondicaoPagamento(int cd_cond, String ds_cond, int cd_usuario) {
         this.cd_cond = cd_cond;
@@ -65,7 +60,4 @@ public class CondicaoPagamento {
         this.cd_usuario = cd_usuario;
     }
 
- 
-
-     
 }

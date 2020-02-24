@@ -3,26 +3,26 @@
     <NFe xmlns="">
         <infNFe>
             <
-                    <nro />
+            <nro />
         
-                </total>
-            <transp>
-                <modFrete></modFrete>
-            </transp>
-            <cobr>
-                <fat>
-                    <nFat></nFat>
-                    <vOrig></vOrig>
-                </fat>
-                <dup>
-                    <nDup></nDup>
-                    <dVenc></dVenc>
-                    <vDup></vDup>
-                </dup>
-            </cobr>
-            <infAdic>
-                <infCpl>"DOCUMENTO EMITIDO POR ME OPTANTE PELO SIMPLES NACIONAL NAO GERA DIREITO A CREDITO FISCAL DE ISS E IPI Valor Aproximado do Imposto R$2.827,50 (37,7%) Fonte: IBPT</infCpl>
-            </infAdic>
+        </total>
+        <transp>
+            <modFrete></modFrete>
+        </transp>
+        <cobr>
+            <fat>
+                <nFat></nFat>
+                <vOrig></vOrig>
+            </fat>
+            <dup>
+                <nDup></nDup>
+                <dVenc></dVenc>
+                <vDup></vDup>
+            </dup>
+        </cobr>
+        <infAdic>
+            <infCpl>"DOCUMENTO EMITIDO POR ME OPTANTE PELO SIMPLES NACIONAL NAO GERA DIREITO A CREDITO FISCAL DE ISS E IPI Valor Aproximado do Imposto R$2.827,50 (37,7%) Fonte: IBPT</infCpl>
+        </infAdic>
         </infNFe>
         <Signature>
             <SignedInfo>

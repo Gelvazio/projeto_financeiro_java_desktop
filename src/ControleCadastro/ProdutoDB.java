@@ -16,7 +16,9 @@ import javax.swing.JOptionPane;
  *
  * @author Gelvazio Camargo
  */
-public class ProdutoDB extends MetodosGlobais{
+public class ProdutoDB extends MetodosGlobais {
+
+    private static final String sqlBuscaGrupoFiscal = "SELECT PRODUTO_SIMPLES.CD_GP_FISCAL FROM PRODUTO_SIMPLES WHERE PRODUTO_SIMPLES.CD_REF=?";
 
     private static final String sqlTodos = "Select * from PRODUTO_SIMPLES order by PRODUTO_SIMPLES.cd_ref";
     private static final String sqlInserir = "INSERT INTO PRODUTO_SIMPLES ("
@@ -38,7 +40,9 @@ public class ProdutoDB extends MetodosGlobais{
             + "CD_USUARIO,"
             + "CD_FILIAL,"
             + "CD_UNIDADE_MEDIDA,"
-            + "QT_ESTOQUE)"
+            + "QT_ESTOQUE,"
+            + "TX_IPI,"
+            + "TX_ISS)"
             + "VALUES"
             + "(?,?,?,?,"
             + "?,?,?,?,"
@@ -46,7 +50,7 @@ public class ProdutoDB extends MetodosGlobais{
             + "CAST('NOW' AS TIME),"
             + "CAST('NOW' AS DATE),"
             + "CAST('NOW' AS TIME),"
-            + "?,?,?,?,?,?,?,?)";
+            + "?,?,?,?,?,?,?,?,?,?)";
     private static final String sqlExcluir = "DELETE FROM PRODUTO_SIMPLES WHERE CD_REF= ?";
     private static final String sqlAlterar = "UPDATE PRODUTO_SIMPLES SET DS_PROD =?,"
             + "    CD_GRUPO = ?,"
@@ -63,7 +67,9 @@ public class ProdutoDB extends MetodosGlobais{
             + "    CD_USUARIO =?,"
             + "    CD_FILIAL = ?,"
             + "    CD_UNIDADE_MEDIDA = ?,"
-            + "    QT_ESTOQUE=?"
+            + "    QT_ESTOQUE=?,"
+            + "    TX_IPI=?,"
+            + "    TX_ISS=?"
             + "WHERE (CD_REF = ? );";
 
     //Abaixo SQLs  dos combobox da tela Produto
@@ -90,7 +96,7 @@ public class ProdutoDB extends MetodosGlobais{
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql, getComboProduto(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);            
+            Conexao.closeAll(conn);
         }
         return modelo;
     }
@@ -110,7 +116,7 @@ public class ProdutoDB extends MetodosGlobais{
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql, getComboGrupoProduto(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);            
+            Conexao.closeAll(conn);
         }
         return modelo;
     }
@@ -130,7 +136,7 @@ public class ProdutoDB extends MetodosGlobais{
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql, getComboSub_GrupoProduto(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);            
+            Conexao.closeAll(conn);
         }
         return modelo;
     }
@@ -150,7 +156,7 @@ public class ProdutoDB extends MetodosGlobais{
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql, getComboCorProduto(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);            
+            Conexao.closeAll(conn);
         }
         return modelo;
     }
@@ -170,7 +176,7 @@ public class ProdutoDB extends MetodosGlobais{
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql, getComboMarcaProduto(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);            
+            Conexao.closeAll(conn);
         }
         return modelo;
     }
@@ -190,7 +196,7 @@ public class ProdutoDB extends MetodosGlobais{
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql, getComboGrupoFiscalProduto: \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);            
+            Conexao.closeAll(conn);
         }
         return modelo;
     }
@@ -216,13 +222,15 @@ public class ProdutoDB extends MetodosGlobais{
             pstmt.setInt(12, produto.getCd_filial());
             pstmt.setInt(13, produto.getCd_unidade_medida());
             pstmt.setInt(14, produto.getQt_estoque());
-            pstmt.setLong(15, produto.getCd_ref());
+            pstmt.setInt(15, produto.getTx_ipi());
+            pstmt.setInt(16, produto.getTx_iss());
+            pstmt.setLong(17, produto.getCd_ref());
             pstmt.executeUpdate();
             alterou = true;
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql. alterarProdutos(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);            
+            Conexao.closeAll(conn);
         }
         return alterou;
     }
@@ -240,7 +248,7 @@ public class ProdutoDB extends MetodosGlobais{
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql. excluirProduto(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);            
+            Conexao.closeAll(conn);
         }
         return excluiu;
     }
@@ -267,12 +275,14 @@ public class ProdutoDB extends MetodosGlobais{
             pstmt.setInt(13, produto.getCd_filial());
             pstmt.setInt(14, produto.getCd_unidade_medida());
             pstmt.setInt(15, produto.getQt_estoque());
+            pstmt.setInt(16, produto.getTx_ipi());
+            pstmt.setInt(17, produto.getTx_iss());
             pstmt.executeUpdate();
             inseriu = true;
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql. inserirProduto(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);            
+            Conexao.closeAll(conn);
         }
         return inseriu;
     }
@@ -302,30 +312,34 @@ public class ProdutoDB extends MetodosGlobais{
                 int cd_filial = rs.getInt("cd_filial");
                 int cd_unidade_medida = rs.getInt("cd_unidade_medida");
                 int qt_estoque = rs.getInt("qt_estoque");
+                int tx_ipi = rs.getInt("tx_ipi");
+                int tx_iss = rs.getInt("tx_iss");
 
                 ProdutoSimples produto = new ProdutoSimples(
                         CD_PROD,
-                        DS_PROD, 
+                        DS_PROD,
                         CD_GRUPO,
                         CD_SUB_GRUPO,
                         FG_ATIVO,
-                        CD_COR, 
+                        CD_COR,
                         CD_FABRICA,
                         CD_MARCA,
                         CD_GP_FISCAL,
-                        CD_NCM_SH, 
-                        CD_REF, 
+                        CD_NCM_SH,
+                        CD_REF,
                         cd_usuario,
                         cd_filial,
                         cd_unidade_medida,
-                        qt_estoque
+                        qt_estoque,
+                        tx_ipi,
+                        tx_iss
                 );
                 listaProduto.add(produto);
             }
         } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro no sql, getTodos(): \n" + erro.getMessage());
+            mensagemErro("Erro no sql, getTodosProdutos(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);            
+            Conexao.closeAll(conn);
         }
         return listaProduto;
     }
@@ -346,7 +360,7 @@ public class ProdutoDB extends MetodosGlobais{
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro de SQL. getProduto():" + e.getMessage());
         } finally {
-            Conexao.closeAll(conn);            
+            Conexao.closeAll(conn);
         }
         return existe;
     }
@@ -367,8 +381,31 @@ public class ProdutoDB extends MetodosGlobais{
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro de SQL. getProduto():" + e.getMessage());
         } finally {
-            Conexao.closeAll(conn);            
+            Conexao.closeAll(conn);
         }
         return existe;
     }
+
+    public int retornaCodigoGrupoFiscal(int referencia) {
+        int codigoGrupoFiscal = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexao.getConexao();
+            pstmt = conn.prepareStatement(sqlBuscaGrupoFiscal);
+            pstmt.setInt(1, referencia);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int auxcd_GRUPO_FISCAL = rs.getInt("CD_GP_FISCAL");
+                codigoGrupoFiscal = auxcd_GRUPO_FISCAL;
+            }
+        } catch (SQLException erro) {
+            mensagemErro("Erro no método retornaCodigoGrupoFiscal: \n" + erro.getMessage());
+        } finally {
+            Conexao.closeAll(conn);
+        }
+        return codigoGrupoFiscal;
+    }
+
 }

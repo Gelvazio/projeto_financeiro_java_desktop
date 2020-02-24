@@ -145,8 +145,8 @@ public class VendaDB {
             pstmt.setInt(3, venda.getCd_vende());
             pstmt.setInt(4, venda.getCd_pagto());
             pstmt.setInt(5, venda.getCd_pessoa());
-            pstmt.setDate(6,venda.getDt_emi_doc());                    
-            pstmt.setDate(7, venda.getDt_sai_doc()); 
+            pstmt.setDate(6, venda.getDt_emi_doc());
+            pstmt.setDate(7, venda.getDt_sai_doc());
             pstmt.setDouble(8, venda.getVl_tot_cus_doc());
             pstmt.setDouble(9, venda.getVl_tot_pro_doc());
             pstmt.setDouble(10, venda.getVl_acrescimo());
@@ -155,10 +155,10 @@ public class VendaDB {
             pstmt.setInt(13, venda.getFg_situacao());
             pstmt.setInt(14, venda.getFg_movimentou_estoque());
             pstmt.setInt(15, venda.getCd_usuario());
-            pstmt.setDate(16,venda.getDt_alt());
-            pstmt.setTime(17,venda.getHr_alt());
-            pstmt.setDate(18,venda.getDt_cad());
-            pstmt.setTime(19,venda.getHr_cad()); 
+            pstmt.setDate(16, venda.getDt_alt());
+            pstmt.setTime(17, venda.getHr_alt());
+            pstmt.setDate(18, venda.getDt_cad());
+            pstmt.setTime(19, venda.getHr_cad());
             pstmt.setInt(20, venda.getCfop());
             pstmt.setDouble(21, venda.getVl_base_icm_total());
             pstmt.setDouble(22, venda.getVl_icm_total());
@@ -210,9 +210,9 @@ public class VendaDB {
             pstmt = conn.prepareStatement(sqlAlterar);
             pstmt.setInt(1, venda.getCd_vende());
             pstmt.setInt(2, venda.getCd_pagto());
-            pstmt.setInt(3, venda.getCd_pessoa());        
-            pstmt.setDate(4,venda.getDt_emi_doc());                    
-            pstmt.setDate(5, venda.getDt_sai_doc());            
+            pstmt.setInt(3, venda.getCd_pessoa());
+            pstmt.setDate(4, venda.getDt_emi_doc());
+            pstmt.setDate(5, venda.getDt_sai_doc());
             pstmt.setDouble(6, venda.getVl_tot_cus_doc());
             pstmt.setDouble(7, venda.getVl_tot_pro_doc());
             pstmt.setDouble(8, venda.getVl_acrescimo());
@@ -221,10 +221,10 @@ public class VendaDB {
             pstmt.setInt(11, venda.getFg_situacao());
             pstmt.setInt(12, venda.getFg_movimentou_estoque());
             pstmt.setInt(13, venda.getCd_usuario());
-            pstmt.setDate(14,venda.getDt_alt());
-            pstmt.setTime(15,venda.getHr_alt());
-            pstmt.setDate(16,venda.getDt_cad());
-            pstmt.setTime(17,venda.getHr_cad());            
+            pstmt.setDate(14, venda.getDt_alt());
+            pstmt.setTime(15, venda.getHr_alt());
+            pstmt.setDate(16, venda.getDt_cad());
+            pstmt.setTime(17, venda.getHr_cad());
             pstmt.setInt(18, venda.getCfop());
             pstmt.setDouble(19, venda.getVl_base_icm_total());
             pstmt.setDouble(20, venda.getVl_icm_total());
@@ -263,13 +263,13 @@ public class VendaDB {
             alterou = true;
         } catch (SQLException erro) {
             mensagemErro("sql. alterarVenda: \n" + erro.getMessage());
-            System.out.println(""+erro.getSQLState());
-        }finally {
+            System.out.println("" + erro.getSQLState());
+        } finally {
             Conexao.closeAll(conn);
         }
         return alterou;
     }
-   
+
     public boolean getVenda(int cd_filial, int cd_movimento) {
         boolean existe = false;
         Connection conn = null;

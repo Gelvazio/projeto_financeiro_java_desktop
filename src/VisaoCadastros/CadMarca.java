@@ -1,9 +1,10 @@
 package VisaoCadastros;
 
-import ControleCadastro.CorDB;
-import ModeloCadastro.Cor;
+import ControleCadastro.MarcaDB;
+import ModeloCadastro.Marca;
 import Principal.MetodosGlobais;
 import VisaoConsultasCadastro.ConsultaCor;
+import VisaoConsultasCadastro.ConsultaMarca;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -14,16 +15,12 @@ import javax.swing.JOptionPane;
  */
 public class CadMarca extends MetodosGlobais {
 
-    CorDB cordb = new CorDB();
+    MarcaDB marcadb = new MarcaDB();
 
-    /**
-     * Creates new form CadCores
-     */
     public CadMarca() {
         initComponents();
         Centro();
         habilitaCampos(false);
-        mensagemErro("Falta Terminar a Programação!");
     }
 
     private void habilitaCampos(boolean habilita) {
@@ -51,24 +48,24 @@ public class CadMarca extends MetodosGlobais {
         String auxTexto = edtCodigo.getText();
         String auxNome = edtDescricao.getText();
         if (auxTexto.equals("")) {
-            JOptionPane.showMessageDialog(null, "Favor Preencher o Código da Cor!");
+            JOptionPane.showMessageDialog(null, "Favor Preencher o Código da Marca!");
             edtCodigo.grabFocus();
         } else if (auxNome.equals("")) {
-            JOptionPane.showMessageDialog(null, "Favor Preencher o nome da Cor!");
+            JOptionPane.showMessageDialog(null, "Favor Preencher o nome da Marca!");
             edtDescricao.grabFocus();
         } else {
 
             int codigo = Integer.parseInt(auxTexto);
             int auxcd_usuario = 1;
-            Cor cor = new Cor(
+            Marca marca = new Marca(
                     codigo,
                     auxNome,
                     auxcd_usuario
             );
 
-            if (cordb.getCor(codigo)) {
+            if (marcadb.getMarca(codigo)) {
                 //Altera
-                if (cordb.alterarCor(cor)) {
+                if (marcadb.alterarMarca(marca)) {
                     JOptionPane.showMessageDialog(null, "Registro alterado com sucesso!");
                     habilitaCampos(false);
                 } else {
@@ -77,7 +74,7 @@ public class CadMarca extends MetodosGlobais {
                 }
             } else {
                 //Insere
-                if (cordb.inserirCor(cor)) {
+                if (marcadb.inserirMarca(marca)) {
                     JOptionPane.showMessageDialog(null, "Registro incluído com sucesso!");
                     habilitaCampos(false);
                 } else {
@@ -92,35 +89,36 @@ public class CadMarca extends MetodosGlobais {
         int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir o registro?");
         if (resposta == JOptionPane.YES_OPTION) {
             int auxCodigo = Integer.parseInt(edtCodigo.getText());
-            if (cordb.excluirCor(auxCodigo)) {
+            if (marcadb.excluirMarca(auxCodigo)) {
                 JOptionPane.showMessageDialog(null, "Exclusão efetuada com sucesso!");
+                habilitaCampos(false);
             } else {
                 JOptionPane.showMessageDialog(null, "Não foi possivel excluir o registro!!");
             }
         }
-        habilitaCampos(true);
     }
 
     private void ValidaCodigoNaoNulo() {
 
-        int cd_cor = Integer.parseInt(edtCodigo.getText());
+        int cd_marca = Integer.parseInt(edtCodigo.getText());
 
-        if (cordb.getCor(cd_cor)) {
+        if (marcadb.getMarca(cd_marca)) {
             habilitaCampos(true);
 
             //Aqui deve chamar o ArrayList com as cores
             //Tendo como parâmetro o código da cor
-            ArrayList<Cor> cores = cordb.listaCores(cd_cor);
-            for (Cor auxCor : cores) {
+            ArrayList<Marca> marcas = marcadb.listaMarcas(cd_marca);
+            for (Marca auxMarcas : marcas) {
                 //Passa os dados aqui neste "for" de objetos 
-                edtDescricao.setText(auxCor.getDs_cor());
+                edtDescricao.setText(auxMarcas.getDs_marca());
             }
             edtDescricao.requestFocus();
         } else {
             //Passa o código do generator para o campo
-            String auxCodigoGenerator = "" + cordb.ValidaCodigoGenerator();
+            String auxCodigoGenerator = "" + marcadb.ValidaCodigoGenerator();
             edtCodigo.setText(auxCodigoGenerator);
             edtDescricao.requestFocus();
+            habilitaCampos(true);
         }
     }
 
@@ -235,7 +233,7 @@ public class CadMarca extends MetodosGlobais {
                 btnSairActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 230, 120, 40));
+        getContentPane().add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 240, 120, 40));
 
         setBounds(0, 0, 686, 350);
     }// </editor-fold>//GEN-END:initComponents
@@ -247,7 +245,7 @@ public class CadMarca extends MetodosGlobais {
             if (auxTexto.equals("")) {
                 habilitaCampos(true);
                 //Passa o código do generator para o campo
-                String auxCodigoGenerator = "" + cordb.ValidaCodigoGenerator();
+                String auxCodigoGenerator = "" + marcadb.ValidaCodigoGenerator();
                 edtCodigo.setText(auxCodigoGenerator);
                 edtDescricao.requestFocus();
             } else {
@@ -320,7 +318,7 @@ public class CadMarca extends MetodosGlobais {
 
     private void btnConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaActionPerformed
         // TODO add your handling code here:
-        ConsultaCor form = new ConsultaCor(edtCodigo);
+        ConsultaMarca form = new ConsultaMarca(edtCodigo);
         this.getDesktopPane().add(form);
         form.setVisible(true);
         edtCodigo.grabFocus();
@@ -342,15 +340,18 @@ public class CadMarca extends MetodosGlobais {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadMarca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadMarca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadMarca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CadMarca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

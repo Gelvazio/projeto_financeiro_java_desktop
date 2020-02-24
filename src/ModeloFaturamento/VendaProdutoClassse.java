@@ -1,6 +1,5 @@
 package ModeloFaturamento;
 
-
 /**
  *
  * @author Gelvazio /

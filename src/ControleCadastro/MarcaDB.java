@@ -1,6 +1,7 @@
 package ControleCadastro;
 
 import ModeloCadastro.Cor;
+import ModeloCadastro.Marca;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import java.sql.Connection;
@@ -21,26 +22,27 @@ public class MarcaDB extends MetodosGlobais {
             = "SELECT * FROM MARCA ORDER BY CD_MARCA";
     private static final String sqlExcluir
             = "DELETE FROM MARCA WHERE CD_MARCA= ?";
+    private static final String sqlBuscaMarcas
+            = "SELECT * FROM MARCA WHERE CD_MARCA= ?";
     private static final String sqlInserir
-            = "INSERT INTO COR                  "
-            + "(CD_COR, DS_COR, DT_ALT, DT_CAD, "
-            + "HR_CAD, HR_ALT, CD_USUARIO)      "
-            + "VALUES                           "
-            + "(?,?,                            "
-            + "CAST('NOW' AS DATE),             "
-            + "CAST('NOW' AS DATE),             "
-            + "CAST('NOW' AS TIME),             "
-            + "CAST('NOW' AS TIME),             "
-            + "?)                               ";
+            = "INSERT INTO MARCA ("
+            + "CD_MARCA,"
+            + " CD_USUARIO,"
+            + " DT_ALT, "
+            + "HR_ALT, "
+            + "DT_CAD, "
+            + "HR_CAD, "
+            + "DS_MARCA"
+            + ") VALUES (?,?,CAST('NOW' AS DATE),CAST('NOW' AS TIME), CAST('NOW' AS DATE), CAST('NOW' AS TIME),?);";
     private static final String sqlAlterar
-            = "UPDATE COR  SET                     "
-            + "    COR.DS_COR=?,                   "
-            + "    COR.DT_ALT=CAST('NOW' AS DATE), "
-            + "    COR.HR_ALT=CAST('NOW' AS TIME), "
-            + "    COR.CD_USUARIO=?,               "
+            = "UPDATE MARCA  SET                     "
+            + "    DS_MARCA=?,                   "
+            + "    MARCA.DT_ALT=CAST('NOW' AS DATE), "
+            + "    MARCA.HR_ALT=CAST('NOW' AS TIME),"
+            + "     CD_USUARIO=?"
             + "WHERE                               "
-            + "    (CD_COR = ? )                   ";
-    private static final String sqlCor
+            + "    (CD_MARCA = ? )                   ";
+    private static final String sqlMarca
             = "SELECT                "
             + "    count(*) as total "
             + "FROM                  "
@@ -61,65 +63,65 @@ public class MarcaDB extends MetodosGlobais {
                 modelo.addElement(rs.getString("ds_marca"));
             }
         } catch (SQLException erro) {
-            mensagemErro("Erro no sql, getComboCor(): \n" + erro.getMessage());
+            mensagemErro("Erro no sql, getComboMarca(): \n" + erro.getMessage());
         } finally {
             Conexao.closeAll(conn);
         }
         return modelo;
     }
 
-    public boolean alterarCor(Cor cor) {
+    public boolean alterarMarca(Marca marca) {
         boolean alterou = false;
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
             conn = Conexao.getConexao();
             pstmt = conn.prepareStatement(sqlAlterar);
-            pstmt.setString(1, cor.getDs_cor());
-            pstmt.setInt(2, cor.getCd_usuario());
-            pstmt.setInt(3, cor.getCd_cor());
+            pstmt.setString(1, marca.getDs_marca());
+            pstmt.setInt(2, marca.getCd_usuario());
+            pstmt.setInt(3, marca.getCd_marca());
             pstmt.executeUpdate();
             alterou = true;
         } catch (SQLException erro) {
-            mensagemErro("Erro de sql. alterarCor(): \n" + erro.getMessage());
+            mensagemErro("Erro de sql. alterarMarca(): \n" + erro.getMessage());
         } finally {
             Conexao.closeAll(conn);
         }
         return alterou;
     }
 
-    public boolean inserirCor(Cor cor) {
+    public boolean inserirMarca(Marca marca) {
         boolean inseriu = false;
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
             conn = Conexao.getConexao();
             pstmt = conn.prepareStatement(sqlInserir);
-            pstmt.setInt(1, cor.getCd_cor());
-            pstmt.setString(2, cor.getDs_cor());
-            pstmt.setInt(3, cor.getCd_usuario());
+            pstmt.setInt(1, marca.getCd_marca());
+            pstmt.setInt(2, marca.getCd_usuario());
+            pstmt.setString(3, marca.getDs_marca());
             pstmt.executeUpdate();
             inseriu = true;
         } catch (SQLException erro) {
-           mensagemErro("Erro de sql. inserirCor(): \n" + erro.getMessage());
+            mensagemErro("Erro de sql. inserirMarca(): \n" + erro.getMessage());
         } finally {
             Conexao.closeAll(conn);
         }
         return inseriu;
     }
 
-    public boolean excluirCor(int cd_cor) {
+    public boolean excluirMarca(int cd_marca) {
         boolean excluiu = false;
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
             conn = Conexao.getConexao();
             pstmt = conn.prepareStatement(sqlExcluir);
-            pstmt.setInt(1, cd_cor);
+            pstmt.setInt(1, cd_marca);
             pstmt.executeUpdate();
             excluiu = true;
         } catch (SQLException erro) {
-            mensagemErro("Erro de sql. excluirCor(): \n" + erro.getMessage());
+            mensagemErro("Erro de sql. excluirMarca(): \n" + erro.getMessage());
         } finally {
             Conexao.closeAll(conn);
         }
@@ -127,7 +129,7 @@ public class MarcaDB extends MetodosGlobais {
     }
 
     public ArrayList getTodos() {
-        ArrayList listaCor = new ArrayList();
+        ArrayList listaMarca = new ArrayList();
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -137,47 +139,98 @@ public class MarcaDB extends MetodosGlobais {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sqlTodos);
             while (rs.next()) {
-                int auxcd_cor = rs.getInt("cd_cor");
-                String auxnm_cor = rs.getString("ds_cor");
-                int auxcd_usuario = rs.getInt("cd_usuario");
+                int cd_marca = rs.getInt("cd_marca");
+                String ds_marca = rs.getString("ds_marca");
+                int cd_usuario = rs.getInt("cd_usuario");
 
-                Cor cor = new Cor(
-                        auxcd_cor,
-                        auxnm_cor,
-                        auxcd_usuario
+                Marca marca = new Marca(
+                        cd_marca,
+                        ds_marca,
+                        cd_usuario
                 );
-                listaCor.add(cor);
+                listaMarca.add(marca);
             }
         } catch (SQLException erro) {
             mensagemErro("Erro de sql. getTodos(): \n" + erro.getMessage());
         } finally {
             Conexao.closeAll(conn);
         }
-        return listaCor;
+        return listaMarca;
     }
 
-    public boolean getCor(int cd_cor) {
+    public boolean getMarca(int cd_marca) {
         boolean existe = false;
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             conn = Conexao.getConexao();
-            pstmt = conn.prepareStatement(sqlCor);
-            pstmt.setInt(1, cd_cor);
+            pstmt = conn.prepareStatement(sqlMarca);
+            pstmt.setInt(1, cd_marca);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                if (rs.getInt("total") > 0) {
-                    existe = true;
-                } else {
-                    existe = false;
-                }
+                existe = rs.getInt("total") > 0;
             }
         } catch (SQLException e) {
-            mensagemErro("Erro de SQL. getCor(): \n" + e.getMessage());
+            mensagemErro("Erro de SQL. getMarca(): \n" + e.getMessage());
         } finally {
             Conexao.closeAll(conn);
         }
         return existe;
     }
+
+    public int ValidaCodigoGenerator() {
+        int codigoGenerator = 0;
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT GEN_ID(CD_MARCA, 1) FROM RDB$DATABASE");
+            while (rs.next()) {
+                int auxCodigoGenerator = rs.getInt("GEN_ID");
+                int auxCodigo = auxCodigoGenerator + 1;
+                codigoGenerator = auxCodigo;
+            }
+        } catch (SQLException erro) {
+            mensagemErro("Erro de conexão! \n" + erro.getMessage());
+        } catch (Exception erro) {
+            mensagemErro("Erro no método ValidaCodigoGenerator()\n" + erro.getMessage());
+        } finally {
+            Conexao.closeAll(conn);
+        }
+        return codigoGenerator;
+    }
+
+    public ArrayList listaMarcas(int cd_marca) {
+        ArrayList listaMarca = new ArrayList();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexao.getConexao();
+            pstmt = conn.prepareStatement(sqlBuscaMarcas);
+            pstmt.setInt(1, cd_marca);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int cd_marcas = rs.getInt("cd_marca");
+                String ds_marca = rs.getString("ds_marca");
+                int cd_usuario = rs.getInt("cd_usuario");
+
+                Marca marca = new Marca(
+                        cd_marcas,
+                        ds_marca,
+                        cd_usuario
+                );
+                listaMarca.add(marca);
+            }
+        } catch (SQLException erro) {
+            mensagemErro("Erro no ArrayList listaMarcas: \n" + erro.getMessage());
+        } finally {
+            Conexao.closeAll(conn);
+        }
+        return listaMarca;
+    }
+
 }

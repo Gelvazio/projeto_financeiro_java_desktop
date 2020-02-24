@@ -41,7 +41,7 @@ public class ConsultaPessoa extends MetodosGlobais {
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Erro no Método getComboCampo(): \n" + erro.getMessage());
         } finally {
-            
+
         }
         return modelo;
     }
@@ -66,7 +66,7 @@ public class ConsultaPessoa extends MetodosGlobais {
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Erro no Método getComboValor(): \n" + erro.getMessage());
         } finally {
-            
+
         }
         return modelo;
     }
@@ -173,7 +173,7 @@ public class ConsultaPessoa extends MetodosGlobais {
             //Nessa Parte é passado po parametro os Dados da Variavel "SQLConsulta_Pessoa" que contem o sql da pesquisa.
             rs = stmt.executeQuery(SQLConsulta_Pessoa);
             while (rs.next()) {
-               int cd_pessoa = rs.getInt("CD_PESSOA");
+                int cd_pessoa = rs.getInt("CD_PESSOA");
                 String nm_pessoa = rs.getString("NM_PESSOA");
                 int fg_cliente = rs.getInt("fg_cliente");
                 int fg_vendedor = rs.getInt("fg_vendedor");
@@ -233,7 +233,7 @@ public class ConsultaPessoa extends MetodosGlobais {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql, SQLConsultagetTodos_Completo: \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);            
+            Conexao.closeAll(conn);
         }
         return listaPessoa;
     }
@@ -291,7 +291,7 @@ public class ConsultaPessoa extends MetodosGlobais {
         ArrayList<Pessoa> pessoas = SQLConsultagetTodos_Completo();
         for (Pessoa auxPessoa : pessoas) {
             modelo.addRow(new Object[]{
-                 auxPessoa.getCd_pessoa(),
+                auxPessoa.getCd_pessoa(),
                 auxPessoa.getNm_pessoa(),
                 auxPessoa.getCd_cgccpf(),
                 auxPessoa.getCd_cep(),

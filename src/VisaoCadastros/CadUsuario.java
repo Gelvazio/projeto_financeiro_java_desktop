@@ -21,74 +21,108 @@ public class CadUsuario extends MetodosGlobais {
 
     private static final String sqlBuscaUsuario
             = "SELECT * FROM usuario WHERE cd_usuario=?";
+    UsuarioDB usuariodb = new UsuarioDB();
 
     public CadUsuario() {
         initComponents();
         Centro();
-        edtCodigo.grabFocus();
+        habilitaCampos(false);
+    }
+
+    private void habilitaCampos(boolean habilita) {
+        edtCodigo.requestFocus();
+        edtCodigo.setEnabled(!habilita);
+        edtds_usuario.setEnabled(habilita);
+        edtLogin.setEnabled(habilita);
+        edtSenha.setEnabled(habilita);
+        edtSenha_Dois.setEnabled(habilita);
+        edtGrupo.setEnabled(habilita);
+
+        btnGravar.setEnabled(habilita);
+        btnCancelar.setEnabled(habilita);
+        btnConsulta.setEnabled(!habilita);
+        btnExcluir.setEnabled(habilita);
+
+        if (habilita) {
+            edtCodigo.requestFocus();
+        } else {
+            LimpaTela();
+        }
     }
 
     private void LimpaTela() {
         edtCodigo.setText("");
+        edtds_usuario.setText("");
         edtLogin.setText("");
-        edtSenha_Um.setText("");
-        edtFilial.setText("");
+        edtSenha.setText("");
+        edtSenha_Dois.setText("");
+        edtGrupo.setText("");
         edtCodigo.grabFocus();
     }
 
     private void Excluir_Registro() {
         int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir o registro?");
         if (resposta == JOptionPane.YES_OPTION) {
-            UsuarioDB usuariodb = new UsuarioDB();
             int auxCodigo = Integer.parseInt(edtCodigo.getText());
-            if (usuariodb.excluirUsuario(auxCodigo)) {
-                JOptionPane.showMessageDialog(null, "Exclusão efetuada com sucesso!");
+            String auxLogin = edtLogin.getText();
+
+            if (usuariodb.getUnicoUsuario(auxLogin)) {
+                mensagemErro("Ùnico usuario do banco e não pode ser deletado!");
+                habilitaCampos(false);
             } else {
-                JOptionPane.showMessageDialog(null, "Não foi possivel excluir o registro!!");
+                if (usuariodb.excluirUsuario(auxCodigo)) {
+                    JOptionPane.showMessageDialog(null, "Exclusão efetuada com sucesso!");
+                    habilitaCampos(false);
+                } else {
+                    mensagemErro("Não foi possivel excluir o registro!");
+                }
             }
         }
-        LimpaTela();
     }
 
-    private void Gravar_Registro() {
-        // TODO add your handling code here:
-        String auxTexto = edtCodigo.getText();
+    private void alterarGravar() {
+        String auxcd_usuario = edtCodigo.getText();
         String auxLogin = edtLogin.getText().toUpperCase();
-        //Teste de Conversao de Tipos de Variaveis
-        int auxSenhaUmConversao = Integer.parseInt(edtSenha_Um.getText());
-        String a = "0" + auxSenhaUmConversao;
-        String auxSenha_Dois = edtFilial.getText();
-        int auxCd_Filial = 1;
-        UsuarioDB usuariodb = new UsuarioDB();
-        int auxCodigo = Integer.parseInt(auxTexto);
-        Usuario usuario = new Usuario(auxLogin, auxSenha_Dois, auxCd_Filial, auxCodigo);
-        if (usuariodb.inserirUsuario(usuario)) {
-            JOptionPane.showMessageDialog(null, "Registro incluído com sucesso!");
-            LimpaTela();
+        String auxds_usuario = edtds_usuario.getText().toUpperCase();
+        String auxSenha = edtSenha.getText();
+        String auxcd_grupo = edtGrupo.getText();
+
+        //Conversao das variaveis            
+        int cd_usuario = Integer.parseInt(auxcd_usuario);
+        String ds_login = auxLogin;
+        String ds_usuario = auxds_usuario;
+        String ds_senha = auxSenha;
+        int cd_grupo = Integer.parseInt(auxcd_grupo);
+        int cd_filial = 1;
+        int fg_ativo = 1;
+        Usuario usuario = new Usuario(
+                cd_usuario,
+                ds_login,
+                ds_usuario,
+                ds_senha,
+                cd_grupo,
+                cd_filial,
+                fg_ativo
+        );
+
+        if (usuariodb.getUsuario(cd_usuario)) {
+            if (usuariodb.alterarUsuario(usuario)) {
+                JOptionPane.showMessageDialog(null, "Registro alterado com sucesso!");
+                habilitaCampos(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Não foi possível alterar o registro!");
+            }
         } else {
-            JOptionPane.showMessageDialog(null, "Não foi possível incluir o registro!");
-            edtCodigo.grabFocus();
+            if (usuariodb.inserirUsuario(usuario)) {
+                JOptionPane.showMessageDialog(null, "Registro incluído com sucesso!");
+                habilitaCampos(false);
+                LimpaTela();
+            } else {
+                JOptionPane.showMessageDialog(null, "Não foi possível incluir o registro!");
+                edtCodigo.grabFocus();
+            }
         }
-    }
 
-    private void Alterar_Registro() {
-        String auxCodigo = edtCodigo.getText();
-        String auxLogin = edtLogin.getText();
-        String auxSenha = edtSenha_Um.getText();
-        String auxFilial = edtFilial.getText();
-
-        int cd_filial = Integer.parseInt(auxFilial);
-        int Codigo = Integer.parseInt(auxCodigo);
-        
-        UsuarioDB usuariodb = new UsuarioDB();
-
-        Usuario usuario = new Usuario(auxLogin, auxSenha, cd_filial, Codigo);
-        if (usuariodb.alterarUsuario(usuario)) {
-            JOptionPane.showMessageDialog(null, "Registro alterado com sucesso!");
-        } else {
-            JOptionPane.showMessageDialog(null, "Não foi possível alterar o registro!");
-        }
-        LimpaTela();
     }
 
     private void ValidaCodigoGenerator() {
@@ -121,10 +155,10 @@ public class CadUsuario extends MetodosGlobais {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        UsuarioDB usuariodb = new UsuarioDB();
         int cd_usuario = Integer.parseInt(edtCodigo.getText());
 
         if (usuariodb.getUsuario(cd_usuario)) {
+            habilitaCampos(true);
             try {
                 conn = Conexao.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaUsuario);
@@ -140,53 +174,50 @@ public class CadUsuario extends MetodosGlobais {
                     int a = Integer.parseInt(auxFilial);
 
                     //Precisa Usar ||  para todos os casos possiveis e eliminar o campo nome do usuario;
-                    edtNome.setText(auxUsuario);
+                    edtds_usuario.setText(auxUsuario);
                     edtLogin.setText(auxLogin);
-                    edtSenha_Um.setText(auxSenha);
-                    edtFilial.setText(auxFilial);
+                    edtSenha.setText(auxSenha);
+                    edtGrupo.setText(auxFilial);
                     edtLogin.grabFocus();
                 }
             } catch (SQLException erro) {
-                JOptionPane.showMessageDialog(null, "Erro de conexão! " + erro);
+                mensagemErro("Erro de conexão! " + erro);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Usuario Não Cadastrado!");
-            edtLogin.grabFocus();
+            mensagemErro("Usuario Não Cadastrado!");
+            habilitaCampos(false);
         }
     }
 
-    private void Gravar_Completo_Validado() {
+    private void GravarCompletoValidado() {
         String auxTexto = edtCodigo.getText();
         String auxLogin = edtLogin.getText();
-        String auxSenhaUm = edtSenha_Um.getText();
-        String auxSenhaDois = edtSenha_Um.getText();
+        String auxSenhaUm = edtSenha.getText();
+        String auxSenhaDois = edtSenha_Dois.getText();
+        String auxGrupo = edtGrupo.getText();
         if (auxTexto.equals("")) {
-            JOptionPane.showMessageDialog(null, "Favor Preencher o Código do Usuário!");
+            mensagemErro("Favor Preencher o Código do Usuário!");
             edtCodigo.grabFocus();
         } else if (auxLogin.equals("")) {
-            JOptionPane.showMessageDialog(null, "Favor Preencher o Login do Usuário!");
+            mensagemErro("Favor Preencher o Login do Usuário!");
             edtLogin.grabFocus();
         } else if (auxSenhaUm.equals("")) {
-            JOptionPane.showMessageDialog(null, "Favor Preencher a Senha do Usuário!");
-            edtSenha_Um.grabFocus();
+            mensagemErro("Favor Preencher a Senha do Usuário!");
+            edtSenha.grabFocus();
         } else if (auxSenhaDois.equals("")) {
-            JOptionPane.showMessageDialog(null, "Favor Preencher a Senha do Usuário!");
-            edtFilial.grabFocus();
+            mensagemErro("Favor Preencher a Senha do Usuário!");
+            edtSenha_Dois.grabFocus();
+        } else if (auxGrupo.equals("")) {
+            mensagemErro("Favor Preencher o grupo do Usuário!");
+            edtGrupo.grabFocus();
         } else {
-            Gravar_Alterar_Registro();
-        }
-    }
-
-    private void Gravar_Alterar_Registro() {
-        //deve ser feita toda a validacao de banco de dados nesta parte
-        String auxTexto = edtCodigo.getText();
-        int codigo = Integer.parseInt(auxTexto);
-        UsuarioDB usuariodb = new UsuarioDB();
-        //int cd_usuario = Integer.parseInt(edtCodigo.getText());
-        if (usuariodb.getUsuario(codigo)) {
-            Alterar_Registro();
-        } else {
-            Gravar_Registro();
+            //Valida senha igual
+            if (auxSenhaUm.equals(auxSenhaDois)) {
+                alterarGravar();
+            } else {
+                mensagemErro("Senhas não conferem!");
+                edtSenha_Dois.requestFocus();
+            }
         }
     }
 
@@ -201,8 +232,8 @@ public class CadUsuario extends MetodosGlobais {
 
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        edtSenha_Um = new javax.swing.JTextField();
-        edtFilial = new javax.swing.JTextField();
+        edtSenha = new javax.swing.JTextField();
+        edtGrupo = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         edtLogin = new javax.swing.JTextField();
@@ -212,7 +243,7 @@ public class CadUsuario extends MetodosGlobais {
         edtSenha_Dois = new javax.swing.JTextField();
         edtCodigo = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        edtNome = new javax.swing.JTextField();
+        edtds_usuario = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         btnGravar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
@@ -225,28 +256,27 @@ public class CadUsuario extends MetodosGlobais {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Cadastro de Usuários");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 10, 245, 39));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 10, 245, 39));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        edtSenha_Um.addKeyListener(new java.awt.event.KeyAdapter() {
+        edtSenha.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                edtSenha_UmKeyPressed(evt);
+                edtSenhaKeyPressed(evt);
             }
         });
-        jPanel1.add(edtSenha_Um, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 160, 410, 30));
+        jPanel1.add(edtSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 160, 140, 30));
 
-        edtFilial.setText("Precisa Fazer!!!");
-        edtFilial.addKeyListener(new java.awt.event.KeyAdapter() {
+        edtGrupo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                edtFilialKeyPressed(evt);
+                edtGrupoKeyPressed(evt);
             }
         });
-        jPanel1.add(edtFilial, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, 410, 30));
+        jPanel1.add(edtGrupo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, 140, 30));
 
-        jLabel10.setText("Grupo de Usuário:");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 90, -1));
+        jLabel10.setText("Grupo Usuário:");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 100, -1));
 
         jLabel8.setText("Senha:");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 160, 40, -1));
@@ -256,24 +286,23 @@ public class CadUsuario extends MetodosGlobais {
                 edtLoginKeyPressed(evt);
             }
         });
-        jPanel1.add(edtLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 410, 30));
+        jPanel1.add(edtLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 140, 30));
 
         jLabel2.setText("Login:");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, 40, -1));
 
         jLabel11.setText("Confirmar Senha:");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 90, -1));
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 100, -1));
 
         jLabel7.setText("Código:");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, 50, -1));
 
-        edtSenha_Dois.setText("Precisa Fazer!!!");
         edtSenha_Dois.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 edtSenha_DoisKeyPressed(evt);
             }
         });
-        jPanel1.add(edtSenha_Dois, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 200, 410, 30));
+        jPanel1.add(edtSenha_Dois, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 200, 140, 30));
 
         edtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -285,14 +314,14 @@ public class CadUsuario extends MetodosGlobais {
         jLabel3.setText("Nome:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, 40, -1));
 
-        edtNome.addKeyListener(new java.awt.event.KeyAdapter() {
+        edtds_usuario.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                edtNomeKeyPressed(evt);
+                edtds_usuarioKeyPressed(evt);
             }
         });
-        jPanel1.add(edtNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 410, 30));
+        jPanel1.add(edtds_usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 220, 30));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 55, 540, 320));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 55, 350, 320));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -362,9 +391,9 @@ public class CadUsuario extends MetodosGlobais {
         });
         jPanel2.add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 120, 40));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 60, 140, 260));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 60, 140, 260));
 
-        setBounds(0, 0, 737, 434);
+        setBounds(0, 0, 536, 434);
     }// </editor-fold>//GEN-END:initComponents
 
     private void edtCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtCodigoKeyPressed
@@ -378,6 +407,7 @@ public class CadUsuario extends MetodosGlobais {
         String auxTexto = edtCodigo.getText();
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (auxTexto.equals("")) {
+                habilitaCampos(true);
                 ValidaCodigoGenerator();
                 edtLogin.grabFocus();
             } else {
@@ -388,21 +418,21 @@ public class CadUsuario extends MetodosGlobais {
 
     private void edtLoginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtLoginKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            edtSenha_Um.grabFocus();
+            edtSenha.grabFocus();
         }
     }//GEN-LAST:event_edtLoginKeyPressed
 
-    private void edtSenha_UmKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtSenha_UmKeyPressed
+    private void edtSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtSenhaKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            edtFilial.grabFocus();
+            edtGrupo.grabFocus();
         }
-    }//GEN-LAST:event_edtSenha_UmKeyPressed
+    }//GEN-LAST:event_edtSenhaKeyPressed
 
-    private void edtFilialKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtFilialKeyPressed
+    private void edtGrupoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtGrupoKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             btnGravar.grabFocus();
         }
-    }//GEN-LAST:event_edtFilialKeyPressed
+    }//GEN-LAST:event_edtGrupoKeyPressed
 
     private void edtSenha_DoisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtSenha_DoisKeyPressed
         // TODO add your handling code here:
@@ -412,7 +442,7 @@ public class CadUsuario extends MetodosGlobais {
         // TODO add your handling code here:
         int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente gravar o registro?");
         if (resposta == JOptionPane.YES_OPTION) {
-            Gravar_Completo_Validado();
+            GravarCompletoValidado();
         }
     }//GEN-LAST:event_btnGravarActionPerformed
 
@@ -470,9 +500,9 @@ public class CadUsuario extends MetodosGlobais {
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
-    private void edtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtNomeKeyPressed
+    private void edtds_usuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtds_usuarioKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_edtNomeKeyPressed
+    }//GEN-LAST:event_edtds_usuarioKeyPressed
 
     /**
      * @param args the command line arguments
@@ -491,23 +521,23 @@ public class CadUsuario extends MetodosGlobais {
 
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadUsuario.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadUsuario.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadUsuario.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CadUsuario.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new CadUsuario().setVisible(true);
             }
@@ -520,11 +550,11 @@ public class CadUsuario extends MetodosGlobais {
     private javax.swing.JButton btnGravar;
     private javax.swing.JButton btnSair;
     private javax.swing.JTextField edtCodigo;
-    private javax.swing.JTextField edtFilial;
+    private javax.swing.JTextField edtGrupo;
     private javax.swing.JTextField edtLogin;
-    private javax.swing.JTextField edtNome;
+    private javax.swing.JTextField edtSenha;
     private javax.swing.JTextField edtSenha_Dois;
-    private javax.swing.JTextField edtSenha_Um;
+    private javax.swing.JTextField edtds_usuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

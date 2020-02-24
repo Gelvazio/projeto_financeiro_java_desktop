@@ -5,7 +5,7 @@ import java.sql.Date;
 
 /**
  *
- * @author Gelvazio Camargo  *
+ * @author Gelvazio Camargo *
  */
 /*
  Tabela Pessoa
@@ -67,7 +67,7 @@ public class Pessoa {
     private int fg_transportador;
     private int fg_ativo;
 
-    public Pessoa(int cd_pessoa, String nm_pessoa, int fg_cliente, int fg_vendedor, int fg_fornecedor, String ds_endereco, String nr_endereco, String ds_bairro, String cd_estado, int cd_cidade, int cd_pais, String cd_cep, String ds_email, String nr_telefone, String cd_cgccpf, int cd_usuario, Date dt_alt, Time hr_alt, Date dt_cad, Time hr_cad, int cd_filial, String nr_inscricao_estadual, int tipo_consumo, int regime_tributacao, int fg_transportador,int fg_ativo) {
+    public Pessoa(int cd_pessoa, String nm_pessoa, int fg_cliente, int fg_vendedor, int fg_fornecedor, String ds_endereco, String nr_endereco, String ds_bairro, String cd_estado, int cd_cidade, int cd_pais, String cd_cep, String ds_email, String nr_telefone, String cd_cgccpf, int cd_usuario, Date dt_alt, Time hr_alt, Date dt_cad, Time hr_cad, int cd_filial, String nr_inscricao_estadual, int tipo_consumo, int regime_tributacao, int fg_transportador, int fg_ativo) {
         this.cd_pessoa = cd_pessoa;
         this.nm_pessoa = nm_pessoa;
         this.fg_cliente = fg_cliente;
@@ -93,7 +93,7 @@ public class Pessoa {
         this.tipo_consumo = tipo_consumo;
         this.regime_tributacao = regime_tributacao;
         this.fg_transportador = fg_transportador;
-        this.fg_ativo=fg_ativo;
+        this.fg_ativo = fg_ativo;
     }
 
     public int getCd_pessoa() {

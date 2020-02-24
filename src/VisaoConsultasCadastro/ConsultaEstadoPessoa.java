@@ -41,7 +41,7 @@ public class ConsultaEstadoPessoa extends MetodosGlobais {
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Erro no Método getComboCampo(): \n" + erro.getMessage());
         } finally {
-            
+
         }
         return modelo;
     }
@@ -228,7 +228,7 @@ public class ConsultaEstadoPessoa extends MetodosGlobais {
         tbGrid.setModel(modelo);
     }
 
-    public ConsultaEstadoPessoa(JComboBox campoCodigo,JComboBox campoNome) {
+    public ConsultaEstadoPessoa(JComboBox campoCodigo, JComboBox campoNome) {
         initComponents();
         ListaTodosEstados();
         cbCampo.setModel(getComboCampo());
