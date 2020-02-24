@@ -1,9 +1,14 @@
 package VisaoConsultasCadastro;
 
-import ControleCadastro.UnidadeMedidaDB;
-import ModeloCadastro.UnidadeMedida;
+import ControleCadastro.UsuarioDB;
+import ModeloCadastro.Usuario;
+import Principal.Conexao;
 import Principal.MetodosGlobais;
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -21,6 +26,9 @@ public class ConsultaUnidadeMedida extends MetodosGlobais {
     String SQLConsulta_Usuario;
     JTextField campoCodigo;
 
+    /**
+     * Creates new form LocalizaUsuario
+     */
     public DefaultComboBoxModel getComboCampo() {
         DefaultComboBoxModel modelo = new DefaultComboBoxModel();
         String auxCodigo = "Codigo";
@@ -33,9 +41,8 @@ public class ConsultaUnidadeMedida extends MetodosGlobais {
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Erro no Método getComboCampo(): \n" + erro.getMessage());
         } finally {
-            
+            return modelo;
         }
-        return modelo;
     }
 
     public DefaultComboBoxModel getComboValor() {
@@ -58,12 +65,11 @@ public class ConsultaUnidadeMedida extends MetodosGlobais {
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Erro no Método getComboValor(): \n" + erro.getMessage());
         } finally {
-            
+            return modelo;
         }
-        return modelo;
     }
 
-    private void PegaValorCamposComboboxCampo_E_Valor(String SQLValorCamposComboboxCampo_E_Valor) {
+    public void PegaValorCamposComboboxCampo_E_Valor(String SQLValorCamposComboboxCampo_E_Valor) {
         String auxedtPesquisa = null;
         String auxCampo = cbCampo.getSelectedItem().toString();
         String auxValor = cbValor.getSelectedItem().toString();
@@ -175,7 +181,7 @@ public class ConsultaUnidadeMedida extends MetodosGlobais {
         SQLConsulta_Usuario = SQLValorCamposComboboxCampo_E_Valor;
     }
 
-    private void ValidaCampoPesquisa() {
+    public void ValidaCampoPesquisa() {
         //JOptionPane.showMessageDialog(null, "Precisa Fazer Validacao de deixar digitar so numero qdo for o Codigo!!");
         //Nesta parte é feita a Validação do Edit  edtPesquisa, para que caso seja nulo de uma MSG.
         String auxedtPesquisa = edtPesquisa.getText();
@@ -184,31 +190,90 @@ public class ConsultaUnidadeMedida extends MetodosGlobais {
             edtPesquisa.grabFocus();
         } else {
             //Não estando Nulo o campo é chamado o Metodo abaixo que é o responsavel pela pesquisa Compelta da Tela.
-            ListaTodasUnidadesMedidas();
+            ListaUsuariosParametrosCompleto();
         }
     }
 
-    private void ListaTodasUnidadesMedidas() {
+    public void mostrar_mensagem_tres() {
+        JOptionPane.showMessageDialog(null, "Teste de Mensagem Tres Valor do SQL: !!!\n " + SQLConsulta_Usuario);
+    }
+
+    public ArrayList SQLConsultagetTodos_Completo() {
+        //Aqui é chamado o Metodo "PegaValorCamposComboboxCampo_E_Valor("");" para pegar os valores da tela
+        //Caso nao seja repassado ele nao da certo pois nao pega nada do edtPesquisa
+        PegaValorCamposComboboxCampo_E_Valor("");
+        ArrayList listaUsuario = new ArrayList();
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.createStatement();
+            //Nessa Parte é passado po parametro os Dados da Variavel "SQLConsulta_Usuario" que contem o sql da pesquisa.
+            rs = stmt.executeQuery(SQLConsulta_Usuario);
+            while (rs.next()) {
+                int cd_usuario = rs.getInt("cd_usuario");
+                String ds_usuario = rs.getString("ds_usuario");
+                String ds_senha = rs.getString("ds_senha");
+                int cd_filial = rs.getInt("cd_filial");
+                Usuario usuario = new Usuario(
+                        ds_usuario,
+                        ds_senha,
+                        cd_filial,
+                        cd_usuario);
+                listaUsuario.add(usuario);
+            }
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "Erro no sql, SQLConsultagetTodos_Completo: \n" + erro.getMessage());
+        } finally {
+            Conexao.closeAll(conn);
+            return listaUsuario;
+        }
+    }
+
+    public void ListaTodosUsuarios() {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("Codigo");
-        modelo.addColumn("Unidade");
-        modelo.addColumn("Sigla");
-        UnidadeMedidaDB unidademedidadb = new UnidadeMedidaDB();
-        ArrayList<UnidadeMedida> unidadesmedidas = unidademedidadb.getTodos();
-        for (UnidadeMedida auxUnidadeMedida : unidadesmedidas) {
+        modelo.addColumn("Filial");
+        modelo.addColumn("Login");
+        modelo.addColumn("Senha");
+        UsuarioDB usuariodb = new UsuarioDB();
+        ArrayList<Usuario> usuarios = usuariodb.getTodos();
+        //ArrayList<Usuario> usuarios = SQLConsultagetTodos_Completo();
+        for (Usuario auxUsuario : usuarios) {
             modelo.addRow(new Object[]{
-                auxUnidadeMedida.getCd_unidade(),
-                auxUnidadeMedida.getDs_unidade(),
-                auxUnidadeMedida.getDs_sigla()
+                auxUsuario.getCd_usuario(),
+                auxUsuario.getCd_filial(),
+                auxUsuario.getDs_usuario(),
+                auxUsuario.getDs_senha()
             });
         }
         tbGrid.setModel(modelo);
 
     }
 
+    public void ListaUsuariosParametrosCompleto() {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Codigo");
+        modelo.addColumn("Filial");
+        modelo.addColumn("Login");
+        modelo.addColumn("Senha");
+        //Nesta Parte o ArrayList dos Usuarios(Que chama a Classe Usuario) recebe por parametro o Metodo "SQLConsultagetTodos_Completo()" que tera os dados da pesquisa
+        //Este Metodo Chama o ArrayList  que tera os dados e passa para a DefaultTableModel
+        ArrayList<Usuario> usuarios = SQLConsultagetTodos_Completo();
+        for (Usuario auxUsuario : usuarios) {
+            modelo.addRow(new Object[]{
+                auxUsuario.getCd_usuario(),
+                auxUsuario.getCd_filial(),
+                auxUsuario.getDs_usuario(),
+                auxUsuario.getDs_senha()
+            });
+        }
+        tbGrid.setModel(modelo);
+    }
+
     public ConsultaUnidadeMedida(JTextField campoCodigo) {
         initComponents();
-        ListaTodasUnidadesMedidas();
         cbCampo.setModel(getComboCampo());
         cbValor.setModel(getComboValor());
         Centro();

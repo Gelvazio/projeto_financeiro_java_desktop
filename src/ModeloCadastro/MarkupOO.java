@@ -21,34 +21,36 @@ package ModeloCadastro;
  * @author Gelvazio Camargo
  */
 /*
- Tabela BAnco Dado
- listMarkupOO
- srsrsrrss
+Tabela BAnco Dado
+listMarkupOO
+srsrsrrss
 
 
- sssrsrs
+sssrsrs
 
 
- listMarkupOO
- listMarkupOOlistMarkupOOlistMarkupOOlistMarkupOOlistMarkupOOlistMarkupOO
- */
+listMarkupOO
+listMarkupOOlistMarkupOOlistMarkupOOlistMarkupOOlistMarkupOOlistMarkupOO
+*/
+
 public class MarkupOO {
 
-    private int cd_grupo_fiscal;
-    private String cd_estado;
-    private int tx_icms_interno;
-    private int tx_icms_interestadual;
-    private int cd_usuario;
+    private  int cd_grupo_fiscal;
+    private  String cd_estado;
+    private  int tx_icms_interno;
+    private  int tx_icms_interestadual;
+    private  int cd_usuario;
 
     /*
-     public MarkupOO(int cd_grupo_fiscal, String cd_estado, int tx_icms_interno, int tx_icms_interestadual, int cd_usuario) {
-     this.cd_grupo_fiscal = cd_grupo_fiscal;
-     this.cd_estado = cd_estado;
-     this.tx_icms_interno = tx_icms_interno;
-     this.tx_icms_interestadual = tx_icms_interestadual;
-     this.cd_usuario = cd_usuario;
-     }
-     */
+    public MarkupOO(int cd_grupo_fiscal, String cd_estado, int tx_icms_interno, int tx_icms_interestadual, int cd_usuario) {
+        this.cd_grupo_fiscal = cd_grupo_fiscal;
+        this.cd_estado = cd_estado;
+        this.tx_icms_interno = tx_icms_interno;
+        this.tx_icms_interestadual = tx_icms_interestadual;
+        this.cd_usuario = cd_usuario;
+    }
+    */
+
     public int getCd_grupo_fiscal() {
         return cd_grupo_fiscal;
     }
@@ -89,4 +91,5 @@ public class MarkupOO {
         this.cd_usuario = cd_usuario;
     }
 
+ 
 }

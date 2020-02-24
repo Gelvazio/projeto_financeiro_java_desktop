@@ -65,7 +65,7 @@ public class GrupoFiscalDB {
             + "    GRUPO_FISCAL      "
             + "WHERE                 "
             + "    CD_GRUPO_FISCAL=? ";
-
+    
     private static final String sqlBuscaGrupoFiscal
             = "SELECT                "
             + "    GRUPO_FISCAL.*    "
@@ -208,9 +208,9 @@ public class GrupoFiscalDB {
         }
         return existe;
     }
-
+ 
     public int ValidaCodigoGenerator() {
-        int codigoGenerator = 0;
+        int codigoGenerator=0;
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -229,17 +229,17 @@ public class GrupoFiscalDB {
         return codigoGenerator;
     }
 
-    public ArrayList listarGruposFiscais(int codigo) {
+     public ArrayList listarGruposFiscais( int codigo) {
         ArrayList listaGruposFiscais = new ArrayList();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            conn = Conexao.getConexao();
-            pstmt = conn.prepareStatement(sqlBuscaGrupoFiscal);
-            pstmt.setInt(1, codigo);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
+        ResultSet rs = null;       
+            try {
+                conn = Conexao.getConexao();
+                pstmt = conn.prepareStatement(sqlBuscaGrupoFiscal);
+                pstmt.setInt(1, codigo);
+                rs = pstmt.executeQuery();  
+                while (rs.next()) {
                 int cdfilial = rs.getInt("CD_FILIAL");
                 int cdgrupofiscal = rs.getInt("CD_GRUPO_FISCAL");
                 String ds_grupofiscal = rs.getString("DS_GRUPO_FISCAL");
@@ -252,13 +252,14 @@ public class GrupoFiscalDB {
                         cdusuario
                 );
                 listaGruposFiscais.add(grupofiscal);
-            }
-        } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro no Método listarGruposFiscais()! " + erro.getMessage());
-        } finally {
-            Conexao.closeAll(conn);
+                }
+            } catch (SQLException erro) {
+                JOptionPane.showMessageDialog(null, "Erro no Método listarGruposFiscais()! " + erro.getMessage());
+            } finally {
+            Conexao.closeAll(conn);            
         }
         return listaGruposFiscais;
     }
+
 
 }

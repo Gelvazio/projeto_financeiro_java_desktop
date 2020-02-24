@@ -35,9 +35,9 @@ public class ConsultaPedido extends MetodosGlobais {
             modelo.addElement(auxNome);
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Erro no Método getComboCampo(): \n" + erro.getMessage());
-        } finally {
+        } finally {           
         }
-        return modelo;
+         return modelo;
     }
 
     public DefaultComboBoxModel getComboValor() {
@@ -180,7 +180,7 @@ public class ConsultaPedido extends MetodosGlobais {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql, SQLConsultagetTodos_Completo: \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            Conexao.closeAll(conn);            
         }
         return listaUnidadeMedida;
     }

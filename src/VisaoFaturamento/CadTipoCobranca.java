@@ -50,7 +50,7 @@ public class CadTipoCobranca extends MetodosGlobais {
             edtCodigo.setText("");
             edtDescricao.setText("");
             edtCodigo.grabFocus();
-
+            
         }
     }
 
@@ -79,7 +79,7 @@ public class CadTipoCobranca extends MetodosGlobais {
                 fg_credito_imediato = 1;
             } else {
                 fg_credito_imediato = 0;
-            }
+            }                        
             if (RadioCheque.isSelected()) {
                 fg_cheque = 1;
             } else {
@@ -110,12 +110,12 @@ public class CadTipoCobranca extends MetodosGlobais {
             } else {
                 fg_ativo = 0;
             }
-
+            
             int codigo = Integer.parseInt(auxTexto);
             int auxcd_usuario = 1;
-            int auxcd_filial = 1;
-
-            TipoCobranca tipocobranca = new TipoCobranca(
+            int auxcd_filial= 1;
+            
+            TipoCobranca tipocobranca  = new TipoCobranca(
                     codigo,
                     auxNome,
                     fg_credito_imediato,
@@ -125,7 +125,7 @@ public class CadTipoCobranca extends MetodosGlobais {
                     fg_cartao,
                     fg_quita_quando_gera,
                     fg_ativo,
-                    auxcd_filial,
+                    auxcd_filial,                    
                     auxcd_usuario
             );
 

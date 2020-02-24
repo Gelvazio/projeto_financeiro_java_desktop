@@ -1,91 +1,78 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ModeloCadastro;
 
 /**
  *
  * @author Gelvazio Camargo
- *
- *
- */
+ * 
+ * */
 /*
  * Tabela do banco de dados 
-
- CREATE TABLE PRODUTO_SIMPLES (
- CD_PROD            INTEGER NOT NULL,
- DS_PROD            VARCHAR(100) NOT NULL,
- CD_GRUPO           INTEGER NOT NULL,
- CD_SUB_GRUPO       INTEGER NOT NULL,
- FG_ATIVO           SMALLINT DEFAULT 1,
- CD_COR             INTEGER,
- CD_FABRICA         VARCHAR(40),
- CD_MARCA           INTEGER,
- DT_ALT             DATE NOT NULL,
- HR_ALT             TIME NOT NULL,
- DT_CAD             DATE NOT NULL,
- HR_CAD             TIME NOT NULL,
- CD_GP_FISCAL       SMALLINT NOT NULL,
- CD_NCM_SH          VARCHAR(11),
- CD_REF             BIGINT NOT NULL,
- CD_USUARIO         SMALLINT NOT NULL,
- CD_FILIAL          INTEGER NOT NULL,
- CD_UNIDADE_MEDIDA  INTEGER,
- QT_ESTOQUE         INTEGER NOT NULL,
- TX_IPI             INTEGER NOT NULL,
- TX_ISS             INTEGER NOT NULL
- );
+CREATE TABLE PRODUTO_SIMPLES (
+    CD_PROD            INTEGER NOT NULL,
+    DS_PROD            VARCHAR(100) NOT NULL,
+    CD_GRUPO           INTEGER NOT NULL,
+    CD_SUB_GRUPO       INTEGER NOT NULL,
+    FG_ATIVO           SMALLINT DEFAULT 1,
+    CD_COR             INTEGER,
+    CD_FABRICA         VARCHAR(40),
+    CD_MARCA           INTEGER,
+    DT_ALT             DATE NOT NULL,
+    HR_ALT             TIME NOT NULL,
+    DT_CAD             DATE NOT NULL,
+    HR_CAD             TIME NOT NULL,
+    CD_GP_FISCAL       SMALLINT NOT NULL,
+    CD_NCM_SH          INTEGER,
+    CD_REF             BIGINT NOT NULL,
+    CD_USUARIO         SMALLINT NOT NULL,
+    CD_FILIAL          INTEGER NOT NULL,
+    CD_UNIDADE_MEDIDA  INTEGER
+);
 
 
 
 
- /******************************************************************************/
-/**
- * * Unique Constraints **
- */
-/**
- * ***************************************************************************
- */
+/******************************************************************************/
+/***                           Unique Constraints                           ***/
+/******************************************************************************/
+
 //ALTER TABLE PRODUTO_SIMPLES ADD CONSTRAINT UNQ1_PRODUTO_SIMPLES UNIQUE (CD_REF);
-/**
- * ***************************************************************************
- */
-/**
- * * Primary Keys **
- */
-/**
- * ***************************************************************************
- */
+
+
+/******************************************************************************/
+/***                              Primary Keys                              ***/
+/******************************************************************************/
+
 //ALTER TABLE PRODUTO_SIMPLES ADD CONSTRAINT PK_PRODUTO_SIMPLES PRIMARY KEY (CD_PROD);
-/**
- * ***************************************************************************
- */
-/**
- * * Privileges **
- */
-/**
- * ***************************************************************************
- */
+
+
+/******************************************************************************/
+/***                               Privileges                               ***/
+/******************************************************************************/
+
  //*/
 public class ProdutoSimples {
+private int cd_prod ;         
+private String ds_prod;          
+private int  cd_grupo  ;       
+private int cd_sub_grupo;     
+private int fg_ativo     ;    
+private int cd_cor        ;   
+private String cd_fabrica  ;     
+private int cd_marca        ; 
+        
+private int cd_gp_fiscal ;    
+private String cd_ncm_sh  ;      
+private long cd_ref        ;   
+private int cd_usuario      ; 
+private int cd_filial        ;
+private int cd_unidade_medida;
+private int qt_estoque;
 
-    private int cd_prod;
-    private String ds_prod;
-    private int cd_grupo;
-    private int cd_sub_grupo;
-    private int fg_ativo;
-    private int cd_cor;
-    private String cd_fabrica;
-    private int cd_marca;
-
-    private int cd_gp_fiscal;
-    private String cd_ncm_sh;
-    private long cd_ref;
-    private int cd_usuario;
-    private int cd_filial;
-    private int cd_unidade_medida;
-    private int qt_estoque;
-    private int tx_ipi;
-    private int tx_iss;
-
-    public ProdutoSimples(int cd_prod, String ds_prod, int cd_grupo, int cd_sub_grupo, int fg_ativo, int cd_cor, String cd_fabrica, int cd_marca, int cd_gp_fiscal, String cd_ncm_sh, long cd_ref, int cd_usuario, int cd_filial, int cd_unidade_medida, int qt_estoque, int tx_ipi, int tx_iss) {
+    public ProdutoSimples(int cd_prod, String ds_prod, int cd_grupo, int cd_sub_grupo, int fg_ativo, int cd_cor, String cd_fabrica, int cd_marca, int cd_gp_fiscal, String cd_ncm_sh, long cd_ref, int cd_usuario, int cd_filial, int cd_unidade_medida,int qt_estoque) {
         this.cd_prod = cd_prod;
         this.ds_prod = ds_prod;
         this.cd_grupo = cd_grupo;
@@ -101,8 +88,6 @@ public class ProdutoSimples {
         this.cd_filial = cd_filial;
         this.cd_unidade_medida = cd_unidade_medida;
         this.qt_estoque = qt_estoque;
-        this.tx_ipi = tx_ipi;
-        this.tx_iss = tx_iss;
     }
 
     public int getCd_prod() {
@@ -225,20 +210,6 @@ public class ProdutoSimples {
         this.qt_estoque = qt_estoque;
     }
 
-    public int getTx_ipi() {
-        return tx_ipi;
-    }
 
-    public void setTx_ipi(int tx_ipi) {
-        this.tx_ipi = tx_ipi;
-    }
-
-    public int getTx_iss() {
-        return tx_iss;
-    }
-
-    public void setTx_iss(int tx_iss) {
-        this.tx_iss = tx_iss;
-    }
-
+    
 }

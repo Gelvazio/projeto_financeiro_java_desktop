@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ControleConfig;
+package ControleFaturamento;
 
 /**
  *
  * @author Gelvazio
  */
-public class FilialDB {
+public class ParcDocDB {
 
 }

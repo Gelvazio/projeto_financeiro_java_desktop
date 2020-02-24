@@ -1,11 +1,14 @@
 package VisaoConsultasCadastro;
 
-import ControleCadastro.GrupoDB;
-import ControleCadastro.GrupoFiscalDB;
-import ModeloCadastro.Grupo;
-import ModeloCadastro.GrupoFiscal;
+import ControleCadastro.UsuarioDB;
+import ModeloCadastro.Usuario;
+import Principal.Conexao;
 import Principal.MetodosGlobais;
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -20,9 +23,12 @@ public class ConsultaGrupo extends MetodosGlobais {
 
     String mensagem;
     String mensagem_dois;
-    String SQLConsultaGruposFiscais;
+    String SQLConsulta_Usuario;
     JTextField campoCodigo;
 
+    /**
+     * Creates new form LocalizaUsuario
+     */
     public DefaultComboBoxModel getComboCampo() {
         DefaultComboBoxModel modelo = new DefaultComboBoxModel();
         String auxCodigo = "Codigo";
@@ -170,9 +176,9 @@ public class ConsultaGrupo extends MetodosGlobais {
         }
         //E passado por parametro os valores do Edit  mais os valores selecionados do Combobox  para o SQL
         //A Variavel "SQLValorCamposComboboxCampo_E_Valor" recebe o SQL
-        SQLValorCamposComboboxCampo_E_Valor = "select * from grupo_fiscal where " + auxCampo + " " + auxValor;
+        SQLValorCamposComboboxCampo_E_Valor = "select * from usuario where " + auxCampo + " " + auxValor;
         //A Variavel global "SQLConsulta_Usuario" recebe por parametro a variavel "SQLValorCamposComboboxCampo_E_Valor"
-        SQLConsultaGruposFiscais = SQLValorCamposComboboxCampo_E_Valor;
+        SQLConsulta_Usuario = SQLValorCamposComboboxCampo_E_Valor;
     }
 
     public void ValidaCampoPesquisa() {
@@ -184,20 +190,83 @@ public class ConsultaGrupo extends MetodosGlobais {
             edtPesquisa.grabFocus();
         } else {
             //Não estando Nulo o campo é chamado o Metodo abaixo que é o responsavel pela pesquisa Compelta da Tela.
-            ListaTodosGrupos();
+            ListaUsuariosParametrosCompleto();
         }
     }
 
-    public void ListaTodosGrupos() {
+    public void mostrar_mensagem_tres() {
+        JOptionPane.showMessageDialog(null, "Teste de Mensagem Tres Valor do SQL: !!!\n " + SQLConsulta_Usuario);
+    }
+
+    public ArrayList SQLConsultagetTodos_Completo() {
+        //Aqui é chamado o Metodo "PegaValorCamposComboboxCampo_E_Valor("");" para pegar os valores da tela
+        //Caso nao seja repassado ele nao da certo pois nao pega nada do edtPesquisa
+        PegaValorCamposComboboxCampo_E_Valor("");
+        ArrayList listaUsuario = new ArrayList();
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.createStatement();
+            //Nessa Parte é passado po parametro os Dados da Variavel "SQLConsulta_Usuario" que contem o sql da pesquisa.
+            rs = stmt.executeQuery(SQLConsulta_Usuario);
+            while (rs.next()) {
+                int cd_usuario = rs.getInt("cd_usuario");
+                String ds_usuario = rs.getString("ds_usuario");
+                String ds_senha = rs.getString("ds_senha");
+                int cd_filial = rs.getInt("cd_filial");
+                Usuario usuario = new Usuario(
+                        ds_usuario,
+                        ds_senha,
+                        cd_filial,
+                        cd_usuario);
+                listaUsuario.add(usuario);
+            }
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "Erro no sql, SQLConsultagetTodos_Completo: \n" + erro.getMessage());
+        } finally {
+            Conexao.closeAll(conn);
+            return listaUsuario;
+        }
+    }
+
+    public void ListaTodosUsuarios() {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("Codigo");
-        modelo.addColumn("Nome");
-        GrupoDB grupodb = new GrupoDB();
-        ArrayList<Grupo> grupos = grupodb.getTodos();
-        for (Grupo auxGrupo : grupos) {
+        modelo.addColumn("Filial");
+        modelo.addColumn("Login");
+        modelo.addColumn("Senha");
+        UsuarioDB usuariodb = new UsuarioDB();
+        ArrayList<Usuario> usuarios = usuariodb.getTodos();
+        //ArrayList<Usuario> usuarios = SQLConsultagetTodos_Completo();
+        for (Usuario auxUsuario : usuarios) {
             modelo.addRow(new Object[]{
-                auxGrupo.getCd_grupo(),
-                auxGrupo.getDs_grupo()
+                auxUsuario.getCd_usuario(),
+                auxUsuario.getCd_filial(),
+                auxUsuario.getDs_usuario(),
+                auxUsuario.getDs_senha()
+            });
+        }
+        tbGrid.setModel(modelo);
+
+    }
+
+    public void ListaUsuariosParametrosCompleto() {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Codigo");
+        modelo.addColumn("Filial");
+        modelo.addColumn("Login");
+        modelo.addColumn("Senha");
+        //Nesta Parte o ArrayList dos Usuarios(Que chama a Classe Usuario) recebe por parametro o Metodo "SQLConsultagetTodos_Completo()" que tera os dados da pesquisa
+        //Este Metodo Chama o ArrayList  que tera os dados e passa para a DefaultTableModel
+        ArrayList<Usuario> usuarios = SQLConsultagetTodos_Completo();
+        for (Usuario auxUsuario : usuarios) {
+            modelo.addRow(new Object[]{
+                auxUsuario.getCd_usuario(),
+                auxUsuario.getCd_filial(),
+                auxUsuario.getDs_usuario(),
+                auxUsuario.getDs_senha()
             });
         }
         tbGrid.setModel(modelo);
@@ -205,7 +274,6 @@ public class ConsultaGrupo extends MetodosGlobais {
 
     public ConsultaGrupo(JTextField campoCodigo) {
         initComponents();
-        ListaTodosGrupos();
         cbCampo.setModel(getComboCampo());
         cbValor.setModel(getComboValor());
         Centro();
@@ -332,21 +400,24 @@ public class ConsultaGrupo extends MetodosGlobais {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cbCampo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(edtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbCampo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(edtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(10, 10, 10))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(cbValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(3, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -370,10 +441,10 @@ public class ConsultaGrupo extends MetodosGlobais {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
                 .addContainerGap())
         );
 

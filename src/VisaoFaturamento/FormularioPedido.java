@@ -1,4 +1,4 @@
-package Testes;
+package VisaoFaturamento;
 
 import ControleCadastro.PessoaDB;
 import ControleCadastro.ProdutoDB;
@@ -284,15 +284,13 @@ public class FormularioPedido extends MetodosGlobais {
     public ArrayList SQLCarregaNomeItens() {
         String auxtexto = edtCodigoMovimento.getText();
         int codigomovimento = Integer.parseInt(auxtexto);
-        String SQLConsulta_itens_dav =
-                "  select	                                                        "
-                + "     produto_simples.*	                                        "
-                + "from                   	                                        "
-                + "	    itens_orc_simples	                                        "
-                + "	    left outer join produto_simples	                        "
+        String SQLConsulta_itens_dav = "	select	 produto_simples.*	"
+                + "	from	"
+                + "	    itens_orc_simples	"
+                + "	    left outer join produto_simples	"
                 + "	    on produto_simples.cd_ref=itens_orc_simples.cd_refer_pro	"
-                + "	where	                                                        "
-                + "	    itens_orc_simples.cd_movimento=?	                        ";
+                + "	where	"
+                + "	    itens_orc_simples.cd_movimento=?	";
 
         ArrayList listaProduto = new ArrayList();
 
@@ -305,7 +303,7 @@ public class FormularioPedido extends MetodosGlobais {
             pstmt.setInt(1, codigomovimento);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                int CD_PROD = rs.getInt("CD_PROD");
+                              int CD_PROD = rs.getInt("CD_PROD");
                 String DS_PROD = rs.getString("DS_PROD");
                 int CD_GRUPO = rs.getInt("CD_GRUPO");
                 int CD_SUB_GRUPO = rs.getInt("CD_SUB_GRUPO");
@@ -319,28 +317,23 @@ public class FormularioPedido extends MetodosGlobais {
                 int cd_usuario = rs.getInt("cd_usuario");
                 int cd_filial = rs.getInt("cd_filial");
                 int cd_unidade_medida = rs.getInt("cd_unidade_medida");
-                int qt_estoque = rs.getInt("qt_estoque");
-                int tx_ipi = rs.getInt("tx_ipi");
-                int tx_iss = rs.getInt("tx_iss");
-
+int qt_estoque = rs.getInt("qt_estoque");
                 ProdutoSimples produto = new ProdutoSimples(
                         CD_PROD,
-                        DS_PROD,
+                        DS_PROD, 
                         CD_GRUPO,
                         CD_SUB_GRUPO,
                         FG_ATIVO,
-                        CD_COR,
+                        CD_COR, 
                         CD_FABRICA,
                         CD_MARCA,
                         CD_GP_FISCAL,
-                        CD_NCM_SH,
-                        CD_REF,
+                        CD_NCM_SH, 
+                        CD_REF, 
                         cd_usuario,
                         cd_filial,
                         cd_unidade_medida,
-                        qt_estoque,
-                        tx_ipi,
-                        tx_iss
+                        qt_estoque
                 );
                 listaProduto.add(produto);
             }
@@ -362,7 +355,7 @@ public class FormularioPedido extends MetodosGlobais {
         int aux_sequencia = 1;//Pega a sequencia
         int aux_contador = 1;   //Pega a sequencia do item
         int aux_movimento = Integer.parseInt(edtCodigoMovimento.getText());
-
+        
         ArrayList<ProdutoSimples> produtosimples = SQLCarregaNomeItens();
 
         VendaProdutoDB venprodb = new VendaProdutoDB();
@@ -379,6 +372,7 @@ public class FormularioPedido extends MetodosGlobais {
                 Connection conn = null;
                 PreparedStatement pstmt = null;
                 ResultSet rs = null;
+                //JOptionPane.showMessageDialog(null, "Valor de sequencia na linha: " + aux_sequencia);
                 for (int x = aux_sequencia; x < TabelaProdutos.getRowCount(); x++) {
                     try {
                         conn = Conexao.getConexao();
@@ -1182,7 +1176,7 @@ public class FormularioPedido extends MetodosGlobais {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 660, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1730,7 +1724,7 @@ public class FormularioPedido extends MetodosGlobais {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-
+        
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

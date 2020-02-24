@@ -23,15 +23,12 @@ public class MetodosGlobais extends JInternalFrame {
         setLocation(screenWidth / 2, screenHeigth / 2);
 
     }
-
     public static void mensagemErro(String mensagem) {
         JOptionPane.showMessageDialog(null, mensagem, "Erro!", JOptionPane.ERROR_MESSAGE);
     }
-
-    public static void mensagemSucesso(String mensagem) {
+        public static void mensagemSucesso(String mensagem) {
         JOptionPane.showMessageDialog(null, mensagem, "Sucesso!", JOptionPane.OK_OPTION);
     }
-
     public void PegaCodigoUsuarioLogado() {
         JOptionPane.showMessageDialog(null, "IMplementar o Metodo de pegar dados do Usuario Logado!!");
     }

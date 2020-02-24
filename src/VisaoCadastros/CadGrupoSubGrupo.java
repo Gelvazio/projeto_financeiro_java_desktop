@@ -7,7 +7,6 @@ import ModeloCadastro.SubGrupo;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import VisaoConsultasCadastro.ConsultaGrupo;
-import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -68,7 +67,12 @@ public class CadGrupoSubGrupo extends MetodosGlobais {
         edtCodigo.grabFocus();
     }
 
-    private void habilitaCampos(boolean habilita) {
+    private void LimpaTelaMenosCodigo() {
+        edtNomeGrupo.setText("");
+        edtCodigo.grabFocus();
+    }
+
+    public void habilitaCampos(boolean habilita) {
         edtCodigo.requestFocus();
         edtCodigo.setEnabled(!habilita);
         edtNomeGrupo.setEnabled(habilita);
@@ -81,6 +85,7 @@ public class CadGrupoSubGrupo extends MetodosGlobais {
         btnGravar.setEnabled(habilita);
         btnCancelar.setEnabled(habilita);
         btnExcluir.setEnabled(habilita);
+        btnAdicionar.setEnabled(!habilita);
         btnConsulta.setEnabled(!habilita);
         //btnSair.setEnabled(habilita);
 
@@ -219,7 +224,7 @@ public class CadGrupoSubGrupo extends MetodosGlobais {
                     JOptionPane.showMessageDialog(null, "Não foi possivel excluir todos os subgrupos deste grupo!");
                 }
             }
-        } catch (NumberFormatException | HeadlessException erro) {
+        } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Erro ao gravar item do subgrupo! " + erro.getMessage());
         } finally {
             //JOptionPane.showMessageDialog(null, "Finalizando erro ao gravar subgrupo!");
@@ -328,18 +333,14 @@ public class CadGrupoSubGrupo extends MetodosGlobais {
         int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir o registro?");
         if (resposta == JOptionPane.YES_OPTION) {
             int auxCodigo = Integer.parseInt(edtCodigo.getText());
-            if (subgrupodb.excluirSubGrupoInteiro(auxCodigo)) {
-                if (grupodb.excluirGrupo(auxCodigo)) {
-                    JOptionPane.showMessageDialog(null, "Exclusão efetuada com sucesso!");
-                    habilitaCampos(false);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Não foi possivel excluir o registro!!");
-                }
+            if (grupodb.excluirGrupo(auxCodigo)) {
+                JOptionPane.showMessageDialog(null, "Exclusão efetuada com sucesso!");
+                habilitaCampos(false);
             } else {
-                JOptionPane.showMessageDialog(null, "Não foi possivel excluir o subgrupo inteiro!");
+                JOptionPane.showMessageDialog(null, "Não foi possivel excluir o registro!!");
             }
         }
-
+        LimpaTela();
     }
 
     private void GravarRegistro() {
@@ -432,12 +433,9 @@ public class CadGrupoSubGrupo extends MetodosGlobais {
                 JOptionPane.showMessageDialog(null, "Erro de conexão no Método ValidaCampoCodigoNãoNulo()! " + erro.getMessage());
             }
         } else {
-            int resposta = JOptionPane.showConfirmDialog(null, "Grupo não Cadastrado! \n Deseja cadastrar?");
-            if (resposta == JOptionPane.YES_OPTION) {
-                habilitaCampos(true);
-            } else {
-                habilitaCampos(false);
-            }
+            JOptionPane.showMessageDialog(null, "Grupo não Cadastrado!");
+            LimpaTelaMenosCodigo();
+            edtNomeGrupo.grabFocus();
         }
     }
 
@@ -469,6 +467,7 @@ public class CadGrupoSubGrupo extends MetodosGlobais {
         jScrollPane1 = new javax.swing.JScrollPane();
         TabelaSubGrupo = new javax.swing.JTable();
         btnDeletarSubGrupo = new javax.swing.JButton();
+        btnAdicionar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -479,7 +478,7 @@ public class CadGrupoSubGrupo extends MetodosGlobais {
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 10, -1, 24));
 
         jLabel2.setText("Descrição:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 55, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 55, -1));
 
         jLabel5.setText("Código:");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 55, -1));
@@ -496,7 +495,7 @@ public class CadGrupoSubGrupo extends MetodosGlobais {
                 edtNomeGrupoKeyPressed(evt);
             }
         });
-        getContentPane().add(edtNomeGrupo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 310, 25));
+        getContentPane().add(edtNomeGrupo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 530, 25));
 
         btnAdicionarSubGrupo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Add.png"))); // NOI18N
         btnAdicionarSubGrupo.setText("Adicionar");
@@ -552,7 +551,7 @@ public class CadGrupoSubGrupo extends MetodosGlobais {
                 btnConsultaKeyPressed(evt);
             }
         });
-        getContentPane().add(btnConsulta, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 240, 120, 40));
+        getContentPane().add(btnConsulta, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 290, 120, 40));
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Red.png"))); // NOI18N
         btnSair.setText("Sair");
@@ -561,7 +560,7 @@ public class CadGrupoSubGrupo extends MetodosGlobais {
                 btnSairActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 290, 120, 40));
+        getContentPane().add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 340, 120, 40));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel6.setText("Sub-Grupos");
@@ -629,6 +628,15 @@ public class CadGrupoSubGrupo extends MetodosGlobais {
             }
         });
         getContentPane().add(btnDeletarSubGrupo, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 170, 120, 40));
+
+        btnAdicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Add.png"))); // NOI18N
+        btnAdicionar.setText("Adicionar");
+        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdicionarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAdicionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 240, 120, 40));
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 470, 780, 40));
 
         pack();
@@ -854,6 +862,11 @@ public class CadGrupoSubGrupo extends MetodosGlobais {
         }
     }//GEN-LAST:event_btnDeletarSubGrupoActionPerformed
 
+    private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
+        // TODO add your handling code here:
+        adicionarGrupo();
+    }//GEN-LAST:event_btnAdicionarActionPerformed
+
     private void TabelaSubGrupoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabelaSubGrupoMousePressed
         // TODO add your handling code here:
         int linha = TabelaSubGrupo.getSelectedRow();
@@ -882,12 +895,15 @@ public class CadGrupoSubGrupo extends MetodosGlobais {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(CadGrupoSubGrupo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(CadGrupoSubGrupo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(CadGrupoSubGrupo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CadGrupoSubGrupo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-
         //</editor-fold>
         //</editor-fold>
 
@@ -901,6 +917,7 @@ public class CadGrupoSubGrupo extends MetodosGlobais {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TabelaSubGrupo;
+    private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnAdicionarSubGrupo;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConsulta;

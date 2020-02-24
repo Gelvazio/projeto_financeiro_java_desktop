@@ -17,7 +17,6 @@ import javax.swing.JOptionPane;
  * @author Gelvazio
  */
 public class CondicaoPagamentoDB {
-
     /**
      *
      * @author Gelvazio Camargo
@@ -227,7 +226,7 @@ public class CondicaoPagamentoDB {
         }
         return listaCondicaoPagamento;
     }
-
+    
     public int ValidaCodigoGenerator() {
         int codigoGenerator = 0;
         Connection conn = null;
@@ -252,4 +251,5 @@ public class CondicaoPagamentoDB {
         return codigoGenerator;
     }
 
+        
 }

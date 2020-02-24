@@ -128,728 +128,727 @@ public class CadNotaEntrada extends MetodosGlobais {
         //edtDataSaida.setEnabled(false);
         //edtHoraSaida.setEnabled(false);
     }
-    /*
-     public void DataAtual() {
-     //JOptionPane.showMessageDialog(null, "Valor da data atual: " + formatadata.format(data));
-     //Passa a Data atual para o campo
-     edtDataSaida.setText(formatadata.format(data));
-     }
+/*
+    public void DataAtual() {
+        //JOptionPane.showMessageDialog(null, "Valor da data atual: " + formatadata.format(data));
+        //Passa a Data atual para o campo
+        edtDataSaida.setText(formatadata.format(data));
+    }
 
-     public void HoraAtual() {
-     //JOptionPane.showMessageDialog(null, "Hora Atual:" + formatahora.format(hora.getTime()));
-     //Passa a Hora atual para o campo
-     //edtHoraSaida.setText(formatahora.format(hora.getTime()));
-     }
+    public void HoraAtual() {
+        //JOptionPane.showMessageDialog(null, "Hora Atual:" + formatahora.format(hora.getTime()));
+        //Passa a Hora atual para o campo
+        //edtHoraSaida.setText(formatahora.format(hora.getTime()));
+    }
 
-     public void AdicionarVenda() {
-     //Programacao Pronta Generator
-     ValidaCodigoGenerator();
-     //Habilitação dos campos
-     habilitaCampos(true);
-     //Combobox Tipo de Nota
-     cbTipo_Nota.setModel(tiponotadb.getComboTipoNota());
-     ComboBoxTipoNota();
-     //Combobox Vendedor
-     //cbVendedor.setModel(pessoadb.getComboPessoa());
-     ComboBoxVendedor();
-     //Combobox Cliente
-     //cbCliente.setModel(pessoadb.getComboPessoa());
-     ComboBoxCliente();
-     //Condicao de Pagamento
-     //cbCondicaoPagamento.setModel(condicaopagamentodb.getComboCondPag());
-     ComboBoxCondicaoPagamento();
-     edtCliente.requestFocus();
-     }
+    public void AdicionarVenda() {
+        //Programacao Pronta Generator
+        ValidaCodigoGenerator();
+        //Habilitação dos campos
+        habilitaCampos(true);
+        //Combobox Tipo de Nota
+        cbTipo_Nota.setModel(tiponotadb.getComboTipoNota());
+        ComboBoxTipoNota();
+        //Combobox Vendedor
+        //cbVendedor.setModel(pessoadb.getComboPessoa());
+        ComboBoxVendedor();
+        //Combobox Cliente
+        //cbCliente.setModel(pessoadb.getComboPessoa());
+        ComboBoxCliente();
+        //Condicao de Pagamento
+        //cbCondicaoPagamento.setModel(condicaopagamentodb.getComboCondPag());
+        ComboBoxCondicaoPagamento();
+        edtCliente.requestFocus();
+    }
 
     
-     private void GravarCompletoValidado() {
-     String auxCodigo = edtCodigoMovimento.getText();
-     String auxCodigoCliente = edtCodigoCliente.getText();
-     String auxCodigoVendedor = edtCodigoVendedor.getText();
-     String auxCodigoCondicaoPagamento = edtCodigoCondicaoPagamento.getText();
-     String auxCodigoProduto = "";
-     for (int x = 0; x < TabelaProdutos.getRowCount(); x++) {
-     int CodigoProduto = (Integer.parseInt(String.valueOf(TabelaProdutos.getModel().getValueAt(x, 0))));
-     auxCodigoProduto = "" + CodigoProduto;
-     }
-     if (auxCodigo.equals("")) {
-     JOptionPane.showMessageDialog(null, "Favor Preencher o Código do movimento!");
-     edtCodigoMovimento.requestFocus();
-     } else if (auxCodigoCliente.equals("")) {
-     JOptionPane.showMessageDialog(null, "Favor Preencher o codigo do cliente!");
-     edtCodigoCliente.requestFocus();
-     } else if (auxCodigoVendedor.equals("")) {
-     JOptionPane.showMessageDialog(null, "Favor Preencher o codigo do vendedor!");
-     edtCodigoVendedor.requestFocus();
-     } else if (auxCodigoCondicaoPagamento.equals("")) {
-     JOptionPane.showMessageDialog(null, "Favor Preencher o codigo da condição de pagamento!");
-     edtCodigoCondicaoPagamento.requestFocus();
-     } else if (auxCodigoProduto.equals("")) {
-     JOptionPane.showMessageDialog(null, "Favor Preencher pelo menos um produto!");
-     edtCodigoProduto.requestFocus();
-     } else {
-     GravarAlterarRegistro();
-     }
-     }
+    private void GravarCompletoValidado() {
+        String auxCodigo = edtCodigoMovimento.getText();
+        String auxCodigoCliente = edtCodigoCliente.getText();
+        String auxCodigoVendedor = edtCodigoVendedor.getText();
+        String auxCodigoCondicaoPagamento = edtCodigoCondicaoPagamento.getText();
+        String auxCodigoProduto = "";
+        for (int x = 0; x < TabelaProdutos.getRowCount(); x++) {
+            int CodigoProduto = (Integer.parseInt(String.valueOf(TabelaProdutos.getModel().getValueAt(x, 0))));
+            auxCodigoProduto = "" + CodigoProduto;
+        }
+        if (auxCodigo.equals("")) {
+            JOptionPane.showMessageDialog(null, "Favor Preencher o Código do movimento!");
+            edtCodigoMovimento.requestFocus();
+        } else if (auxCodigoCliente.equals("")) {
+            JOptionPane.showMessageDialog(null, "Favor Preencher o codigo do cliente!");
+            edtCodigoCliente.requestFocus();
+        } else if (auxCodigoVendedor.equals("")) {
+            JOptionPane.showMessageDialog(null, "Favor Preencher o codigo do vendedor!");
+            edtCodigoVendedor.requestFocus();
+        } else if (auxCodigoCondicaoPagamento.equals("")) {
+            JOptionPane.showMessageDialog(null, "Favor Preencher o codigo da condição de pagamento!");
+            edtCodigoCondicaoPagamento.requestFocus();
+        } else if (auxCodigoProduto.equals("")) {
+            JOptionPane.showMessageDialog(null, "Favor Preencher pelo menos um produto!");
+            edtCodigoProduto.requestFocus();
+        } else {
+            GravarAlterarRegistro();
+        }
+    }
 
-     private void GravarAlterarRegistro() {
-     String auxTexto = edtCodigoMovimento.getText();
-     int codigo = Integer.parseInt(auxTexto);
-     VendaSimplesDB vendadb = new VendaSimplesDB();
-     if (vendadb.getVenda(codigo)) {
-     AlterarRegistro();
-     } else {
-     GravarRegistro();
-     }
-     }
+    private void GravarAlterarRegistro() {
+        String auxTexto = edtCodigoMovimento.getText();
+        int codigo = Integer.parseInt(auxTexto);
+        VendaSimplesDB vendadb = new VendaSimplesDB();
+        if (vendadb.getVenda(codigo)) {
+            AlterarRegistro();
+        } else {
+            GravarRegistro();
+        }
+    }
 
-     public void ListaVendaCompleto() {
-     Connection conn = null;
-     PreparedStatement pstmt = null;
-     ResultSet rs = null;
-     VendaSimplesDB vendadb = new VendaSimplesDB();
-     int cd_movimento = Integer.parseInt(edtCodigoMovimento.getText());
+    public void ListaVendaCompleto() {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        VendaSimplesDB vendadb = new VendaSimplesDB();
+        int cd_movimento = Integer.parseInt(edtCodigoMovimento.getText());
 
-     if (vendadb.getVenda(cd_movimento)) {
-     //Habilitação dos campos
-     habilitaCampos(true);
-     //Combobox Tipo de Nota
-     cbTipo_Nota.setModel(tiponotadb.getComboTipoNota());
-     ComboBoxTipoNota();
-     //Combobox Vendedor
-     cbVendedor.setModel(pessoadb.getComboPessoa());
-     ComboBoxVendedor();
-     //Combobox Cliente
-     cbCliente.setModel(pessoadb.getComboPessoa());
-     ComboBoxCliente();
-     //Condicao de Pagamento
-     cbCondicaoPagamento.setModel(condicaopagamentodb.getComboCondPag());
-     ComboBoxCondicaoPagamento();
-     try {
-     conn = Conexao.getConexao();
-     pstmt = conn.prepareStatement(sqlBuscaVendaPeloMovimento);
-     pstmt.setInt(1, cd_movimento);
-     rs = pstmt.executeQuery();
-     while (rs.next()) {
-     int cd_tipo_nota = rs.getInt("cd_tipo_doc");
-     int cd_pessoa = rs.getInt("cd_pessoa");
-     int cd_vendedor = rs.getInt("cd_vende");
-     int cd_pagamento = rs.getInt("cd_pagto");
+        if (vendadb.getVenda(cd_movimento)) {
+            //Habilitação dos campos
+            habilitaCampos(true);
+            //Combobox Tipo de Nota
+            cbTipo_Nota.setModel(tiponotadb.getComboTipoNota());
+            ComboBoxTipoNota();
+            //Combobox Vendedor
+            cbVendedor.setModel(pessoadb.getComboPessoa());
+            ComboBoxVendedor();
+            //Combobox Cliente
+            cbCliente.setModel(pessoadb.getComboPessoa());
+            ComboBoxCliente();
+            //Condicao de Pagamento
+            cbCondicaoPagamento.setModel(condicaopagamentodb.getComboCondPag());
+            ComboBoxCondicaoPagamento();
+            try {
+                conn = Conexao.getConexao();
+                pstmt = conn.prepareStatement(sqlBuscaVendaPeloMovimento);
+                pstmt.setInt(1, cd_movimento);
+                rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    int cd_tipo_nota = rs.getInt("cd_tipo_doc");
+                    int cd_pessoa = rs.getInt("cd_pessoa");
+                    int cd_vendedor = rs.getInt("cd_vende");
+                    int cd_pagamento = rs.getInt("cd_pagto");
 
-     // double acrescimo= rs.getDouble("CD_MARCA");
-     // double desconto= rs.getDouble("CD_MARCA");
-     double total = rs.getDouble("VL_TOT_PRO_DOC");
+                    // double acrescimo= rs.getDouble("CD_MARCA");
+                    // double desconto= rs.getDouble("CD_MARCA");
+                    double total = rs.getDouble("VL_TOT_PRO_DOC");
 
-     String data_saida = rs.getString("dt_sai_doc");
-     String hora_saida = rs.getString("hr_alt");
+                    String data_saida = rs.getString("dt_sai_doc");
+                    String hora_saida = rs.getString("hr_alt");
 
-     //Conversao das variaveis para String
-     String auxcd_tipo_nota = "" + cd_tipo_nota;
-     String auxcd_pessoa = "" + cd_pessoa;
-     String auxcd_vendedor = "" + cd_vendedor;
-     String auxcd_pagamento = "" + cd_pagamento;
+                    //Conversao das variaveis para String
+                    String auxcd_tipo_nota = "" + cd_tipo_nota;
+                    String auxcd_pessoa = "" + cd_pessoa;
+                    String auxcd_vendedor = "" + cd_vendedor;
+                    String auxcd_pagamento = "" + cd_pagamento;
 
-     //Fazer Depois a busca so do tipo de nota
-     //cbTipo_Nota.setModel(null);
-     //Combobox Tipo de Nota
-     cbTipo_Nota.setModel(tiponotadb.getComboTipoNota());
-     ComboBoxTipoNota();
+                    //Fazer Depois a busca so do tipo de nota
+                    //cbTipo_Nota.setModel(null);
+                    //Combobox Tipo de Nota
+                    cbTipo_Nota.setModel(tiponotadb.getComboTipoNota());
+                    ComboBoxTipoNota();
 
-     edtCodigoCliente.setText(auxcd_pessoa);
-     edtCodigoVendedor.setText(auxcd_vendedor);
-     edtCodigoCondicaoPagamento.setText(auxcd_pagamento);
-     edtDataSaida.setText(data_saida);
-     edtHoraSaida.setText(hora_saida);
+                    edtCodigoCliente.setText(auxcd_pessoa);
+                    edtCodigoVendedor.setText(auxcd_vendedor);
+                    edtCodigoCondicaoPagamento.setText(auxcd_pagamento);
+                    edtDataSaida.setText(data_saida);
+                    edtHoraSaida.setText(hora_saida);
 
-     ValidaCampoCodigoClienteNãoNulo();
-     ValidaCampoCodigoVendedorNãoNulo();
-     ValidaCampoCodigoCondicaoPagamentoNãoNulo();
+                    ValidaCampoCodigoClienteNãoNulo();
+                    ValidaCampoCodigoVendedorNãoNulo();
+                    ValidaCampoCodigoCondicaoPagamentoNãoNulo();
 
-     //Aqui comeca a carregar os itens
-     ListaItensCompleto();
-     edtCodigoCliente.requestFocus();
-     }
-     } catch (SQLException erro) {
-     JOptionPane.showMessageDialog(null, "Erro de conexão! " + erro);
-     }
-     } else {
-     JOptionPane.showMessageDialog(null, "Venda não cadastrada!");
-     edtCodigoMovimento.requestFocus();
-     //habilitaCampos(false);
-     //limparTela();
-     }
-     }
+                    //Aqui comeca a carregar os itens
+                    ListaItensCompleto();
+                    edtCodigoCliente.requestFocus();
+                }
+            } catch (SQLException erro) {
+                JOptionPane.showMessageDialog(null, "Erro de conexão! " + erro);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Venda não cadastrada!");
+            edtCodigoMovimento.requestFocus();
+            //habilitaCampos(false);
+            //limparTela();
+        }
+    }
 
-     public ArrayList SQLCarregaNomeItens() {
-     String auxtexto = edtCodigoMovimento.getText();
-     int codigomovimento = Integer.parseInt(auxtexto);
-     String SQLConsulta_itens_dav = "	select	 produto_simples.*	"
-     + "	from	"
-     + "	    itens_orc_simples	"
-     + "	    left outer join produto_simples	"
-     + "	    on produto_simples.cd_ref=itens_orc_simples.cd_refer_pro	"
-     + "	where	"
-     + "	    itens_orc_simples.cd_movimento=?	";
+    public ArrayList SQLCarregaNomeItens() {
+        String auxtexto = edtCodigoMovimento.getText();
+        int codigomovimento = Integer.parseInt(auxtexto);
+        String SQLConsulta_itens_dav = "	select	 produto_simples.*	"
+                + "	from	"
+                + "	    itens_orc_simples	"
+                + "	    left outer join produto_simples	"
+                + "	    on produto_simples.cd_ref=itens_orc_simples.cd_refer_pro	"
+                + "	where	"
+                + "	    itens_orc_simples.cd_movimento=?	";
 
-     ArrayList listaProduto = new ArrayList();
+        ArrayList listaProduto = new ArrayList();
 
-     Connection conn = null;
-     PreparedStatement pstmt = null;
-     ResultSet rs = null;
-     try {
-     conn = Conexao.getConexao();
-     pstmt = conn.prepareStatement(SQLConsulta_itens_dav);
-     pstmt.setInt(1, codigomovimento);
-     rs = pstmt.executeQuery();
-     while (rs.next()) {
-     int CD_PROD = rs.getInt("CD_PROD");
-     String DS_PROD = rs.getString("DS_PROD");
-     int CD_GRUPO = rs.getInt("CD_GRUPO");
-     int CD_SUB_GRUPO = rs.getInt("CD_SUB_GRUPO");
-     int FG_ATIVO = rs.getInt("FG_ATIVO");
-     int CD_COR = rs.getInt("CD_COR");
-     String CD_FABRICA = rs.getString("CD_FABRICA");
-     int CD_MARCA = rs.getInt("CD_MARCA");
-     int CD_GP_FISCAL = rs.getInt("CD_GP_FISCAL");
-     int CD_NCM_SH = rs.getInt("CD_NCM_SH");
-     int CD_REF = rs.getInt("CD_REF");
-     ProdutoSimples produto = new ProdutoSimples(
-     CD_PROD,
-     CD_GRUPO,
-     CD_SUB_GRUPO,
-     FG_ATIVO,
-     CD_COR,
-     CD_FABRICA,
-     CD_MARCA,
-     CD_GP_FISCAL,
-     CD_NCM_SH,
-     CD_REF,
-     DS_PROD);
-     listaProduto.add(produto);
-     }
-     } catch (SQLException erro) {
-     JOptionPane.showMessageDialog(null, "Erro no sql,  SQLConsultagetTodos_Completo_NomeProduto(): \n" + erro.getMessage());
-     } finally {
-     Conexao.closeAll(conn);
-     }
-     return listaProduto;
-     }
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexao.getConexao();
+            pstmt = conn.prepareStatement(SQLConsulta_itens_dav);
+            pstmt.setInt(1, codigomovimento);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int CD_PROD = rs.getInt("CD_PROD");
+                String DS_PROD = rs.getString("DS_PROD");
+                int CD_GRUPO = rs.getInt("CD_GRUPO");
+                int CD_SUB_GRUPO = rs.getInt("CD_SUB_GRUPO");
+                int FG_ATIVO = rs.getInt("FG_ATIVO");
+                int CD_COR = rs.getInt("CD_COR");
+                String CD_FABRICA = rs.getString("CD_FABRICA");
+                int CD_MARCA = rs.getInt("CD_MARCA");
+                int CD_GP_FISCAL = rs.getInt("CD_GP_FISCAL");
+                int CD_NCM_SH = rs.getInt("CD_NCM_SH");
+                int CD_REF = rs.getInt("CD_REF");
+                ProdutoSimples produto = new ProdutoSimples(
+                        CD_PROD,
+                        CD_GRUPO,
+                        CD_SUB_GRUPO,
+                        FG_ATIVO,
+                        CD_COR,
+                        CD_FABRICA,
+                        CD_MARCA,
+                        CD_GP_FISCAL,
+                        CD_NCM_SH,
+                        CD_REF,
+                        DS_PROD);
+                listaProduto.add(produto);
+            }
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "Erro no sql,  SQLConsultagetTodos_Completo_NomeProduto(): \n" + erro.getMessage());
+        } finally {
+            Conexao.closeAll(conn);
+        }
+        return listaProduto;
+    }
 
-     public void ListaItensCompleto() {
-     DefaultTableModel modelo = new DefaultTableModel();
-     modelo.addColumn("Codigo");
-     modelo.addColumn("Nome");
-     modelo.addColumn("Quantidade");
-     modelo.addColumn("Preco");
-     habilitaCampos(true);
-     int aux_sequencia = 1;//Pega a sequencia
-     int aux_contador = 1;   //Pega a sequencia do item
-     int aux_movimento = Integer.parseInt(edtCodigoMovimento.getText());
-     ArrayList<ProdutoSimples> produtosimples = SQLCarregaNomeItens();
+    public void ListaItensCompleto() {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Codigo");
+        modelo.addColumn("Nome");
+        modelo.addColumn("Quantidade");
+        modelo.addColumn("Preco");
+        habilitaCampos(true);
+        int aux_sequencia = 1;//Pega a sequencia
+        int aux_contador = 1;   //Pega a sequencia do item
+        int aux_movimento = Integer.parseInt(edtCodigoMovimento.getText());
+        ArrayList<ProdutoSimples> produtosimples = SQLCarregaNomeItens();
 
-     VendaProdutoDB venprodb = new VendaProdutoDB();
-     //aqui verifica se existe item desta venda
-     if (venprodb.getProdutoDaVenda(aux_movimento, aux_sequencia)) {
-     aux_sequencia = 0;
-     for (ProdutoSimples auxprodutosimples : produtosimples) {
-     modelo.addRow(new Object[]{
-     auxprodutosimples.getCD_REF(),
-     auxprodutosimples.getDS_PROD()
-     });
-     TabelaProdutos.setModel(modelo);
-     //Programacao do valor e quantidade
-     Connection conn = null;
-     PreparedStatement pstmt = null;
-     ResultSet rs = null;
-     //JOptionPane.showMessageDialog(null, "Valor de sequencia na linha: " + aux_sequencia);
-     for (int x = aux_sequencia; x < TabelaProdutos.getRowCount(); x++) {
-     try {
-     conn = Conexao.getConexao();
-     pstmt = conn.prepareStatement(sqlBuscaQuantidadeEPreco);
-     pstmt.setInt(1, aux_movimento);
-     pstmt.setInt(2, aux_contador);
-     rs = pstmt.executeQuery();
-     while (rs.next()) {
-     int aux_quantidade = rs.getInt("QT_ITE_PRO");
-     double aux_preco = rs.getDouble("VL_VEN_ITE_PRO");
-     TabelaProdutos.getModel().setValueAt(aux_quantidade, x, 2);
-     TabelaProdutos.getModel().setValueAt(aux_preco, x, 3);
-     }
-     } catch (SQLException erro) {
-     JOptionPane.showMessageDialog(null, "Erro no sql, Nome Produto Itens:\n" + erro.getMessage());
-     } finally {
-     Conexao.closeAll(conn);
-     }
-     }
-     aux_sequencia++;//Incrementa a sequencia
-     aux_contador++; //Incrementa a sequencia do banco de dados               
-     }
+        VendaProdutoDB venprodb = new VendaProdutoDB();
+        //aqui verifica se existe item desta venda
+        if (venprodb.getProdutoDaVenda(aux_movimento, aux_sequencia)) {
+            aux_sequencia = 0;
+            for (ProdutoSimples auxprodutosimples : produtosimples) {
+                modelo.addRow(new Object[]{
+                    auxprodutosimples.getCD_REF(),
+                    auxprodutosimples.getDS_PROD()
+                });
+                TabelaProdutos.setModel(modelo);
+                //Programacao do valor e quantidade
+                Connection conn = null;
+                PreparedStatement pstmt = null;
+                ResultSet rs = null;
+                //JOptionPane.showMessageDialog(null, "Valor de sequencia na linha: " + aux_sequencia);
+                for (int x = aux_sequencia; x < TabelaProdutos.getRowCount(); x++) {
+                    try {
+                        conn = Conexao.getConexao();
+                        pstmt = conn.prepareStatement(sqlBuscaQuantidadeEPreco);
+                        pstmt.setInt(1, aux_movimento);
+                        pstmt.setInt(2, aux_contador);
+                        rs = pstmt.executeQuery();
+                        while (rs.next()) {
+                            int aux_quantidade = rs.getInt("QT_ITE_PRO");
+                            double aux_preco = rs.getDouble("VL_VEN_ITE_PRO");
+                            TabelaProdutos.getModel().setValueAt(aux_quantidade, x, 2);
+                            TabelaProdutos.getModel().setValueAt(aux_preco, x, 3);
+                        }
+                    } catch (SQLException erro) {
+                        JOptionPane.showMessageDialog(null, "Erro no sql, Nome Produto Itens:\n" + erro.getMessage());
+                    } finally {
+                        Conexao.closeAll(conn);
+                    }
+                }
+                aux_sequencia++;//Incrementa a sequencia
+                aux_contador++; //Incrementa a sequencia do banco de dados               
+            }
 
-     } else {
-     JOptionPane.showMessageDialog(null, "Não existe itens nesta venda!");
-     edtCodigoProduto.requestFocus();
-     }
-     }
+        } else {
+            JOptionPane.showMessageDialog(null, "Não existe itens nesta venda!");
+            edtCodigoProduto.requestFocus();
+        }
+    }
 
-     public void GravarRegistro() {
-     int auxcd_filial = 1;
-     int auxcd_movimento = (Integer.parseInt(edtCodigoMovimento.getText()));
-     int auxcd_vendedor = (Integer.parseInt(edtCodigoVendedor.getText()));
-     int auxcd_pagto = Integer.parseInt(edtCodigoCondicaoPagamento.getText());
-     int auxcd_pessoa = (Integer.parseInt(edtCodigoCliente.getText()));
+    public void GravarRegistro() {
+        int auxcd_filial = 1;
+        int auxcd_movimento = (Integer.parseInt(edtCodigoMovimento.getText()));
+        int auxcd_vendedor = (Integer.parseInt(edtCodigoVendedor.getText()));
+        int auxcd_pagto = Integer.parseInt(edtCodigoCondicaoPagamento.getText());
+        int auxcd_pessoa = (Integer.parseInt(edtCodigoCliente.getText()));
 
-     double auxvl_custototaldoc = 100;
-     double auxvl_totaldoc = 200;
-     int aux_cd_tipo_nota = 1;
-     int auxfg_situacao = 1;
-     int auxcd_usuario = 1;
-     VendaSimplesDB vendadb = new VendaSimplesDB();
-     VendaClasse vendaclasse = new VendaClasse(
-     auxcd_filial,
-     auxcd_movimento,
-     auxcd_usuario,
-     auxcd_vendedor,
-     auxcd_pagto,
-     auxcd_pessoa,
-     auxvl_custototaldoc,
-     auxvl_totaldoc,
-     auxfg_situacao,
-     aux_cd_tipo_nota
-     );
-     if (vendadb.gravarVenda(vendaclasse)) {
-     JOptionPane.showMessageDialog(null, "Venda incluída com sucesso!");
-     //Parte Item já ta programado
-     int auxsequencia = 1;
-     for (int x = 0; x < TabelaProdutos.getRowCount(); x++) {
-     // JOptionPane.showMessageDialog(null, "Entrou aqui: for (int x = 0; x < TabelaProdutos.getRowCount(); x++)");
-     double auxvl_custo = 10;
-     double aux_vl_preco = (Double.parseDouble(String.valueOf(TabelaProdutos.getModel().getValueAt(x, 3))));
-     int aux_cd_referencia = (Integer.parseInt(String.valueOf(TabelaProdutos.getModel().getValueAt(x, 0))));
-     int aux_quantidade = (Integer.parseInt(String.valueOf(TabelaProdutos.getModel().getValueAt(x, 2))));
+        double auxvl_custototaldoc = 100;
+        double auxvl_totaldoc = 200;
+        int aux_cd_tipo_nota = 1;
+        int auxfg_situacao = 1;
+        int auxcd_usuario = 1;
+        VendaSimplesDB vendadb = new VendaSimplesDB();
+        VendaClasse vendaclasse = new VendaClasse(
+                auxcd_filial,
+                auxcd_movimento,
+                auxcd_usuario,
+                auxcd_vendedor,
+                auxcd_pagto,
+                auxcd_pessoa,
+                auxvl_custototaldoc,
+                auxvl_totaldoc,
+                auxfg_situacao,
+                aux_cd_tipo_nota
+        );
+        if (vendadb.gravarVenda(vendaclasse)) {
+            JOptionPane.showMessageDialog(null, "Venda incluída com sucesso!");
+            //Parte Item já ta programado
+            int auxsequencia = 1;
+            for (int x = 0; x < TabelaProdutos.getRowCount(); x++) {
+                // JOptionPane.showMessageDialog(null, "Entrou aqui: for (int x = 0; x < TabelaProdutos.getRowCount(); x++)");
+                double auxvl_custo = 10;
+                double aux_vl_preco = (Double.parseDouble(String.valueOf(TabelaProdutos.getModel().getValueAt(x, 3))));
+                int aux_cd_referencia = (Integer.parseInt(String.valueOf(TabelaProdutos.getModel().getValueAt(x, 0))));
+                int aux_quantidade = (Integer.parseInt(String.valueOf(TabelaProdutos.getModel().getValueAt(x, 2))));
 
-     VendaProdutoDB venprodb = new VendaProdutoDB();
-     VendaProdutoClassse venclasse = new VendaProdutoClassse(
-     aux_quantidade,
-     aux_vl_preco,
-     aux_cd_referencia,
-     auxcd_filial,
-     auxcd_movimento,
-     auxsequencia,
-     auxcd_usuario,
-     auxvl_custo);
-     if (venprodb.gravarProdutoDaVenda(venclasse)) {
-     //JOptionPane.showMessageDialog(null, "Produtos incluídos com sucesso!");
-     //LimpaTela();
-     //Incrementar a programacao de habilita e desabilita campos
-     } else {
-     JOptionPane.showMessageDialog(null, "Não foi possível incluir o os Produtos!");
-     //edtCodigo.grabFocus();
-     }
-     auxsequencia++;
-     }
-     habilitaCampos(false);
-     limparTela();
-     } else {
-     JOptionPane.showMessageDialog(null, "Não foi possível gravar a venda!");
-     }
-     }
+                VendaProdutoDB venprodb = new VendaProdutoDB();
+                VendaProdutoClassse venclasse = new VendaProdutoClassse(
+                        aux_quantidade,
+                        aux_vl_preco,
+                        aux_cd_referencia,
+                        auxcd_filial,
+                        auxcd_movimento,
+                        auxsequencia,
+                        auxcd_usuario,
+                        auxvl_custo);
+                if (venprodb.gravarProdutoDaVenda(venclasse)) {
+                    //JOptionPane.showMessageDialog(null, "Produtos incluídos com sucesso!");
+                    //LimpaTela();
+                    //Incrementar a programacao de habilita e desabilita campos
+                } else {
+                    JOptionPane.showMessageDialog(null, "Não foi possível incluir o os Produtos!");
+                    //edtCodigo.grabFocus();
+                }
+                auxsequencia++;
+            }
+            habilitaCampos(false);
+            limparTela();
+        } else {
+            JOptionPane.showMessageDialog(null, "Não foi possível gravar a venda!");
+        }
+    }
 
-     public void AlterarRegistro() {
-     int auxcd_filial = 1;
-     int auxcd_movimento = (Integer.parseInt(edtCodigoMovimento.getText()));
-     int auxcd_vendedor = (Integer.parseInt(edtCodigoVendedor.getText()));
-     int auxcd_pagto = Integer.parseInt(edtCodigoCondicaoPagamento.getText());
-     int auxcd_pessoa = (Integer.parseInt(edtCodigoCliente.getText()));
+    public void AlterarRegistro() {
+        int auxcd_filial = 1;
+        int auxcd_movimento = (Integer.parseInt(edtCodigoMovimento.getText()));
+        int auxcd_vendedor = (Integer.parseInt(edtCodigoVendedor.getText()));
+        int auxcd_pagto = Integer.parseInt(edtCodigoCondicaoPagamento.getText());
+        int auxcd_pessoa = (Integer.parseInt(edtCodigoCliente.getText()));
 
-     double auxvl_custototaldoc = 100.0;
-     double auxvl_totaldoc = 200.0;
-     int auxfg_situacao = 1;
-     int auxcd_usuario = 1;
-     int aux_cd_tipo_nota = 1;
-     VendaSimplesDB vendadb = new VendaSimplesDB();
-     VendaClasse vendaclasse = new VendaClasse(
-     auxcd_filial,
-     auxcd_movimento,
-     auxcd_usuario,
-     auxcd_vendedor,
-     auxcd_pagto,
-     auxcd_pessoa,
-     auxvl_custototaldoc,
-     auxvl_totaldoc,
-     auxfg_situacao,
-     aux_cd_tipo_nota
-     );
+        double auxvl_custototaldoc = 100.0;
+        double auxvl_totaldoc = 200.0;
+        int auxfg_situacao = 1;
+        int auxcd_usuario = 1;
+        int aux_cd_tipo_nota = 1;
+        VendaSimplesDB vendadb = new VendaSimplesDB();
+        VendaClasse vendaclasse = new VendaClasse(
+                auxcd_filial,
+                auxcd_movimento,
+                auxcd_usuario,
+                auxcd_vendedor,
+                auxcd_pagto,
+                auxcd_pessoa,
+                auxvl_custototaldoc,
+                auxvl_totaldoc,
+                auxfg_situacao,
+                aux_cd_tipo_nota
+        );
 
-     if (vendadb.alterarVenda(vendaclasse)) {
-     int auxsequencia = 1;
-     for (int x = 0; x < TabelaProdutos.getRowCount(); x++) {
-     double auxvl_custo = 10;
-     double aux_vl_preco = (Double.parseDouble(String.valueOf(TabelaProdutos.getModel().getValueAt(x, 3))));
-     int aux_cd_referencia = (Integer.parseInt(String.valueOf(TabelaProdutos.getModel().getValueAt(x, 0))));
-     int aux_quantidade = (Integer.parseInt(String.valueOf(TabelaProdutos.getModel().getValueAt(x, 2))));
+        if (vendadb.alterarVenda(vendaclasse)) {
+            int auxsequencia = 1;
+            for (int x = 0; x < TabelaProdutos.getRowCount(); x++) {
+                double auxvl_custo = 10;
+                double aux_vl_preco = (Double.parseDouble(String.valueOf(TabelaProdutos.getModel().getValueAt(x, 3))));
+                int aux_cd_referencia = (Integer.parseInt(String.valueOf(TabelaProdutos.getModel().getValueAt(x, 0))));
+                int aux_quantidade = (Integer.parseInt(String.valueOf(TabelaProdutos.getModel().getValueAt(x, 2))));
 
-     VendaProdutoClassse venclasse = new VendaProdutoClassse(
-     aux_quantidade,
-     aux_vl_preco,
-     aux_cd_referencia,
-     auxcd_filial,
-     auxcd_movimento,
-     auxsequencia,
-     auxcd_usuario,
-     auxvl_custo);
-     //Fazer verificação de item que ja existe
-     VendaProdutoDB venprodb = new VendaProdutoDB();
-     if (venprodb.getProdutoDaVenda(auxcd_movimento, auxsequencia)) {
-     if (venprodb.alterarProdutoDaVenda(venclasse)) {
-     //JOptionPane.showMessageDialog(null, "Produtos alterados com sucesso!");
-     } else {
-     JOptionPane.showMessageDialog(null, "Não foi possível alterar o Produto!");
-     }
-     } else {
-     if (venprodb.gravarProdutoDaVenda(venclasse)) {
-     //JOptionPane.showMessageDialog(null, "Produtos incluídos com sucesso!");
-     } else {
-     JOptionPane.showMessageDialog(null, "Não foi possível incluir o os Produtos!");
-     }
-     }
-     //Incrementa a sequencia do formulario
-     auxsequencia++;
-     }
-     habilitaCampos(false);
-     } else {
-     JOptionPane.showMessageDialog(null, "Não foi possível alterar a venda!");
-     }
-     }
+                VendaProdutoClassse venclasse = new VendaProdutoClassse(
+                        aux_quantidade,
+                        aux_vl_preco,
+                        aux_cd_referencia,
+                        auxcd_filial,
+                        auxcd_movimento,
+                        auxsequencia,
+                        auxcd_usuario,
+                        auxvl_custo);
+                //Fazer verificação de item que ja existe
+                VendaProdutoDB venprodb = new VendaProdutoDB();
+                if (venprodb.getProdutoDaVenda(auxcd_movimento, auxsequencia)) {
+                    if (venprodb.alterarProdutoDaVenda(venclasse)) {
+                        //JOptionPane.showMessageDialog(null, "Produtos alterados com sucesso!");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Não foi possível alterar o Produto!");
+                    }
+                } else {
+                    if (venprodb.gravarProdutoDaVenda(venclasse)) {
+                        //JOptionPane.showMessageDialog(null, "Produtos incluídos com sucesso!");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Não foi possível incluir o os Produtos!");
+                    }
+                }
+                //Incrementa a sequencia do formulario
+                auxsequencia++;
+            }
+            habilitaCampos(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "Não foi possível alterar a venda!");
+        }
+    }
 
-     public void habilitaCampos(boolean habilita) {
-     edtCodigoMovimento.requestFocus();
-     edtCodigoMovimento.setEnabled(!habilita);
-     edtCodigoCliente.setEnabled(habilita);
-     edtCodigoVendedor.setEnabled(habilita);
-     edtValorUnitario.setEnabled(habilita);
-     edtCodigoProduto.setEnabled(habilita);
-     edtQuantidade.setEnabled(habilita);
-     edtDescricao.setEnabled(habilita);
-     edtCodigoCondicaoPagamento.setEnabled(habilita);
+    public void habilitaCampos(boolean habilita) {
+        edtCodigoMovimento.requestFocus();
+        edtCodigoMovimento.setEnabled(!habilita);
+        edtCodigoCliente.setEnabled(habilita);
+        edtCodigoVendedor.setEnabled(habilita);
+        edtValorUnitario.setEnabled(habilita);
+        edtCodigoProduto.setEnabled(habilita);
+        edtQuantidade.setEnabled(habilita);
+        edtDescricao.setEnabled(habilita);
+        edtCodigoCondicaoPagamento.setEnabled(habilita);
 
-     btnGravar.setEnabled(habilita);
-     btnCancelar.setEnabled(habilita);
-     btnConsulta.setEnabled(!habilita);
-     btnAdicionar.setEnabled(!habilita);
+        btnGravar.setEnabled(habilita);
+        btnCancelar.setEnabled(habilita);
+        btnConsulta.setEnabled(!habilita);
+        btnAdicionar.setEnabled(!habilita);
 
-     //btnSair.setEnabled(!habilita);
-     btnConsultaCliente.setEnabled(habilita);
-     btnConsultaVendedor.setEnabled(habilita);
-     btnConsultaCondicaoPagamento.setEnabled(habilita);
+        //btnSair.setEnabled(!habilita);
+        btnConsultaCliente.setEnabled(habilita);
+        btnConsultaVendedor.setEnabled(habilita);
+        btnConsultaCondicaoPagamento.setEnabled(habilita);
 
-     cbCliente.setEnabled(habilita);
-     cbTipo_Nota.setEnabled(habilita);
-     cbCondicaoPagamento.setEnabled(habilita);
-     cbVendedor.setEnabled(habilita);
+        cbCliente.setEnabled(habilita);
+        cbTipo_Nota.setEnabled(habilita);
+        cbCondicaoPagamento.setEnabled(habilita);
+        cbVendedor.setEnabled(habilita);
 
-     if (habilita) {
-     edtCliente.requestFocus();
-     } else {
-     //Remover registros dos campos
-     limparTela();
-     }
-     }
+        if (habilita) {
+            edtCliente.requestFocus();
+        } else {
+            //Remover registros dos campos
+            limparTela();
+        }
+    }
 
-     private void limparTela() {
-     edtDescricao.setText("");
-     edtCodigoMovimento.setText("");
-     edtCodigoCliente.setText("");
-     edtCodigoVendedor.setText("");
-     edtValorUnitario.setText("");
-     edtCodigoProduto.setText("");
-     edtQuantidade.setText("");
-     edtCodigoCondicaoPagamento.setText("");
-     edtDataSaida.setText("");
-     edtHoraSaida.setText("");
+    private void limparTela() {
+        edtDescricao.setText("");
+        edtCodigoMovimento.setText("");
+        edtCodigoCliente.setText("");
+        edtCodigoVendedor.setText("");
+        edtValorUnitario.setText("");
+        edtCodigoProduto.setText("");
+        edtQuantidade.setText("");
+        edtCodigoCondicaoPagamento.setText("");
+        edtDataSaida.setText("");
+        edtHoraSaida.setText("");
 
-     DefaultTableModel model = (DefaultTableModel) TabelaProdutos.getModel();
-     model.setNumRows(0);
-     cbCliente.removeAllItems();
-     cbVendedor.removeAllItems();
-     cbCondicaoPagamento.removeAllItems();
-     cbCondicaoPagamento.removeAllItems();
-     cbTipo_Nota.removeAllItems();
-     edtCodigoMovimento.requestFocus();
-     }
+        DefaultTableModel model = (DefaultTableModel) TabelaProdutos.getModel();
+        model.setNumRows(0);
+        cbCliente.removeAllItems();
+        cbVendedor.removeAllItems();
+        cbCondicaoPagamento.removeAllItems();
+        cbCondicaoPagamento.removeAllItems();
+        cbTipo_Nota.removeAllItems();
+        edtCodigoMovimento.requestFocus();
+    }
 
-     private void ValidaCodigoGenerator() {
-     Connection conn = null;
-     Statement stmt = null;
-     ResultSet rs = null;
-     try {
-     conn = Conexao.getConexao();
-     stmt = conn.createStatement();
-     rs = stmt.executeQuery("SELECT GEN_ID(CD_ORC, 1) FROM RDB$DATABASE");
-     while (rs.next()) {
-     int auxCodigoGenerator = rs.getInt("GEN_ID");
-     int auxCodigo = auxCodigoGenerator + 1;
-     String a;
-     a = "" + auxCodigo;
-     edtCodigoMovimento.setText(a);
-     cbTipo_Nota.grabFocus();
-     }
-     } catch (SQLException erro) {
-     JOptionPane.showMessageDialog(null, "Erro de conexão! \n" + erro.getMessage());
-     } finally {
-     Conexao.closeAll(conn);
-     }
-     }
+    private void ValidaCodigoGenerator() {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT GEN_ID(CD_ORC, 1) FROM RDB$DATABASE");
+            while (rs.next()) {
+                int auxCodigoGenerator = rs.getInt("GEN_ID");
+                int auxCodigo = auxCodigoGenerator + 1;
+                String a;
+                a = "" + auxCodigo;
+                edtCodigoMovimento.setText(a);
+                cbTipo_Nota.grabFocus();
+            }
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "Erro de conexão! \n" + erro.getMessage());
+        } finally {
+            Conexao.closeAll(conn);
+        }
+    }
 
-     public void ComboBoxTipoNota() {
-     Connection conn = null;
-     Statement stmt = null;
-     ResultSet rs = null;
-     String sql
-     = "select * from tipo_nota_simples where "
-     + "tipo_nota_simples.ds_tipo_nota='" + cbTipo_Nota.getSelectedItem() + "'";
-     try {
-     conn = Conexao.getConexao();
-     stmt = conn.createStatement();
-     rs = stmt.executeQuery(sql);
-     rs.next();
-     aux_codigo_tipo_nota = rs.getInt("cd_tipo");
+    public void ComboBoxTipoNota() {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        String sql
+                = "select * from tipo_nota_simples where "
+                + "tipo_nota_simples.ds_tipo_nota='" + cbTipo_Nota.getSelectedItem() + "'";
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            rs.next();
+            aux_codigo_tipo_nota = rs.getInt("cd_tipo");
 
-     } catch (SQLException ex) {
-     //JOptionPane.showMessageDialog(null, "Tipo de Nota não encontrado!Erro na funcao ComboBoxTipoNota()!:" + ex.getMessage());
-     }
-     }
+        } catch (SQLException ex) {
+            //JOptionPane.showMessageDialog(null, "Tipo de Nota não encontrado!Erro na funcao ComboBoxTipoNota()!:" + ex.getMessage());
+        }
+    }
 
-     public void ComboBoxVendedor() {
-     Connection conn = null;
-     Statement stmt = null;
-     ResultSet rs = null;
-     String sql = "select * from pessoa_simples where pessoa_simples.nm_pessoa= '" + cbVendedor.getSelectedItem() + "'";
-     try {
-     conn = Conexao.getConexao();
-     stmt = conn.createStatement();
-     rs = stmt.executeQuery(sql);
-     rs.next();
-     int auxcd_pessoa = rs.getInt("cd_pessoa");
-     String aux = "";
-     aux = "" + auxcd_pessoa;
-     edtCodigoVendedor.setText(aux);
-     edtCodigoVendedor.setVisible(true);
-     } catch (SQLException ex) {
-     //JOptionPane.showMessageDialog(null, "Vendedor não encontrado!Erro na funcao ComboBoxVendedor()!:" + ex.getMessage());
-     }
-     }
+    public void ComboBoxVendedor() {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        String sql = "select * from pessoa_simples where pessoa_simples.nm_pessoa= '" + cbVendedor.getSelectedItem() + "'";
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            rs.next();
+            int auxcd_pessoa = rs.getInt("cd_pessoa");
+            String aux = "";
+            aux = "" + auxcd_pessoa;
+            edtCodigoVendedor.setText(aux);
+            edtCodigoVendedor.setVisible(true);
+        } catch (SQLException ex) {
+            //JOptionPane.showMessageDialog(null, "Vendedor não encontrado!Erro na funcao ComboBoxVendedor()!:" + ex.getMessage());
+        }
+    }
 
-     public void ComboBoxCliente() {
-     Connection conn = null;
-     Statement stmt = null;
-     ResultSet rs = null;
-     String sql = "select * from pessoa_simples where pessoa_simples.nm_pessoa= '" + cbCliente.getSelectedItem() + "'";
-     try {
-     conn = Conexao.getConexao();
-     stmt = conn.createStatement();
-     rs = stmt.executeQuery(sql);
-     rs.next();
-     int auxcd_pessoa = rs.getInt("cd_pessoa");
-     String aux = "";
-     aux = "" + auxcd_pessoa;
-     edtCodigoCliente.setText(aux);
-     edtCodigoCliente.setVisible(true);
-     } catch (SQLException ex) {
-     //JOptionPane.showMessageDialog(null, "Cliente não encontrado!Erro na funcao ComboBoxCliente()!:" + ex.getMessage());
-     }
-     }
+    public void ComboBoxCliente() {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        String sql = "select * from pessoa_simples where pessoa_simples.nm_pessoa= '" + cbCliente.getSelectedItem() + "'";
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            rs.next();
+            int auxcd_pessoa = rs.getInt("cd_pessoa");
+            String aux = "";
+            aux = "" + auxcd_pessoa;
+            edtCodigoCliente.setText(aux);
+            edtCodigoCliente.setVisible(true);
+        } catch (SQLException ex) {
+            //JOptionPane.showMessageDialog(null, "Cliente não encontrado!Erro na funcao ComboBoxCliente()!:" + ex.getMessage());
+        }
+    }
 
-     public void ComboBoxCondicaoPagamento() {
-     Connection conn = null;
-     Statement stmt = null;
-     ResultSet rs = null;
-     String sql = "SELECT * FROM COND_PAG WHERE ds_cond='" + cbCondicaoPagamento.getSelectedItem() + "'";
-     try {
-     conn = Conexao.getConexao();
-     stmt = conn.createStatement();
-     rs = stmt.executeQuery(sql);
-     rs.next();
-     int auxcd_condicaopagamento = rs.getInt("cd_cond");
-     String aux = "";
-     aux = "" + auxcd_condicaopagamento;
-     edtCodigoCondicaoPagamento.setText(aux);
-     edtCodigoCondicaoPagamento.setVisible(true);
-     } catch (SQLException ex) {
-     //JOptionPane.showMessageDialog(null, "Condicao de Pagamento não encontrada!Erro na funcao ComboBoxCondicaoPagamento()!:" + ex.getMessage());
-     }
-     }
+    public void ComboBoxCondicaoPagamento() {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        String sql = "SELECT * FROM COND_PAG WHERE ds_cond='" + cbCondicaoPagamento.getSelectedItem() + "'";
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            rs.next();
+            int auxcd_condicaopagamento = rs.getInt("cd_cond");
+            String aux = "";
+            aux = "" + auxcd_condicaopagamento;
+            edtCodigoCondicaoPagamento.setText(aux);
+            edtCodigoCondicaoPagamento.setVisible(true);
+        } catch (SQLException ex) {
+            //JOptionPane.showMessageDialog(null, "Condicao de Pagamento não encontrada!Erro na funcao ComboBoxCondicaoPagamento()!:" + ex.getMessage());
+        }
+    }
 
-     public DefaultComboBoxModel ValidaCampoTipoNota() {
-     TipoNotaDB tiponotadb = new TipoNotaDB();
-     DefaultComboBoxModel modelo = new DefaultComboBoxModel();
-     Connection conn = null;
-     PreparedStatement pstmt = null;
-     ResultSet rs = null;
-     int cd_tipo = 1;//Passado Fixos
-     if (tiponotadb.getTipoNota(cd_tipo)) {
-     try {
-     conn = Conexao.getConexao();
-     pstmt = conn.prepareStatement(sqlBuscaTipoNota);
-     pstmt.setInt(1, cd_tipo);
-     rs = pstmt.executeQuery();
-     while (rs.next()) {
-     modelo.addElement(rs.getString("ds_tipo_nota"));
-     cbTipo_Nota.setModel(modelo);
-     edtCodigoCliente.grabFocus();
-     }
-     } catch (SQLException erro) {
-     JOptionPane.showMessageDialog(null, "Erro no sql, ValidaCampoTipoNota(): \n" + erro.getMessage());
-     } finally {
-     Conexao.closeAll(conn);
-     }
-     } else {
-     JOptionPane.showMessageDialog(null, "Tipo de Nota 1 não cadastrado!");
-     edtCodigoMovimento.requestFocus();
-     }
-     return modelo;
-     }
+    public DefaultComboBoxModel ValidaCampoTipoNota() {
+        TipoNotaDB tiponotadb = new TipoNotaDB();
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        int cd_tipo = 1;//Passado Fixos
+        if (tiponotadb.getTipoNota(cd_tipo)) {
+            try {
+                conn = Conexao.getConexao();
+                pstmt = conn.prepareStatement(sqlBuscaTipoNota);
+                pstmt.setInt(1, cd_tipo);
+                rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    modelo.addElement(rs.getString("ds_tipo_nota"));
+                    cbTipo_Nota.setModel(modelo);
+                    edtCodigoCliente.grabFocus();
+                }
+            } catch (SQLException erro) {
+                JOptionPane.showMessageDialog(null, "Erro no sql, ValidaCampoTipoNota(): \n" + erro.getMessage());
+            } finally {
+                Conexao.closeAll(conn);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Tipo de Nota 1 não cadastrado!");
+            edtCodigoMovimento.requestFocus();
+        }
+        return modelo;
+    }
 
-     public DefaultComboBoxModel ValidaCampoCodigoClienteNãoNulo() {
-     PessoaDB pessoadb = new PessoaDB();
-     String auxTexto = edtCodigoCliente.getText();
-     int cd_pessoa = Integer.parseInt(auxTexto);
-     DefaultComboBoxModel modelo = new DefaultComboBoxModel();
-     Connection conn = null;
-     PreparedStatement pstmt = null;
-     ResultSet rs = null;
-     if (pessoadb.getPessoa(cd_pessoa)) {
-     try {
-     conn = Conexao.getConexao();
-     pstmt = conn.prepareStatement(sqlBuscaPessoa);
-     pstmt.setInt(1, cd_pessoa);
-     rs = pstmt.executeQuery();
-     while (rs.next()) {
-     String auxNome = rs.getString("nm_pessoa");
-     cbCliente.setSelectedItem(auxNome);
-     edtCodigoVendedor.grabFocus();
-     }
-     } catch (SQLException erro) {
-     JOptionPane.showMessageDialog(null, "Erro no sql, getComboPessoa(): \n" + erro.getMessage());
-     } finally {
-     Conexao.closeAll(conn);
-     }
-     } else {
-     JOptionPane.showMessageDialog(null, "Pessoa nao cadastrada");
-     edtCodigoCliente.requestFocus();
-     }
-     return modelo;
-     }
+    public DefaultComboBoxModel ValidaCampoCodigoClienteNãoNulo() {
+        PessoaDB pessoadb = new PessoaDB();
+        String auxTexto = edtCodigoCliente.getText();
+        int cd_pessoa = Integer.parseInt(auxTexto);
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        if (pessoadb.getPessoa(cd_pessoa)) {
+            try {
+                conn = Conexao.getConexao();
+                pstmt = conn.prepareStatement(sqlBuscaPessoa);
+                pstmt.setInt(1, cd_pessoa);
+                rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    String auxNome = rs.getString("nm_pessoa");
+                    cbCliente.setSelectedItem(auxNome);
+                    edtCodigoVendedor.grabFocus();
+                }
+            } catch (SQLException erro) {
+                JOptionPane.showMessageDialog(null, "Erro no sql, getComboPessoa(): \n" + erro.getMessage());
+            } finally {
+                Conexao.closeAll(conn);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Pessoa nao cadastrada");
+            edtCodigoCliente.requestFocus();
+        }
+        return modelo;
+    }
 
-     public DefaultComboBoxModel ValidaCampoCodigoVendedorNãoNulo() {
-     PessoaDB pessoadb = new PessoaDB();
-     String auxTexto = edtCodigoVendedor.getText();
-     int cd_pessoa = Integer.parseInt(auxTexto);
-     DefaultComboBoxModel modelo = new DefaultComboBoxModel();
-     Connection conn = null;
-     PreparedStatement pstmt = null;
-     ResultSet rs = null;
-     if (pessoadb.getPessoa(cd_pessoa)) {
-     try {
-     conn = Conexao.getConexao();
-     pstmt = conn.prepareStatement(sqlBuscaPessoa);
-     pstmt.setInt(1, cd_pessoa);
-     rs = pstmt.executeQuery();
-     while (rs.next()) {
-     String auxNome = rs.getString("nm_pessoa");
-     cbVendedor.setSelectedItem(auxNome);
-     edtCodigoCondicaoPagamento.grabFocus();
-     }
-     } catch (SQLException erro) {
-     JOptionPane.showMessageDialog(null, "Erro no sql, ValidaCampoCodigoVendedorNãoNulo() \n" + erro.getMessage());
-     } finally {
-     Conexao.closeAll(conn);
-     }
-     } else {
-     JOptionPane.showMessageDialog(null, "Vendedor nao cadastrado!");
-     edtCodigoVendedor.requestFocus();
-     }
-     return modelo;
-     }
+    public DefaultComboBoxModel ValidaCampoCodigoVendedorNãoNulo() {
+        PessoaDB pessoadb = new PessoaDB();
+        String auxTexto = edtCodigoVendedor.getText();
+        int cd_pessoa = Integer.parseInt(auxTexto);
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        if (pessoadb.getPessoa(cd_pessoa)) {
+            try {
+                conn = Conexao.getConexao();
+                pstmt = conn.prepareStatement(sqlBuscaPessoa);
+                pstmt.setInt(1, cd_pessoa);
+                rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    String auxNome = rs.getString("nm_pessoa");
+                    cbVendedor.setSelectedItem(auxNome);
+                    edtCodigoCondicaoPagamento.grabFocus();
+                }
+            } catch (SQLException erro) {
+                JOptionPane.showMessageDialog(null, "Erro no sql, ValidaCampoCodigoVendedorNãoNulo() \n" + erro.getMessage());
+            } finally {
+                Conexao.closeAll(conn);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Vendedor nao cadastrado!");
+            edtCodigoVendedor.requestFocus();
+        }
+        return modelo;
+    }
 
-     public DefaultComboBoxModel ValidaCampoCodigoCondicaoPagamentoNãoNulo() {
-     CondicaoPagamentoDB condicaopagamentodb = new CondicaoPagamentoDB();
-     String auxTexto = edtCodigoCondicaoPagamento.getText();
-     int cd_cond = Integer.parseInt(auxTexto);
-     DefaultComboBoxModel modelo = new DefaultComboBoxModel();
-     Connection conn = null;
-     PreparedStatement pstmt = null;
-     ResultSet rs = null;
-     if (condicaopagamentodb.getCondicaoPagamento(cd_cond)) {
-     try {
-     conn = Conexao.getConexao();
-     pstmt = conn.prepareStatement(sqlBuscaCondicaoPagamento);
-     pstmt.setInt(1, cd_cond);
-     rs = pstmt.executeQuery();
-     while (rs.next()) {
-     String auxNome = rs.getString("DS_COND");
-     cbCondicaoPagamento.setSelectedItem(auxNome);
-     edtCodigoProduto.grabFocus();
-     }
-     } catch (SQLException erro) {
-     JOptionPane.showMessageDialog(null, "Erro no sql, ValidaCampoCodigoCondicaoPagamentoNãoNulo():\n" + erro.getMessage());
-     } finally {
-     Conexao.closeAll(conn);
-     }
-     } else {
-     JOptionPane.showMessageDialog(null, "Condicao de Pagamento nao cadastrada!");
-     edtCodigoCondicaoPagamento.requestFocus();
-     }
-     return modelo;
-     }
+    public DefaultComboBoxModel ValidaCampoCodigoCondicaoPagamentoNãoNulo() {
+        CondicaoPagamentoDB condicaopagamentodb = new CondicaoPagamentoDB();
+        String auxTexto = edtCodigoCondicaoPagamento.getText();
+        int cd_cond = Integer.parseInt(auxTexto);
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        if (condicaopagamentodb.getCondicaoPagamento(cd_cond)) {
+            try {
+                conn = Conexao.getConexao();
+                pstmt = conn.prepareStatement(sqlBuscaCondicaoPagamento);
+                pstmt.setInt(1, cd_cond);
+                rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    String auxNome = rs.getString("DS_COND");
+                    cbCondicaoPagamento.setSelectedItem(auxNome);
+                    edtCodigoProduto.grabFocus();
+                }
+            } catch (SQLException erro) {
+                JOptionPane.showMessageDialog(null, "Erro no sql, ValidaCampoCodigoCondicaoPagamentoNãoNulo():\n" + erro.getMessage());
+            } finally {
+                Conexao.closeAll(conn);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Condicao de Pagamento nao cadastrada!");
+            edtCodigoCondicaoPagamento.requestFocus();
+        }
+        return modelo;
+    }
 
-     public boolean ValidaCampoCodigoProdutoNaoNulo() {
-     ProdutoDB produtosimplesdb = new ProdutoDB();
-     String auxTexto = edtCodigoProduto.getText();
-     int cd_ref = Integer.parseInt(auxTexto);
-     Connection conn = null;
-     PreparedStatement pstmt = null;
-     ResultSet rs = null;
-     if (produtosimplesdb.getProdutoCD_REF(cd_ref)) {
-     try {
-     conn = Conexao.getConexao();
-     pstmt = conn.prepareStatement(sqlBuscaProduto);
-     pstmt.setInt(1, cd_ref);
-     rs = pstmt.executeQuery();
-     while (rs.next()) {
-     String auxnome = rs.getString("ds_prod");
-     double vl_preco = rs.getDouble("vl_venda");
-     edtDescricao.setText(auxnome);
-     //Sugere a quantidade 1
-     edtQuantidade.setText("1");
-     edtQuantidade.grabFocus();
+    public boolean ValidaCampoCodigoProdutoNaoNulo() {
+        ProdutoDB produtosimplesdb = new ProdutoDB();
+        String auxTexto = edtCodigoProduto.getText();
+        int cd_ref = Integer.parseInt(auxTexto);
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        if (produtosimplesdb.getProdutoCD_REF(cd_ref)) {
+            try {
+                conn = Conexao.getConexao();
+                pstmt = conn.prepareStatement(sqlBuscaProduto);
+                pstmt.setInt(1, cd_ref);
+                rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    String auxnome = rs.getString("ds_prod");
+                    double vl_preco = rs.getDouble("vl_venda");
+                    edtDescricao.setText(auxnome);
+                    //Sugere a quantidade 1
+                    edtQuantidade.setText("1");
+                    edtQuantidade.grabFocus();
 
-     if (vl_preco > 0) {
-     //Conversao de variavel
-     String aux = "";
-     aux = "" + vl_preco;
+                    if (vl_preco > 0) {
+                        //Conversao de variavel
+                        String aux = "";
+                        aux = "" + vl_preco;
 
-     //JOptionPane.showMessageDialog(null, "Item: "+aux);
-     //Muda o preço do item para o preço da tabela                   
-     edtValorUnitario.setText(aux);
-     } else {
-     JOptionPane.showMessageDialog(null, "Item com preço zerado!");
-     edtCodigoProduto.grabFocus();
-     }
-     }
-     } catch (SQLException erro) {
-     JOptionPane.showMessageDialog(null, "Erro no sql, ValidaCampoCodigoProdutoNaoNulo():\n" + erro.getMessage());
-     } finally {
-     Conexao.closeAll(conn);
-     }
-     } else {
-     JOptionPane.showMessageDialog(null, "Produto nao cadastrado!");
-     edtCodigoProduto.requestFocus();
-     }
-     return true;
-     }
+                        //JOptionPane.showMessageDialog(null, "Item: "+aux);
+                        //Muda o preço do item para o preço da tabela                   
+                        edtValorUnitario.setText(aux);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Item com preço zerado!");
+                        edtCodigoProduto.grabFocus();
+                    }
+                }
+            } catch (SQLException erro) {
+                JOptionPane.showMessageDialog(null, "Erro no sql, ValidaCampoCodigoProdutoNaoNulo():\n" + erro.getMessage());
+            } finally {
+                Conexao.closeAll(conn);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Produto nao cadastrado!");
+            edtCodigoProduto.requestFocus();
+        }
+        return true;
+    }
 
-     */
-
+    */
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1604,13 +1603,13 @@ public class CadNotaEntrada extends MetodosGlobais {
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         // TODO add your handling code here:
-        // AdicionarVenda();
+       // AdicionarVenda();
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void btnConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaActionPerformed
         //ConsultaPedido form = new ConsultaPedido(edtCodigoMovimento);
-        // this.getDesktopPane().add(form);
-        // form.setVisible(true);
+       // this.getDesktopPane().add(form);
+       // form.setVisible(true);
         //edtCodigoMovimento.grabFocus();
     }//GEN-LAST:event_btnConsultaActionPerformed
 
@@ -1627,8 +1626,8 @@ public class CadNotaEntrada extends MetodosGlobais {
         if (resposta == JOptionPane.YES_OPTION) {
             int resposta2 = JOptionPane.showConfirmDialog(null, "Você perderá os dados Adicionados Alterados!Deseja continuar?");
             if (resposta2 == JOptionPane.YES_OPTION) {
-                //  habilitaCampos(false);
-                // limparTela();
+              //  habilitaCampos(false);
+               // limparTela();
                 dispose();
             } else {
                 edtCodigoCliente.requestFocus();

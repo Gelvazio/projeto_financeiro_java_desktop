@@ -1,8 +1,11 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ControleCadastro;
 
 import ModeloCadastro.Pessoa;
 import Principal.Conexao;
-import Principal.MetodosGlobais;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -18,23 +21,18 @@ import javax.swing.JOptionPane;
  *
  * @author Gelvazio Camargo
  */
-public class PessoaDB extends MetodosGlobais {
+public class PessoaDB {
 
     /**
      *
-     * @author Gelvazio Camargo
+     * @author Gelvazio Camargo update pessoa_simples set
+     * pessoa_simples.cd_usuario=1, pessoa_simples.dt_cad=(cast ('now' as
+     * date)), pessoa_simples.dt_alt=(cast ('now' as date)),
+     * pessoa_simples.hr_alt=(cast ('now' as time)), pessoa_simples.hr_cad=(cast
+     * ('now' as time) )
      */
-    private static final String sqlBuscaDadosPessoa = "SELECT PESSOA.CD_ESTADO,PESSOA.TIPO_CONSUMO FROM PESSOA WHERE PESSOA.CD_PESSOA=?";
-
-    private static final String sqlTodos= " SELECT * FROM PESSOA    ORDER BY PESSOA.CD_PESSOA; ";
- 
-    private static final String sqlTodosFornecedores= "	SELECT * FROM	PESSOA  WHERE PESSOA.FG_FORNECEDOR =1  ORDER BY PESSOA.CD_PESSOA; ";
-      
-   private static final String sqlTodosVendedores= "SELECT * FROM	PESSOA  WHERE PESSOA.FG_VENDEDOR =1  ORDER BY PESSOA.CD_PESSOA; ";
-    private static final String sqlBuscaDadosPessoaImpostos
-            = "	SELECT PESSOA.* FROM	PESSOA WHERE PESSOA.CD_PESSOA=?";
-    private static final String sqlTodasTransportadoras
-            = "	SELECT * FROM	PESSOA  WHERE PESSOA.FG_TRANSPORTADOR=1  ORDER BY PESSOA.CD_PESSOA; ";
+    private static final String sqlTodos
+            = "	SELECT * FROM	PESSOA    ORDER BY PESSOA.CD_PESSOA; ";
     private static final String sqlInserir = "INSERT INTO PESSOA ("
             + " CD_PESSOA,"
             + " NM_PESSOA,"
@@ -67,20 +65,21 @@ public class PessoaDB extends MetodosGlobais {
             + "?,?,?,?,?,?,?,?,?,?,"
             + "?,?,?,?,?,?);";
     private static final String sqlExcluir = "DELETE FROM PESSOA WHERE CD_PESSOA= ?";
-    private static final String sqlAlterar = "UPDATE PESSOA SET NM_PESSOA = ?,"
+    private static final String sqlAlterar= "UPDATE PESSOA SET NM_PESSOA = ?,"
             + "    FG_CLIENTE =  ?,"
             + "    FG_VENDEDOR =  ?,"
             + "    FG_FORNECEDOR =  ?,"
-            + "   DS_ENDERECO =  ?,"
+             + "   DS_ENDERECO =  ?,"
             + "    NR_ENDERECO =  ?,"
             + "    DS_BAIRRO =  ?,"
-            + "    CD_ESTADO =  ?,"
+            + "    CD_ESTADO =  ?,"            
             + "    CD_CIDADE =  ?,"
             + "    CD_PAIS =  ?,"
             + "    CD_CEP =  ?,"
             + "    DS_EMAIL = ?,"
             + "    NR_TELEFONE = ?,"
             + "    CD_CGCCPF =  ?,"
+         
             + "    CD_USUARIO =  ?,"
             + "    DT_ALT =  ?,"
             + "    HR_ALT =  ?,"
@@ -93,10 +92,10 @@ public class PessoaDB extends MetodosGlobais {
             + "    FG_TRANSPORTADOR =  ?,"
             + "    FG_ATIVO =  ?"
             + "WHERE (CD_PESSOA = ?);";
+          
 
     private static final String sqlPessoa = "SELECT count(*) as total FROM PESSOA WHERE CD_PESSOA=?";
     private static final String sqlConsultaPessoa = "SELECT (PESSOA.cd_pessoa)as codigosql FROM PESSOA where PESSOA.cd_pessoa=?";
-    private static final String sqlConsultaPessoaTransportadora = "SELECT (PESSOA.cd_pessoa)as codigosql FROM PESSOA where PESSOA.FG_TRANSPORTADOR=1 AND PESSOA.cd_pessoa=?";
 
     public DefaultComboBoxModel getComboPessoa() {
         DefaultComboBoxModel modelo = new DefaultComboBoxModel();
@@ -130,6 +129,7 @@ public class PessoaDB extends MetodosGlobais {
             pstmt.setInt(3, pessoa.getFg_vendedor());
             pstmt.setInt(4, pessoa.getFg_fornecedor());
             pstmt.setString(5, pessoa.getDs_endereco());
+            
             pstmt.setString(6, pessoa.getNr_endereco());
             pstmt.setString(7, pessoa.getDs_bairro());
             pstmt.setString(8, pessoa.getCd_estado());
@@ -139,8 +139,12 @@ public class PessoaDB extends MetodosGlobais {
             pstmt.setString(12, pessoa.getDs_email());
             pstmt.setString(13, pessoa.getNr_telefone());
             pstmt.setString(14, pessoa.getCd_cgccpf());
+
+
+            
+            
             pstmt.setInt(15, pessoa.getCd_usuario());
-            pstmt.setDate(16, pessoa.getDt_alt());
+            pstmt.setDate(16,pessoa.getDt_alt());
             pstmt.setTime(17, pessoa.getHr_alt());
             pstmt.setDate(18, pessoa.getDt_cad());
             pstmt.setTime(19, pessoa.getHr_cad());
@@ -150,8 +154,8 @@ public class PessoaDB extends MetodosGlobais {
             pstmt.setInt(23, pessoa.getRegime_tributacao());
             pstmt.setInt(24, pessoa.getFg_transportador());
             pstmt.setInt(25, pessoa.getFg_ativo());
-            pstmt.setInt(26, pessoa.getCd_pessoa());
-
+            pstmt.setInt(26, pessoa.getCd_pessoa());            
+          
             pstmt.executeUpdate();
             alterou = true;
         } catch (SQLException erro) {
@@ -301,231 +305,6 @@ public class PessoaDB extends MetodosGlobais {
         return listaPessoa;
     }
 
-    public ArrayList getTodosFornecedores() {
-        ArrayList listaPessoa = new ArrayList();
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-            conn = Conexao.getConexao();
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sqlTodosFornecedores);        
-            while (rs.next()) {
-                int cd_pessoa = rs.getInt("CD_PESSOA");
-                String nm_pessoa = rs.getString("NM_PESSOA");
-                int fg_cliente = rs.getInt("fg_cliente");
-                int fg_vendedor = rs.getInt("fg_vendedor");
-                int fg_fornecedor = rs.getInt("fg_fornecedor");
-                String ds_endereco = rs.getString("ds_endereco");
-                String nr_endereco = rs.getString("nr_endereco");
-                String ds_bairro = rs.getString("ds_bairro");
-                String cd_estado = rs.getString("cd_estado");
-                int cd_cidade = rs.getInt("cd_cidade");
-                int cd_pais = rs.getInt("cd_pais");
-                String cd_cep = rs.getString("cd_cep");
-                String ds_email = rs.getString("ds_email");
-                String nr_telefone = rs.getString("nr_telefone");
-                String cd_cgccpf = rs.getString("cd_cgccpf");
-                int cd_usuario = rs.getInt("cd_usuario");
-                Date dt_alt = rs.getDate("dt_alt");
-                Time hr_alt = rs.getTime("hr_alt");
-                Date dt_cad = rs.getDate("dt_cad");
-                Time hr_cad = rs.getTime("hr_cad");
-                int cd_filial = rs.getInt("cd_filial");
-                String nr_inscricao_estadual = rs.getString("nr_inscricao_estadual");
-                int tipo_consumo = rs.getInt("tipo_consumo");
-                int regime_tributacao = rs.getInt("regime_tributacao");
-                int fg_transportador = rs.getInt("fg_transportador");
-                int fg_ativo = rs.getInt("fg_ativo");
-
-                Pessoa pessoa = new Pessoa(
-                        cd_pessoa,
-                        nm_pessoa,
-                        fg_cliente,
-                        fg_vendedor,
-                        fg_fornecedor,
-                        ds_endereco,
-                        nr_endereco,
-                        ds_bairro,
-                        cd_estado,
-                        cd_cidade,
-                        cd_pais,
-                        cd_cep,
-                        ds_email,
-                        nr_telefone,
-                        cd_cgccpf,
-                        cd_usuario,
-                        dt_alt,
-                        hr_alt,
-                        dt_cad,
-                        hr_cad,
-                        cd_filial,
-                        nr_inscricao_estadual,
-                        tipo_consumo,
-                        regime_tributacao,
-                        fg_transportador,
-                        fg_ativo
-                );
-                listaPessoa.add(pessoa);
-            }
-        } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro no sql, getTodos(): \n" + erro.getMessage());
-        } finally {
-            Conexao.closeAll(conn);
-        }
-        return listaPessoa;
-    }
-
-    public ArrayList getTodosVendedores() {
-        ArrayList listaPessoa = new ArrayList();
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-            conn = Conexao.getConexao();
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sqlTodosVendedores);        
-            while (rs.next()) {
-                int cd_pessoa = rs.getInt("CD_PESSOA");
-                String nm_pessoa = rs.getString("NM_PESSOA");
-                int fg_cliente = rs.getInt("fg_cliente");
-                int fg_vendedor = rs.getInt("fg_vendedor");
-                int fg_fornecedor = rs.getInt("fg_fornecedor");
-                String ds_endereco = rs.getString("ds_endereco");
-                String nr_endereco = rs.getString("nr_endereco");
-                String ds_bairro = rs.getString("ds_bairro");
-                String cd_estado = rs.getString("cd_estado");
-                int cd_cidade = rs.getInt("cd_cidade");
-                int cd_pais = rs.getInt("cd_pais");
-                String cd_cep = rs.getString("cd_cep");
-                String ds_email = rs.getString("ds_email");
-                String nr_telefone = rs.getString("nr_telefone");
-                String cd_cgccpf = rs.getString("cd_cgccpf");
-                int cd_usuario = rs.getInt("cd_usuario");
-                Date dt_alt = rs.getDate("dt_alt");
-                Time hr_alt = rs.getTime("hr_alt");
-                Date dt_cad = rs.getDate("dt_cad");
-                Time hr_cad = rs.getTime("hr_cad");
-                int cd_filial = rs.getInt("cd_filial");
-                String nr_inscricao_estadual = rs.getString("nr_inscricao_estadual");
-                int tipo_consumo = rs.getInt("tipo_consumo");
-                int regime_tributacao = rs.getInt("regime_tributacao");
-                int fg_transportador = rs.getInt("fg_transportador");
-                int fg_ativo = rs.getInt("fg_ativo");
-
-                Pessoa pessoa = new Pessoa(
-                        cd_pessoa,
-                        nm_pessoa,
-                        fg_cliente,
-                        fg_vendedor,
-                        fg_fornecedor,
-                        ds_endereco,
-                        nr_endereco,
-                        ds_bairro,
-                        cd_estado,
-                        cd_cidade,
-                        cd_pais,
-                        cd_cep,
-                        ds_email,
-                        nr_telefone,
-                        cd_cgccpf,
-                        cd_usuario,
-                        dt_alt,
-                        hr_alt,
-                        dt_cad,
-                        hr_cad,
-                        cd_filial,
-                        nr_inscricao_estadual,
-                        tipo_consumo,
-                        regime_tributacao,
-                        fg_transportador,
-                        fg_ativo
-                );
-                listaPessoa.add(pessoa);
-            }
-        } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro no sql, getTodos(): \n" + erro.getMessage());
-        } finally {
-            Conexao.closeAll(conn);
-        }
-        return listaPessoa;
-    }
-
-    public ArrayList getTodasTransportadoras() {
-        ArrayList listaPessoa = new ArrayList();
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-            conn = Conexao.getConexao();
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sqlTodasTransportadoras);
-            while (rs.next()) {
-                int cd_pessoa = rs.getInt("CD_PESSOA");
-                String nm_pessoa = rs.getString("NM_PESSOA");
-                int fg_cliente = rs.getInt("fg_cliente");
-                int fg_vendedor = rs.getInt("fg_vendedor");
-                int fg_fornecedor = rs.getInt("fg_fornecedor");
-                String ds_endereco = rs.getString("ds_endereco");
-                String nr_endereco = rs.getString("nr_endereco");
-                String ds_bairro = rs.getString("ds_bairro");
-                String cd_estado = rs.getString("cd_estado");
-                int cd_cidade = rs.getInt("cd_cidade");
-                int cd_pais = rs.getInt("cd_pais");
-                String cd_cep = rs.getString("cd_cep");
-                String ds_email = rs.getString("ds_email");
-                String nr_telefone = rs.getString("nr_telefone");
-                String cd_cgccpf = rs.getString("cd_cgccpf");
-                int cd_usuario = rs.getInt("cd_usuario");
-                Date dt_alt = rs.getDate("dt_alt");
-                Time hr_alt = rs.getTime("hr_alt");
-                Date dt_cad = rs.getDate("dt_cad");
-                Time hr_cad = rs.getTime("hr_cad");
-                int cd_filial = rs.getInt("cd_filial");
-                String nr_inscricao_estadual = rs.getString("nr_inscricao_estadual");
-                int tipo_consumo = rs.getInt("tipo_consumo");
-                int regime_tributacao = rs.getInt("regime_tributacao");
-                int fg_transportador = rs.getInt("fg_transportador");
-                int fg_ativo = rs.getInt("fg_ativo");
-
-                Pessoa pessoa = new Pessoa(
-                        cd_pessoa,
-                        nm_pessoa,
-                        fg_cliente,
-                        fg_vendedor,
-                        fg_fornecedor,
-                        ds_endereco,
-                        nr_endereco,
-                        ds_bairro,
-                        cd_estado,
-                        cd_cidade,
-                        cd_pais,
-                        cd_cep,
-                        ds_email,
-                        nr_telefone,
-                        cd_cgccpf,
-                        cd_usuario,
-                        dt_alt,
-                        hr_alt,
-                        dt_cad,
-                        hr_cad,
-                        cd_filial,
-                        nr_inscricao_estadual,
-                        tipo_consumo,
-                        regime_tributacao,
-                        fg_transportador,
-                        fg_ativo
-                );
-                listaPessoa.add(pessoa);
-            }
-        } catch (SQLException erro) {
-            mensagemErro("Erro no sql,getTodasTransportadoras(): \n" + erro.getMessage());
-        } finally {
-            Conexao.closeAll(conn);
-        }
-        return listaPessoa;
-    }
-
     public boolean getPessoa(int cd_pessoa) {
         boolean existe = false;
         Connection conn = null;
@@ -541,27 +320,6 @@ public class PessoaDB extends MetodosGlobais {
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro de SQL. getPessoa: \n" + e.getMessage());
-        } finally {
-            Conexao.closeAll(conn);
-        }
-        return existe;
-    }
-
-    public boolean getPessoaTransportadora(int cd_pessoa) {
-        boolean existe = false;
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            conn = Conexao.getConexao();
-            pstmt = conn.prepareStatement(sqlConsultaPessoaTransportadora);
-            pstmt.setInt(1, cd_pessoa);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                existe = rs.getInt("codigosql") > 0;
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro de SQL. getPessoaTransportadora: \n" + e.getMessage());
         } finally {
             Conexao.closeAll(conn);
         }
@@ -589,48 +347,47 @@ public class PessoaDB extends MetodosGlobais {
         return existe;
     }
 
-    public String retornaCodigoEstado(int cd_pessoa) {
-        String codigoEstado = "";
+    public boolean getEstado_Pessoa(int CD_PESSOA) {
+        boolean existe = false;
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             conn = Conexao.getConexao();
-            pstmt = conn.prepareStatement(sqlBuscaDadosPessoa);
-            pstmt.setInt(1, cd_pessoa);
+            pstmt = conn.prepareStatement(sqlPessoa);
+            pstmt.setInt(1, CD_PESSOA);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                String auxcd_estado = rs.getString("CD_ESTADO");
-                codigoEstado = auxcd_estado;
+                if (rs.getInt("total") > 0) {
+                    existe = true;
+                    //int CD_PESSOA = rs.getInt("CD_PESSOA");
+                    int CD_CIDADE = rs.getInt("CD_CIDADE");
+                    int CD_PAIS = rs.getInt("CD_PAIS");
+                    int CD_USUARIO = rs.getInt("CD_USUARIO");
+                    int CD_FILIAL = rs.getInt("CD_FILIAL");
+
+                    //Campos String
+                    //NÃO DEIXAR ESPAÇOS!!!!!!
+                    String NM_PESSOA = rs.getString("NM_PESSOA");
+                    String DS_ENDERECO = rs.getString("DS_ENDERECO");
+                    String NR_ENDERECO = rs.getString("NR_ENDERECO");
+                    String DS_BAIRRO = rs.getString("DS_BAIRRO");
+                    String CD_ESTADO = rs.getString("CD_ESTADO");
+                    String CD_CEP = rs.getString("CD_CEP");
+                    String DS_EMAIL = rs.getString("DS_EMAIL");
+                    String NR_TELEFONE = rs.getString("NR_TELEFONE");
+                    String CD_CGCCPF = rs.getString("CD_CGCCPF");
+
+                } else {
+                    existe = false;
+                }
             }
-        } catch (SQLException erro) {
-            mensagemErro("Erro no método retornaCodigoEstado: \n" + erro.getMessage());
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro de SQL. getPessoa(): \n" + e.getMessage());
         } finally {
             Conexao.closeAll(conn);
         }
-        return codigoEstado;
-    }
-    
-    public int retornaTipoConsumo(int cd_pessoa) {
-        int TipoConsumo =0;
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            conn = Conexao.getConexao();
-            pstmt = conn.prepareStatement(sqlBuscaDadosPessoa);
-            pstmt.setInt(1, cd_pessoa);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                int auxtipo_consumo = rs.getInt("TIPO_CONSUMO");
-                TipoConsumo = auxtipo_consumo;
-            }
-        } catch (SQLException erro) {
-            mensagemErro("Erro no método retornaTipoConsumo: \n" + erro.getMessage());
-        } finally {
-            Conexao.closeAll(conn);
-        }
-        return TipoConsumo;
+        return existe;
     }
 
     public boolean getPais_Pessoa(int CD_PESSOA) {
@@ -652,82 +409,6 @@ public class PessoaDB extends MetodosGlobais {
             Conexao.closeAll(conn);
         }
         return existe;
-    }
-
-      public ArrayList verificaDadosImpostos(int auxcd_pessoa) {
-        ArrayList listaPessoa = new ArrayList();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            conn = Conexao.getConexao();
-            pstmt = conn.prepareStatement(sqlBuscaDadosPessoaImpostos);
-            pstmt.setInt(1, auxcd_pessoa);
-            rs = pstmt.executeQuery();            
-            while (rs.next()) {
-                int cd_pessoa = rs.getInt("CD_PESSOA");
-                String nm_pessoa = rs.getString("NM_PESSOA");
-                int fg_cliente = rs.getInt("fg_cliente");
-                int fg_vendedor = rs.getInt("fg_vendedor");
-                int fg_fornecedor = rs.getInt("fg_fornecedor");
-                String ds_endereco = rs.getString("ds_endereco");
-                String nr_endereco = rs.getString("nr_endereco");
-                String ds_bairro = rs.getString("ds_bairro");
-                String cd_estado = rs.getString("cd_estado");
-                int cd_cidade = rs.getInt("cd_cidade");
-                int cd_pais = rs.getInt("cd_pais");
-                String cd_cep = rs.getString("cd_cep");
-                String ds_email = rs.getString("ds_email");
-                String nr_telefone = rs.getString("nr_telefone");
-                String cd_cgccpf = rs.getString("cd_cgccpf");
-                int cd_usuario = rs.getInt("cd_usuario");
-                Date dt_alt = rs.getDate("dt_alt");
-                Time hr_alt = rs.getTime("hr_alt");
-                Date dt_cad = rs.getDate("dt_cad");
-                Time hr_cad = rs.getTime("hr_cad");
-                int cd_filial = rs.getInt("cd_filial");
-                String nr_inscricao_estadual = rs.getString("nr_inscricao_estadual");
-                int tipo_consumo = rs.getInt("tipo_consumo");
-                int regime_tributacao = rs.getInt("regime_tributacao");
-                int fg_transportador = rs.getInt("fg_transportador");
-                int fg_ativo = rs.getInt("fg_ativo");
-
-                Pessoa pessoa = new Pessoa(
-                        cd_pessoa,
-                        nm_pessoa,
-                        fg_cliente,
-                        fg_vendedor,
-                        fg_fornecedor,
-                        ds_endereco,
-                        nr_endereco,
-                        ds_bairro,
-                        cd_estado,
-                        cd_cidade,
-                        cd_pais,
-                        cd_cep,
-                        ds_email,
-                        nr_telefone,
-                        cd_cgccpf,
-                        cd_usuario,
-                        dt_alt,
-                        hr_alt,
-                        dt_cad,
-                        hr_cad,
-                        cd_filial,
-                        nr_inscricao_estadual,
-                        tipo_consumo,
-                        regime_tributacao,
-                        fg_transportador,
-                        fg_ativo
-                );
-                listaPessoa.add(pessoa);
-            }
-        } catch (SQLException erro) {
-            mensagemErro("Erro no sql, verificaDadosImpostos(): \n" + erro.getMessage());
-        } finally {
-            Conexao.closeAll(conn);
-        }
-        return listaPessoa;
     }
 
 }

@@ -23,25 +23,24 @@ import java.util.List;
  * @author Gelvazio
  */
 public class ListMarkupOO {
-
     protected List<MarkupOO> listMarkupOO;
     /*
-     public int retornaCodigo() {
-     int codigo = 0;
-     int maior = -1;
-     if (listMarkupOO.size() <= 0) {
-     codigo = 1;
-     } else {
-     for (int x = 0; x < listMarkupOO.size(); x++) {
-     if (listMarkupOO.get(x).getCd_estado()> maior) {
-     maior = listMarkupOO.get(x).getCodigo();
-     }
-     }
-     codigo = maior + 1;
-     }
+        public int retornaCodigo() {
+        int codigo = 0;
+        int maior = -1;
+        if (listMarkupOO.size() <= 0) {
+            codigo = 1;
+        } else {
+            for (int x = 0; x < listMarkupOO.size(); x++) {
+                if (listMarkupOO.get(x).getCd_estado()> maior) {
+                    maior = listMarkupOO.get(x).getCodigo();
+                }
+            }
+            codigo = maior + 1;
+        }
 
-     return codigo;
-     }
-     */
-
+        return codigo;
+    }
+    */
+    
 }

@@ -1,5 +1,4 @@
 package ControleFaturamento;
-
 import ModeloCadastro.Municipio;
 import ModeloFaturamento.VendaProdutoClassse;
 import Principal.Conexao;
@@ -122,7 +121,11 @@ public class VendaProdutoDB {
             pstmt.setInt(2, aux_sequencia);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                existe = rs.getInt("CD_SEQ_ITE_PRO") > 0;
+                if (rs.getInt("CD_SEQ_ITE_PRO") > 0) {
+                    existe = true;
+                } else {
+                    existe = false;
+                }
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro de SQL. getProdutoDaVenda(): \n" + e.getMessage());

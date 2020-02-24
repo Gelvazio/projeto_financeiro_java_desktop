@@ -672,95 +672,94 @@ public class CadClienteModelo_2 extends MetodosGlobais {
         habilitaCampos(false);
         LimpaTela();
     }
-    /*
-     private void GravarRegistro() {
-     String auxTexto = edtCodigo.getText();
-     String auxCPF = edtCPF.getText();
-     String auxNome = edtNome.getText();
-     String auxEndereco = edtEndereco.getText();
-     String auxNumero = edtNumero.getText();
-     String auxBairro = edtBairro.getText();
-     int auxCodigoCidade = Integer.parseInt(edtCodigoCidade.getText());
-     String auxCodigoEstado = edtCodigoEstado.getText();
-     int auxCodigoPais = Integer.parseInt(edtCodigoPais.getText());
-     String auxTelefone = edtTelefone.getText();
-     String auxCEP = edtCEP.getText();
-     String auxEmail = edtEmail.getText();
+/*
+    private void GravarRegistro() {
+        String auxTexto = edtCodigo.getText();
+        String auxCPF = edtCPF.getText();
+        String auxNome = edtNome.getText();
+        String auxEndereco = edtEndereco.getText();
+        String auxNumero = edtNumero.getText();
+        String auxBairro = edtBairro.getText();
+        int auxCodigoCidade = Integer.parseInt(edtCodigoCidade.getText());
+        String auxCodigoEstado = edtCodigoEstado.getText();
+        int auxCodigoPais = Integer.parseInt(edtCodigoPais.getText());
+        String auxTelefone = edtTelefone.getText();
+        String auxCEP = edtCEP.getText();
+        String auxEmail = edtEmail.getText();
 
-     if (auxEmail.equals("")) {
-     auxEmail = null;
-     }
+        if (auxEmail.equals("")) {
+            auxEmail = null;
+        }
 
-     int CD_USUARIO = 1;//= Integer.parseInt(login.getCodigo());
-     int CD_FILIAL = 1;//Integer.parseInt(login.getFilial());
+        int CD_USUARIO = 1;//= Integer.parseInt(login.getCodigo());
+        int CD_FILIAL = 1;//Integer.parseInt(login.getFilial());
 
-     PessoaDB pessoadb = new PessoaDB();
-     int auxCodigo = Integer.parseInt(auxTexto);
-     Pessoa pessoa = new Pessoa(
-     auxCodigoCidade,
-     auxCodigoPais,
-     auxNome,
-     auxEndereco,
-     auxNumero,
-     auxBairro,
-     auxCodigoEstado,
-     auxCEP,
-     auxEmail,
-     auxTelefone,
-     auxCPF,
-     CD_USUARIO,
-     auxCodigo,
-     CD_FILIAL);
-     if (pessoadb.inserirPessoa(pessoa)) {
-     JOptionPane.showMessageDialog(null, "Registro incluído com sucesso!");
-     LimpaTela();
-     } else {
-     JOptionPane.showMessageDialog(null, "Não foi possível incluir o registro!");
-     edtCodigo.grabFocus();
-     }
-     }
+        PessoaDB pessoadb = new PessoaDB();
+        int auxCodigo = Integer.parseInt(auxTexto);
+        Pessoa pessoa = new Pessoa(
+                auxCodigoCidade,
+                auxCodigoPais,
+                auxNome,
+                auxEndereco,
+                auxNumero,
+                auxBairro,
+                auxCodigoEstado,
+                auxCEP,
+                auxEmail,
+                auxTelefone,
+                auxCPF,
+                CD_USUARIO,
+                auxCodigo,
+                CD_FILIAL);
+        if (pessoadb.inserirPessoa(pessoa)) {
+            JOptionPane.showMessageDialog(null, "Registro incluído com sucesso!");
+            LimpaTela();
+        } else {
+            JOptionPane.showMessageDialog(null, "Não foi possível incluir o registro!");
+            edtCodigo.grabFocus();
+        }
+    }
 
-     private void AlterarRegistro() {
-     String auxCPF = edtCPF.getText();
-     String auxNome = edtNome.getText();
-     String auxEndereco = edtEndereco.getText();
-     String auxNumero = edtNumero.getText();
-     String auxBairro = edtBairro.getText();
-     String auxCodigoEstado = edtCodigoEstado.getText();
-     String auxTelefone = edtTelefone.getText();
-     String auxCEP = edtCEP.getText();
-     String auxEmail = edtEmail.getText();
-     int auxCodigoPais = Integer.parseInt(edtCodigoPais.getText());
-     int auxCodigo = Integer.parseInt(edtCodigo.getText());
-     int auxCodigoCidade = Integer.parseInt(edtCodigoCidade.getText());
-     //JOptionPane.showMessageDialog(null, "Codigo do Usuario Logado:  " + ologin.getCodigo());
-     int CD_USUARIO = 1;
-     int CD_FILIAL = 1;
-     PessoaDB pessoadb = new PessoaDB();
-     Pessoa pessoa = new Pessoa(
-     auxCodigoCidade,
-     auxCodigoPais,
-     auxNome,
-     auxEndereco,
-     auxNumero,
-     auxBairro,
-     auxCodigoEstado,
-     auxCEP,
-     auxEmail,
-     auxTelefone,
-     auxCPF,
-     CD_USUARIO,
-     auxCodigo,
-     CD_FILIAL);
-     if (pessoadb.alterarPessoa(pessoa)) {
-     JOptionPane.showMessageDialog(null, "Registro alterado com sucesso!");
-     habilitaCampos(false);
-     } else {
-     JOptionPane.showMessageDialog(null, "Não foi possível alterar o registro!");
-     }
-     }
-     */
-
+    private void AlterarRegistro() {
+        String auxCPF = edtCPF.getText();
+        String auxNome = edtNome.getText();
+        String auxEndereco = edtEndereco.getText();
+        String auxNumero = edtNumero.getText();
+        String auxBairro = edtBairro.getText();
+        String auxCodigoEstado = edtCodigoEstado.getText();
+        String auxTelefone = edtTelefone.getText();
+        String auxCEP = edtCEP.getText();
+        String auxEmail = edtEmail.getText();
+        int auxCodigoPais = Integer.parseInt(edtCodigoPais.getText());
+        int auxCodigo = Integer.parseInt(edtCodigo.getText());
+        int auxCodigoCidade = Integer.parseInt(edtCodigoCidade.getText());
+        //JOptionPane.showMessageDialog(null, "Codigo do Usuario Logado:  " + ologin.getCodigo());
+        int CD_USUARIO = 1;
+        int CD_FILIAL = 1;
+        PessoaDB pessoadb = new PessoaDB();
+        Pessoa pessoa = new Pessoa(
+                auxCodigoCidade,
+                auxCodigoPais,
+                auxNome,
+                auxEndereco,
+                auxNumero,
+                auxBairro,
+                auxCodigoEstado,
+                auxCEP,
+                auxEmail,
+                auxTelefone,
+                auxCPF,
+                CD_USUARIO,
+                auxCodigo,
+                CD_FILIAL);
+        if (pessoadb.alterarPessoa(pessoa)) {
+            JOptionPane.showMessageDialog(null, "Registro alterado com sucesso!");
+            habilitaCampos(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "Não foi possível alterar o registro!");
+        }
+    }
+*/
     private void ValidaCodigoGenerator() {
         Connection conn = null;
         Statement stmt = null;

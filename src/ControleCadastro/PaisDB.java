@@ -4,10 +4,8 @@
  */
 package ControleCadastro;
 
-import ModeloCadastro.Cor;
 import ModeloCadastro.Pais;
 import Principal.Conexao;
-import Principal.MetodosGlobais;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +19,7 @@ import javax.swing.JOptionPane;
  *
  * @author geo
  */
-public class PaisDB extends MetodosGlobais {
+public class PaisDB {
 
     private static final String sqlTodos = "SELECT * FROM PAIS ORDER BY CD_PAIS";
     private static final String sqlExcluir = "DELETE FROM PAIS WHERE CD_PAIS= ?";
@@ -45,14 +43,6 @@ public class PaisDB extends MetodosGlobais {
             + "WHERE cd_pais = ?               ";
     private static final String sqlPais = "SELECT count(*) as total FROM pais WHERE CD_pais=?";
 
-    private static final String sqlBuscaPais
-            = "SELECT                "
-            + "    PAIS.*             "
-            + "FROM                  "
-            + "    PAIS               "
-            + "WHERE                 "
-            + "    PAIS.CD_PAIS=?          ";
-
     public DefaultComboBoxModel getComboPais() {
         DefaultComboBoxModel modelo = new DefaultComboBoxModel();
         Connection conn = null;
@@ -66,7 +56,7 @@ public class PaisDB extends MetodosGlobais {
                 modelo.addElement(rs.getString("NM_PAIS"));
             }
         } catch (SQLException erro) {
-            mensagemErro("Erro no sql, getComboPais(): \n" + erro.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro no sql, getComboPais(): \n" + erro.getMessage());
         } finally {
             Conexao.closeAll(conn);
         }
@@ -87,7 +77,7 @@ public class PaisDB extends MetodosGlobais {
             pstmt.executeUpdate();
             alterou = true;
         } catch (SQLException erro) {
-            mensagemErro("Erro de sql. alterarCidade(): \n" + erro.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro de sql. alterarCidade(): \n" + erro.getMessage());
         } finally {
             Conexao.closeAll(conn);
         }
@@ -108,25 +98,26 @@ public class PaisDB extends MetodosGlobais {
             pstmt.executeUpdate();
             inseriu = true;
         } catch (SQLException erro) {
-            mensagemErro("Erro de sql. inserirCidade(): \n" + erro.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro de sql. inserirCidade(): \n" + erro.getMessage());
         } finally {
             Conexao.closeAll(conn);
         }
         return inseriu;
     }
 
-    public boolean excluirPais(int cd_pais) {
+    public boolean excluirPais(String cd_estado, int cd_municipio) {
         boolean excluiu = false;
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
             conn = Conexao.getConexao();
             pstmt = conn.prepareStatement(sqlExcluir);
-            pstmt.setInt(1, cd_pais);
+            pstmt.setString(1, cd_estado);
+            pstmt.setInt(2, cd_municipio);
             pstmt.executeUpdate();
             excluiu = true;
         } catch (SQLException erro) {
-            mensagemErro("Erro de sql. excluirPais(): \n" + erro.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro de sql. excluirCidade(): \n" + erro.getMessage());
         } finally {
             Conexao.closeAll(conn);
         }
@@ -157,66 +148,11 @@ public class PaisDB extends MetodosGlobais {
                 listaPais.add(pais);
             }
         } catch (SQLException erro) {
-            mensagemErro("Erro de sql. getTodos(): \n" + erro.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro de sql. getTodos(): \n" + erro.getMessage());
         } finally {
             Conexao.closeAll(conn);
         }
         return listaPais;
-    }
-
-    public ArrayList listaPaises(int cd_pais) {
-        ArrayList listaPais = new ArrayList();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            conn = Conexao.getConexao();
-            pstmt = conn.prepareStatement(sqlBuscaPais);
-            pstmt.setInt(1, cd_pais);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                int auxcd_pais = rs.getInt("cd_pais");
-                String auxnm_pais = rs.getString("nm_pais");
-                int auxcd_usuario = rs.getInt("cd_usuario");
-                int auxcd_filial = rs.getInt("cd_filial");
-
-                Pais pais = new Pais(
-                        auxcd_pais,
-                        auxnm_pais,
-                        auxcd_usuario,
-                        auxcd_filial);
-                listaPais.add(pais);
-            }
-        } catch (SQLException erro) {
-            mensagemErro("Erro no ArrayList listaCores: \n" + erro.getMessage());
-        } finally {
-            Conexao.closeAll(conn);
-        }
-        return listaPais;
-    }
-
-    public int ValidaCodigoGenerator() {
-        int codigoGenerator = 0;
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-            conn = Conexao.getConexao();
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT GEN_ID(CD_PAIS, 1) FROM RDB$DATABASE");
-            while (rs.next()) {
-                int auxCodigoGenerator = rs.getInt("GEN_ID");
-                int auxCodigo = auxCodigoGenerator + 1;
-                codigoGenerator = auxCodigo;
-            }
-        } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro de conexão! \n" + erro.getMessage());
-        } catch (Exception erro) {
-            mensagemErro("Erro no método ValidaCodigoGenerator()\n" + erro.getMessage());
-        } finally {
-            Conexao.closeAll(conn);
-        }
-        return codigoGenerator;
     }
 
     public boolean getPais(int cd_pais) {
@@ -230,10 +166,14 @@ public class PaisDB extends MetodosGlobais {
             pstmt.setInt(1, cd_pais);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                existe = rs.getInt("total") > 0;
+                if (rs.getInt("total") > 0) {
+                    existe = true;
+                } else {
+                    existe = false;
+                }
             }
         } catch (SQLException e) {
-            mensagemErro("Erro de SQL. getPais(): \n" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro de SQL. getPais(): \n" + e.getMessage());
         } finally {
             Conexao.closeAll(conn);
         }

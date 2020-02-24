@@ -88,11 +88,11 @@ public class CadCondicaoPagamento extends MetodosGlobais {
                 edtCodigoTipoCobranca.requestFocus();
                 verifica = false;
             } else {
-                if (auxNRDiasParcelas.equals("")) {
-                    if (dias <= 0) {
-                        JOptionPane.showMessageDialog(null, "Preencha a quantidade de dias da parcela!");
-                        edtQtdeDias.requestFocus();
-                        verifica = false;
+                if (auxNRDiasParcelas.equals("")){
+                    if (dias<= 0){                        
+                    JOptionPane.showMessageDialog(null, "Preencha a quantidade de dias da parcela!");
+                    edtQtdeDias.requestFocus();
+                    verifica = false;
                     }
                 } else {
                     verifica = true;
@@ -118,10 +118,11 @@ public class CadCondicaoPagamento extends MetodosGlobais {
         cbTipoCobranca.setEnabled(habilita);
         edtCodigoTipoCobranca.setEnabled(habilita);
         edtQtdeDias.setEnabled(habilita);
-
+        
         //btnAdicionarGrid.setEnabled(habilita);
         btnCancelarGrid.setEnabled(habilita);
         //btnDeletarGrid.setEnabled(habilita);
+
 
         if (habilita) {
             cbTipoCobranca.setModel(tipocobrancadb.getComboRegistro());
@@ -136,11 +137,11 @@ public class CadCondicaoPagamento extends MetodosGlobais {
 
     }
 
-    public void habilitaCampos(boolean habilita) {
+    public void habilitaCampos(boolean habilita) {        
         edtCodigo.setEnabled(!habilita);
         edtCodigo.requestFocus();
         edtCodigo.grabFocus();
-
+        
         edtDescricao.setEnabled(habilita);
         edtCodigoTipoCobranca.setEnabled(habilita);
         edtQtdeDias.setEnabled(habilita);
@@ -328,44 +329,44 @@ public class CadCondicaoPagamento extends MetodosGlobais {
         String auxTexto = edtCodigo.getText();
         int auxCodigoCondicaoPagamento = Integer.parseInt(auxTexto);
         try {
-            if (verificaGrid()) {
-                int codigoparcela = 1;
-                for (int x = 0; x < TabelaParcelas.getRowCount(); x++) {
-                    int auxCodigoTipoCobranca = (Integer.parseInt(String.valueOf(TabelaParcelas.getModel().getValueAt(x, 1))));
-                    int auxNRDiasParcela = (Integer.parseInt(String.valueOf(TabelaParcelas.getModel().getValueAt(x, 3))));
+            if (verificaGrid()) {                
+                    int codigoparcela = 1;
+                    for (int x = 0; x < TabelaParcelas.getRowCount(); x++) {
+                        int auxCodigoTipoCobranca = (Integer.parseInt(String.valueOf(TabelaParcelas.getModel().getValueAt(x, 1))));
+                        int auxNRDiasParcela = (Integer.parseInt(String.valueOf(TabelaParcelas.getModel().getValueAt(x, 3))));
 
-                    int auxcd_usuario = 1;
+                        int auxcd_usuario = 1;
 
-                    SubCondPag subcondpag = new SubCondPag(
-                            auxCodigoCondicaoPagamento,
-                            codigoparcela,
-                            auxNRDiasParcela,
-                            auxCodigoTipoCobranca,
-                            auxcd_usuario);
+                        SubCondPag subcondpag = new SubCondPag(
+                                auxCodigoCondicaoPagamento,
+                                codigoparcela,
+                                auxNRDiasParcela,
+                                auxCodigoTipoCobranca,
+                                auxcd_usuario);
 
-                    if (subcondpagdb.retornaParcelaDaCondicao(auxCodigoCondicaoPagamento, codigoparcela)) {
+                        if (subcondpagdb.retornaParcelaDaCondicao(auxCodigoCondicaoPagamento, codigoparcela)) {
                         //altera
-                        //JOptionPane.showMessageDialog(null, "Entrou em alterar!");
-                        if (subcondpagdb.alterar(subcondpag)) {
-                            //JOptionPane.showMessageDialog(null, "Registro do Subgrupo alterado com sucesso! "+auxCodigoParcela);
+                            //JOptionPane.showMessageDialog(null, "Entrou em alterar!");
+                            if (subcondpagdb.alterar(subcondpag)) {
+                                //JOptionPane.showMessageDialog(null, "Registro do Subgrupo alterado com sucesso! "+auxCodigoParcela);
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Não foi possível alterar o registro da parcela: " + x + "\n"
+                                        + " Condicao: " + auxCodigoCondicaoPagamento + "\n"
+                                        + " parcela" + codigoparcela + "\n"
+                                        + " Numero de dias: " + auxNRDiasParcela + "\n"
+                                        + " Tipo de cobranca: " + auxCodigoTipoCobranca + "\n"
+                                        + " Usuario: " + auxcd_usuario);
+                            }
                         } else {
-                            JOptionPane.showMessageDialog(null, "Não foi possível alterar o registro da parcela: " + x + "\n"
-                                    + " Condicao: " + auxCodigoCondicaoPagamento + "\n"
-                                    + " parcela" + codigoparcela + "\n"
-                                    + " Numero de dias: " + auxNRDiasParcela + "\n"
-                                    + " Tipo de cobranca: " + auxCodigoTipoCobranca + "\n"
-                                    + " Usuario: " + auxcd_usuario);
+                            if (subcondpagdb.inserir(subcondpag)) {
+                                //JOptionPane.showMessageDialog(null, "Registro do Markup inserido com sucesso!");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Não foi possível inserir o registro da parcela: " + x);
+                            }
                         }
-                    } else {
-                        if (subcondpagdb.inserir(subcondpag)) {
-                            //JOptionPane.showMessageDialog(null, "Registro do Markup inserido com sucesso!");
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Não foi possível inserir o registro da parcela: " + x);
-                        }
+                        codigoparcela++;
                     }
-                    codigoparcela++;
-                }
-                excluirItemForaGrid();
+                    excluirItemForaGrid();            
             } else {
                 int auxCodigo = Integer.parseInt(edtCodigo.getText());
                 if (subcondpagdb.excluirGridInteiro(auxCodigo)) {
@@ -866,7 +867,7 @@ public class CadCondicaoPagamento extends MetodosGlobais {
             } else {
                 GravarAlterar();
             }
-        } else {
+        }else{
             GravarAlterar();
         }
     }//GEN-LAST:event_btnGravarActionPerformed
@@ -916,17 +917,17 @@ public class CadCondicaoPagamento extends MetodosGlobais {
     }//GEN-LAST:event_edtQtdeDiasKeyPressed
 
     private void btnAdicionarGridActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarGridActionPerformed
-        String auxtexto = edtCodigoParcela.getText();
+        String auxtexto=edtCodigoParcela.getText();     
         if (auxtexto.equals("")) {
-            habilitaCamposParcelas(true);
-            int aux = retornaCodigoParcela();
-            String auxCodigoParcela = "" + aux;
-            edtCodigoParcela.setText(auxCodigoParcela);
-            cbTipoCobranca.requestFocus();
-            edtCodigoParcela.setEnabled(false);
-        } else {
+                habilitaCamposParcelas(true);
+                int aux = retornaCodigoParcela();
+                String auxCodigoParcela = "" + aux;
+                edtCodigoParcela.setText(auxCodigoParcela);
+                cbTipoCobranca.requestFocus();
+                edtCodigoParcela.setEnabled(false);
+            } else {
             AdicionaNoGrid();
-        }
+                        }
     }//GEN-LAST:event_btnAdicionarGridActionPerformed
 
     private void btnDeletarGridActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarGridActionPerformed
@@ -1012,9 +1013,9 @@ public class CadCondicaoPagamento extends MetodosGlobais {
 
     private void btnAdicionarGridKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAdicionarGridKeyPressed
         // TODO add your handling code here:
-        String auxtexto = edtCodigoParcela.getText();
+        String auxtexto=edtCodigoParcela.getText();
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (auxtexto.equals("")) {
+                        if (auxtexto.equals("")) {
                 habilitaCamposParcelas(true);
                 int aux = retornaCodigoParcela();
                 String auxCodigoParcela = "" + aux;
@@ -1022,8 +1023,8 @@ public class CadCondicaoPagamento extends MetodosGlobais {
                 cbTipoCobranca.requestFocus();
                 edtCodigoParcela.setEnabled(false);
             } else {
-                AdicionaNoGrid();
-            }
+            AdicionaNoGrid();
+                        }
         }
     }//GEN-LAST:event_btnAdicionarGridKeyPressed
 
@@ -1045,7 +1046,7 @@ public class CadCondicaoPagamento extends MetodosGlobais {
 
     private void btnCancelarGrid1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarGrid1MouseClicked
         // TODO add your handling code here:
-        habilitaCamposParcelas(true);
+                habilitaCamposParcelas(true);
         int aux = retornaCodigoParcela();
         String auxCodigoParcela = "" + aux;
         edtCodigoParcela.setText(auxCodigoParcela);

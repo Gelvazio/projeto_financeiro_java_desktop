@@ -35,15 +35,17 @@ import javax.swing.JOptionPane;
  * @author Gelvazio
  */
 public class ConfiguracaoBancoDados extends JFrame {
+    
 
-    // public class ConfiguracaoBancoDados extends MetodosGlobais{
+   // public class ConfiguracaoBancoDados extends MetodosGlobais{
+
     final static String LOCALHOST = "Conexao.ini";
 
-    private static final String driver  = "org.firebirdsql.jdbc.FBDriver"; //Classe do driver
-    private static String banco         = "";
-    private static String str_conn      = "";//URL de conexão
+    private static final String driver = "org.firebirdsql.jdbc.FBDriver"; //Classe do driver
+    private static String banco = "";
+    private static String str_conn = "";//URL de conexão
     private static final String usuario = "SYSDBA"; //Usuário da base
-    private static final String senha   = "masterkey"; //Senha da base
+    private static final String senha = "masterkey"; //Senha da base
 
     /**
      * Creates new form ConfiguracaoBancoDados
@@ -65,7 +67,7 @@ public class ConfiguracaoBancoDados extends JFrame {
         }
     }
 
-    public void carregaArquivoEmTexto() {
+    public static void carregaArquivoEmTexto() {
         //Este método carrega o arquivo ini na tela
         try {
             java.awt.Desktop.getDesktop().open(new File(LOCALHOST));
@@ -80,7 +82,7 @@ public class ConfiguracaoBancoDados extends JFrame {
     }
 
     public boolean verificaCamposTela() {
-        boolean verifica;
+        boolean verifica = false;
         //Validacao dos campos da tela
         String auxRede = edtRede.getText();
         String auxPorta = edtPorta.getText();
@@ -126,7 +128,7 @@ public class ConfiguracaoBancoDados extends JFrame {
                 edtCaminho.setText("");
                 edtRede.setText("");
                 edtPorta.setText("");
-                valores = "";
+                valores="";
             } catch (IOException erro) {
                 JOptionPane.showMessageDialog(null, "Erro ao gravar o caminho do banco de dados!" + erro.getMessage());
             }
@@ -186,53 +188,29 @@ public class ConfiguracaoBancoDados extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        btnAbreArquivoGravado = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        edtCaminho = new javax.swing.JTextField();
+        edtRede = new javax.swing.JTextField();
+        btnTestarConexao = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
         btnGravarIni = new javax.swing.JButton();
-        btnTestarConexao = new javax.swing.JButton();
-        edtCaminho = new javax.swing.JTextField();
-        edtPorta = new javax.swing.JTextField();
-        edtRede = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        edtPorta = new javax.swing.JTextField();
+        btnAbreArquivoGravado = new javax.swing.JButton();
         btnPesquisa = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("Configuração de Banco de Dados");
 
-        btnAbreArquivoGravado.setText("Abrir Arquivo Gravado");
-        btnAbreArquivoGravado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAbreArquivoGravadoActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnAbreArquivoGravado, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, -1, 30));
+        jLabel2.setText("Caminho:");
 
-        btnSair.setText("Sair");
-        btnSair.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSairActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 280, 119, 30));
-
-        btnGravarIni.setText("Gravar Dados");
-        btnGravarIni.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGravarIniActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnGravarIni, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 240, 119, 30));
+        jLabel3.setText("Rede:");
 
         btnTestarConexao.setText("Testar Conexão");
         btnTestarConexao.addActionListener(new java.awt.event.ActionListener() {
@@ -240,29 +218,29 @@ public class ConfiguracaoBancoDados extends JFrame {
                 btnTestarConexaoActionPerformed(evt);
             }
         });
-        jPanel1.add(btnTestarConexao, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, 139, 30));
-        jPanel1.add(edtCaminho, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 200, 139, 30));
 
-        edtPorta.setText("3050");
-        jPanel1.add(edtPorta, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 80, 30));
+        btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
 
-        edtRede.setText("Localhost");
-        jPanel1.add(edtRede, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 80, 145, 30));
-
-        jLabel4.setText("Localhost ou IP");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(209, 88, -1, -1));
-
-        jLabel3.setText("Rede:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, -1, -1));
+        btnGravarIni.setText("Gravar Dados");
+        btnGravarIni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGravarIniActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Porta:");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 120, -1, 10));
 
-        jLabel2.setText("Caminho:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, -1, -1));
-
-        jLabel5.setText("Porta 3050  ou 3060");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 150, -1, -1));
+        btnAbreArquivoGravado.setText("Abrir Arquivo Gravado");
+        btnAbreArquivoGravado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAbreArquivoGravadoActionPerformed(evt);
+            }
+        });
 
         btnPesquisa.setText("Pesquisar");
         btnPesquisa.addActionListener(new java.awt.event.ActionListener() {
@@ -270,19 +248,83 @@ public class ConfiguracaoBancoDados extends JFrame {
                 btnPesquisaActionPerformed(evt);
             }
         });
-        jPanel1.add(btnPesquisa, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 200, 119, 30));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Configuração de Banco de Dados");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, -1));
+        jLabel4.setText("Localhost ou IP");
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 390, 350));
+        jLabel5.setText("Porta 3050  ou 3060");
 
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, 20, 350));
-
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 390, 30));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnTestarConexao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnAbreArquivoGravado))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnGravarIni, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(edtPorta, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel5))
+                            .addComponent(edtCaminho)
+                            .addComponent(edtRede))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnPesquisa)
+                    .addComponent(jLabel4))
+                .addContainerGap(53, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(edtRede, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(edtPorta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(68, 68, 68)
+                        .addComponent(jLabel3)
+                        .addGap(10, 10, 10)
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(edtCaminho, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGravarIni, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTestarConexao, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAbreArquivoGravado, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(45, Short.MAX_VALUE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -310,7 +352,7 @@ public class ConfiguracaoBancoDados extends JFrame {
             if (verificaConexaoTela()) {
                 JOptionPane.showMessageDialog(null, "Conexão ok!");
             } else {
-                JOptionPane.showMessageDialog(null, "Nao existem usuarios cadastrados!");
+                JOptionPane.showMessageDialog(null, "Erro nos dados da tela!");
             }
         }
     }//GEN-LAST:event_btnTestarConexaoActionPerformed
@@ -337,17 +379,23 @@ public class ConfiguracaoBancoDados extends JFrame {
 
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(ConfiguracaoBancoDados.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(ConfiguracaoBancoDados.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ConfiguracaoBancoDados.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ConfiguracaoBancoDados.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
             public void run() {
                 new ConfiguracaoBancoDados().setVisible(true);
             }
@@ -369,8 +417,5 @@ public class ConfiguracaoBancoDados extends JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 }

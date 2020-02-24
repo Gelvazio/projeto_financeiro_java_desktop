@@ -19,29 +19,13 @@ import javax.swing.JOptionPane;
 public class CadEstado extends MetodosGlobais {
 
     private static final String sqlBuscaEstado = "SELECT * FROM estado  WHERE cd_estado=?";
-    EstadoDB estadodb = new EstadoDB();
 
+    /**
+     * Creates new form CadEstado
+     */
     public CadEstado() {
         initComponents();
         Centro();
-        habilitaCampos(false);
-    }
-
-    private void habilitaCampos(boolean habilita) {
-        edtSigla.setEnabled(!habilita);
-        edtDescricao.setEnabled(habilita);
-        edtIbge.setEnabled(habilita);
-
-        btnGravar.setEnabled(habilita);
-        btnCancelar.setEnabled(habilita);
-        btnConsulta.setEnabled(!habilita);
-        btnExcluir.setEnabled(habilita);
-
-        if (habilita) {
-            edtDescricao.requestFocus();
-        } else {
-            LimpaTela();
-        }
     }
 
     private void LimpaTela() {
@@ -59,14 +43,15 @@ public class CadEstado extends MetodosGlobais {
 
             int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir o registro?");
             if (resposta == JOptionPane.YES_OPTION) {
+                EstadoDB estadodb = new EstadoDB();
                 String auxCodigo = edtSigla.getText();
                 if (estadodb.excluirEstado(auxCodigo)) {
                     JOptionPane.showMessageDialog(null, "Exclusão efetuada com sucesso!");
-                    habilitaCampos(false);
                 } else {
                     JOptionPane.showMessageDialog(null, "Não foi possivel excluir o registro!!");
                 }
             }
+            LimpaTela();
         }
     }
 
@@ -77,6 +62,7 @@ public class CadEstado extends MetodosGlobais {
         //Sera implementado depois
         int auxcd_usuario = 1;
         int auxcd_filial = 1;
+        EstadoDB estadodb = new EstadoDB();
         Estado estado = new Estado(
                 auxCd_estado,
                 auxDs_estado,
@@ -85,7 +71,7 @@ public class CadEstado extends MetodosGlobais {
                 auxcd_usuario);
         if (estadodb.inserirEstado(estado)) {
             JOptionPane.showMessageDialog(null, "Registro incluído com sucesso!");
-            habilitaCampos(false);
+            LimpaTela();
         } else {
             JOptionPane.showMessageDialog(null, "Não foi possível incluir o registro!");
             edtSigla.grabFocus();
@@ -99,6 +85,7 @@ public class CadEstado extends MetodosGlobais {
         //Sera implementado depois
         int auxcd_usuario = 1;
         int auxcd_filial = 1;
+        EstadoDB estadodb = new EstadoDB();
         Estado estado = new Estado(
                 auxCd_estado,
                 auxDs_estado,
@@ -107,20 +94,20 @@ public class CadEstado extends MetodosGlobais {
                 auxcd_usuario);
         if (estadodb.alterarEstado(estado)) {
             JOptionPane.showMessageDialog(null, "Registro alterado com sucesso!");
-            habilitaCampos(false);
         } else {
             JOptionPane.showMessageDialog(null, "Não foi possível alterar o registro!");
         }
+        LimpaTela();
     }
 
-    private void ValidaCampoCodigoNaoNulo() {
+    private void ValidaCampoCodigoNãoNulo() {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+        EstadoDB estadodb = new EstadoDB();
         String cd_estado = edtSigla.getText().toUpperCase();
 
         if (estadodb.getEstado(cd_estado)) {
-            habilitaCampos(true);
             try {
                 conn = Conexao.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaEstado);
@@ -140,15 +127,11 @@ public class CadEstado extends MetodosGlobais {
                     edtDescricao.grabFocus();
                 }
             } catch (SQLException erro) {
-                mensagemErro("Erro de conexão! " + erro);
+                JOptionPane.showMessageDialog(null, "Erro de conexão! " + erro);
             }
         } else {
-            int resposta = JOptionPane.showConfirmDialog(null, "Estado Não Cadastrado! \n Deseja cadastrar?");
-            if (resposta == JOptionPane.YES_OPTION) {
-                habilitaCampos(true);
-            } else {
-                habilitaCampos(false);
-            }
+            JOptionPane.showMessageDialog(null, "Estado Não Cadastrado!");
+            edtDescricao.grabFocus();
         }
     }
 
@@ -172,6 +155,7 @@ public class CadEstado extends MetodosGlobais {
 
     private void Gravar_Alterar_Registro() {
         String auxTexto = edtSigla.getText();
+        EstadoDB estadodb = new EstadoDB();
         if (estadodb.getEstado(auxTexto)) {
             Alterar_Registro();
         } else {
@@ -195,18 +179,15 @@ public class CadEstado extends MetodosGlobais {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         edtSigla = new javax.swing.JTextField();
-        jPanel1 = new javax.swing.JPanel();
-        btnGravar = new javax.swing.JButton();
-        btnCancelar = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
-        btnConsulta = new javax.swing.JButton();
-        btnSair = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        btnSair = new javax.swing.JButton();
+        btnConsulta = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnGravar = new javax.swing.JButton();
 
         setTitle("Cadastro de Estado");
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         edtIbge.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -214,73 +195,43 @@ public class CadEstado extends MetodosGlobais {
                 edtIbgeKeyPressed(evt);
             }
         });
-        jPanel3.add(edtIbge, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, 110, 25));
+        jPanel3.add(edtIbge, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 190, 370, 25));
 
         edtDescricao.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 edtDescricaoKeyPressed(evt);
             }
         });
-        jPanel3.add(edtDescricao, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, 220, 25));
+        jPanel3.add(edtDescricao, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 370, 25));
 
         jLabel2.setText("Descrição:");
-        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 70, -1));
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 70, -1));
 
         jLabel4.setText("Código IBGE:");
-        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 80, -1));
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 70, -1));
 
         jLabel5.setText("Estado/Sigla:");
-        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 80, -1));
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 70, -1));
 
         edtSigla.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 edtSiglaKeyPressed(evt);
             }
         });
-        jPanel3.add(edtSigla, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 50, 25));
+        jPanel3.add(edtSigla, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 370, 25));
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 350, 165));
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel6.setText("Cadastro de Estado");
+        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, -1, -1));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        btnGravar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Valid Green.png"))); // NOI18N
-        btnGravar.setText("Gravar");
-        btnGravar.addActionListener(new java.awt.event.ActionListener() {
+        btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Red.png"))); // NOI18N
+        btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGravarActionPerformed(evt);
+                btnSairActionPerformed(evt);
             }
         });
-        btnGravar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnGravarKeyPressed(evt);
-            }
-        });
-
-        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Cancel.png"))); // NOI18N
-        btnCancelar.setText("Cancelar");
-        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
-            }
-        });
-        btnCancelar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnCancelarKeyPressed(evt);
-            }
-        });
-
-        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Remove Red.png"))); // NOI18N
-        btnExcluir.setText("Excluir");
-        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluirActionPerformed(evt);
-            }
-        });
-        btnExcluir.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnExcluirKeyPressed(evt);
-            }
-        });
+        jPanel3.add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 260, 120, 40));
 
         btnConsulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Search.png"))); // NOI18N
         btnConsulta.setText("Consulta");
@@ -294,52 +245,66 @@ public class CadEstado extends MetodosGlobais {
                 btnConsultaKeyPressed(evt);
             }
         });
+        jPanel3.add(btnConsulta, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 210, 120, 40));
 
-        btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Red.png"))); // NOI18N
-        btnSair.setText("Sair");
-        btnSair.addActionListener(new java.awt.event.ActionListener() {
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Remove Red.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSairActionPerformed(evt);
+                btnExcluirActionPerformed(evt);
             }
         });
+        btnExcluir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnExcluirKeyPressed(evt);
+            }
+        });
+        jPanel3.add(btnExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 160, 120, 40));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnGravar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Cancel.png"))); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+        btnCancelar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnCancelarKeyPressed(evt);
+            }
+        });
+        jPanel3.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 110, 120, 40));
+
+        btnGravar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Valid Green.png"))); // NOI18N
+        btnGravar.setText("Gravar");
+        btnGravar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGravarActionPerformed(evt);
+            }
+        });
+        btnGravar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnGravarKeyPressed(evt);
+            }
+        });
+        jPanel3.add(btnGravar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 60, 120, 40));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
+                .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnGravar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(btnConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 12, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 50, 142, -1));
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel6.setText("Cadastro de Estado");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 0, -1, -1));
-
-        setBounds(0, 0, 549, 356);
+        setBounds(0, 0, 671, 350);
     }// </editor-fold>//GEN-END:initComponents
 
     private void edtSiglaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtSiglaKeyPressed
@@ -350,7 +315,7 @@ public class CadEstado extends MetodosGlobais {
                 JOptionPane.showMessageDialog(null, "Por favor digite um Valor no campo!");
                 edtSigla.grabFocus();
             } else {
-                ValidaCampoCodigoNaoNulo();
+                ValidaCampoCodigoNãoNulo();
             }
         }
     }//GEN-LAST:event_edtSiglaKeyPressed
@@ -404,7 +369,8 @@ public class CadEstado extends MetodosGlobais {
         // TODO add your handling code here:
         int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente Cancelar a Edição?");
         if (resposta == JOptionPane.YES_OPTION) {
-            habilitaCampos(false);
+            LimpaTela();
+            edtSigla.grabFocus();
         }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -435,7 +401,6 @@ public class CadEstado extends MetodosGlobais {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
             public void run() {
                 new CadEstado().setVisible(true);
             }
@@ -454,7 +419,6 @@ public class CadEstado extends MetodosGlobais {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 }

@@ -29,6 +29,18 @@ public class CadProduto extends MetodosGlobais {
 
     private static final String sqlBuscaProdutoPeloCodigo = "SELECT * FROM Produto_simples WHERE cd_prod=?";
     private static final String sqlBuscaPrecoProdutoPelaReferencia = "SELECT * FROM  SUB_TAB_PRECO WHERE CD_REF=?";
+
+    /*"SELECT  COALESCE(CD_REF,0)CD_REF,"
+     + "    COALESCE(VL_CUSTO,0)VL_CUSTO,"
+     + "    COALESCE(VL_VENDA,0)VL_VENDA,"
+     + "    COALESCE(VL_PROMOCAO,0)VL_PROMOCAO,"
+     + "    COALESCE(VL_ESPECIAL,0) VL_ESPECIAL,"
+     + "    COALESCE(VL_CUSTO_MED,0) VL_CUSTO_MED,"
+     + "    COALESCE(TX_MARGEM_LUCRO_VENDA,0)TX_MARGEM_LUCRO_VENDA,"
+     + "    COALESCE(TX_MARGEM_LUCRO_PROMOCAO,0)TX_MARGEM_LUCRO_PROMOCAO,"
+     + "    COALESCE(TX_MARGEM_LUCRO_ESPECIAL,0) TX_MARGEM_LUCRO_ESPECIAL"
+     + "FROM  SUB_TAB_PRECO WHERE CD_REF=?";
+     */
     private static final String sqlBuscaProdutoPelaReferencia = "SELECT * FROM Produto_simples WHERE cd_ref=?";
     private static final String sqlBuscaGrupo = "SELECT * FROM grupo WHERE cd_grupo=?";
     private static final String sqlBuscaSubGrupo = "SELECT  * FROM sub_grupo WHERE cd_grupo=? and cd_sub_grupo=?";
@@ -87,6 +99,7 @@ public class CadProduto extends MetodosGlobais {
         btnConsultaGrupoFiscal.setEnabled(habilita);
         btnConsultaMarca.setEnabled(habilita);
         btnConsultaUnidadeMedida.setEnabled(habilita);
+        btnConsultaNCMSH.setEnabled(habilita);
         btnConsultaCor.setEnabled(habilita);
 
         //Campos de preço e Margem
@@ -102,14 +115,12 @@ public class CadProduto extends MetodosGlobais {
         btnGravar.setEnabled(habilita);
         btnCancelar.setEnabled(habilita);
         btnConsulta.setEnabled(!habilita);
-
+        
         LabelEstoque.setEnabled(habilita);
-        edtTXIPI.setEnabled(habilita);
-        edtTXISS.setEnabled(habilita);        
 
         if (habilita) {
             VerificaHabilitacaoCampos = true;
-            edtDesricao.requestFocus();
+            edtCodigo.requestFocus();
 
         } else {
             //Remover registros dos campos
@@ -148,9 +159,7 @@ public class CadProduto extends MetodosGlobais {
         edtMargemVenda.setText("");
         edtMargemPromocao.setText("");
         edtMargemEspecial.setText("");
-        LabelEstoque.setText("0,00");
-        edtTXIPI.setText("");
-        edtTXISS.setText("");
+         LabelEstoque.setText("0,00");
     }
 
     private void Excluir_Registro() {
@@ -178,29 +187,6 @@ public class CadProduto extends MetodosGlobais {
         }
     }
 
-    private void validaCodigoReferencia() {
-        String auxCodigo = edtCodigo.getText();
-        String auxReferencia = edtReferencia.getText();
-        if (auxCodigo.equals("")) {
-            if (auxReferencia.equals("")) {
-                //Chama os Generators
-                ValidaCodigoGenerator();
-                ValidaReferenciaGenerator();
-                habilitaCampos(true);
-            } else {
-                int referencia = Integer.parseInt(auxReferencia);
-                if (referencia > 0) {
-                    ValidaCampoReferenciaNaoNulo();
-                    edtReferencia.grabFocus();
-                } else {
-                    edtDesricao.grabFocus();
-                }
-            }
-        } else {
-            ValidaCampoCodigoNaoNulo();
-        }
-    }
-
     private void GravarAlterarRegistro() {
         int auxCodigo = Integer.parseInt(edtCodigo.getText());
         int auxReferencia = Integer.parseInt(edtReferencia.getText());
@@ -224,8 +210,6 @@ public class CadProduto extends MetodosGlobais {
         int cd_filial = 1;
         int cd_unidade_medida = Integer.parseInt(edtCodigoUnidadeMedida.getText());
         int qt_estoque = Integer.parseInt(LabelEstoque.getText());
-        int tx_ipi = Integer.parseInt(edtTXIPI.getText());
-        int tx_iss = Integer.parseInt(edtTXISS.getText());
 
         ProdutoSimples produto_simples = new ProdutoSimples(
                 auxCodigo,
@@ -242,9 +226,7 @@ public class CadProduto extends MetodosGlobais {
                 cd_usuario,
                 cd_filial,
                 cd_unidade_medida,
-                qt_estoque,
-                tx_ipi,
-                tx_iss
+                qt_estoque
         );
 
         int codigo = Integer.parseInt(edtCodigo.getText());
@@ -284,29 +266,9 @@ public class CadProduto extends MetodosGlobais {
                 String a;
                 a = "" + auxCodigo;
                 edtCodigo.setText(a);
-            }
-        } catch (SQLException erro) {
-            System.out.println("Erro de conexão! " + erro);
-        } finally {
-            Conexao.closeAll(conn);
-        }
-    }
-
-    private void ValidaReferenciaGenerator() {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-            conn = Conexao.getConexao();
-            stmt = conn.createStatement();
-            //Pega o Valor do Generator
-            rs = stmt.executeQuery("SELECT GEN_ID(CD_REF, 1) FROM RDB$DATABASE");
-            while (rs.next()) {
-                int auxCodigoGenerator = rs.getInt("GEN_ID");
-                int auxCodigo = auxCodigoGenerator + 1;
-                String a;
-                a = "" + auxCodigo;
-                edtReferencia.setText(a);
+                edtDesricao.grabFocus();
+                //Altera o valor do Generator se o SQL passado acima fosse""SELECT GEN_ID(GEN_CD_USUARIO, 0) FROM RDB$DATABASE""
+                //rs = stmt.executeQuery("ALTER SEQUENCE GEN_CD_USUARIO RESTART WITH " + auxCodigo);
             }
         } catch (SQLException erro) {
             System.out.println("Erro de conexão! " + erro);
@@ -442,8 +404,6 @@ public class CadProduto extends MetodosGlobais {
                     int CD_REF = rs.getInt("CD_REF");
                     int CD_UNIDADE = rs.getInt("CD_UNIDADE_MEDIDA");
                     int qt_estoque = rs.getInt("qt_estoque");
-                    int tx_ipi = rs.getInt("tx_ipi");
-                    int tx_iss = rs.getInt("tx_iss");
 
                     //Conversao das variaveis para String
                     String auxCD_PROD = "" + CD_PROD;
@@ -458,8 +418,6 @@ public class CadProduto extends MetodosGlobais {
                     String auxDS_PROD = "" + DS_PROD;
                     String auxCD_UNIDADE = "" + CD_UNIDADE;
                     String auxqt_estoque = "" + qt_estoque;
-                    String auxTXIPI = "" + tx_ipi;
-                    String auxTXISS = "" + tx_iss;
 
                     //Validação do Ativo
                     if (FG_ATIVO == 1) {
@@ -480,8 +438,6 @@ public class CadProduto extends MetodosGlobais {
                     edtCodigoFabrica.setText(CD_FABRICA);
                     edtCodigoUnidadeMedida.setText(auxCD_UNIDADE);
                     LabelEstoque.setText(auxqt_estoque);
-                    edtTXIPI.setText(auxTXIPI);
-                    edtTXISS.setText(auxTXISS);
                     edtReferencia.grabFocus();
 
                     //Carregamento de Codigos
@@ -631,7 +587,7 @@ public class CadProduto extends MetodosGlobais {
         if ((!auxTexto.equals(""))) {
             cd_marca = Integer.parseInt(auxTexto);
         }
-        if (marcadb.getMarca(cd_marca)) {
+        if (marcadb.getCor(cd_marca)) {
             try {
                 conn = Conexao.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaMarca);
@@ -1051,6 +1007,7 @@ public class CadProduto extends MetodosGlobais {
         edtCodigoSub_Grupo = new javax.swing.JTextField();
         edtCodigoMarca = new javax.swing.JTextField();
         edtCodigoGp_Fiscal = new javax.swing.JTextField();
+        btnConsultaNCMSH = new javax.swing.JButton();
         btnConsultaGrupo = new javax.swing.JButton();
         btnConsultaSubGrupo = new javax.swing.JButton();
         btnConsultaGrupoFiscal = new javax.swing.JButton();
@@ -1084,22 +1041,17 @@ public class CadProduto extends MetodosGlobais {
         jLabel21 = new javax.swing.JLabel();
         edtPrecoEspecial = new javax.swing.JTextField();
         jLabel26 = new javax.swing.JLabel();
-        jLabel28 = new javax.swing.JLabel();
-        edtTXIPI = new javax.swing.JTextField();
-        jLabel29 = new javax.swing.JLabel();
-        edtTXISS = new javax.swing.JTextField();
+        jPanel4 = new javax.swing.JPanel();
+        LabelEstoque = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         btnGravar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnConsulta = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        LabelEstoque = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         edtDataCadastro = new javax.swing.JFormattedTextField();
@@ -1109,7 +1061,6 @@ public class CadProduto extends MetodosGlobais {
         edtHoraCadastro = new javax.swing.JFormattedTextField();
         jLabel19 = new javax.swing.JLabel();
         edtHoraAlteracao = new javax.swing.JFormattedTextField();
-        jPanel9 = new javax.swing.JPanel();
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -1165,7 +1116,7 @@ public class CadProduto extends MetodosGlobais {
         jPanel5.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(182, 14, -1, -1));
 
         jLabel11.setText("NCM_SH:");
-        jPanel5.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 90, -1));
+        jPanel5.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 90, -1));
 
         edtReferencia.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1186,7 +1137,7 @@ public class CadProduto extends MetodosGlobais {
                 edtCodigoFabricaKeyPressed(evt);
             }
         });
-        jPanel5.add(edtCodigoFabrica, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 270, 120, -1));
+        jPanel5.add(edtCodigoFabrica, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 120, -1));
 
         edtCodigoGrupo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1222,6 +1173,19 @@ public class CadProduto extends MetodosGlobais {
             }
         });
         jPanel5.add(edtCodigoGp_Fiscal, new org.netbeans.lib.awtextra.AbsoluteConstraints(104, 133, 40, -1));
+
+        btnConsultaNCMSH.setText("Consulta");
+        btnConsultaNCMSH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultaNCMSHActionPerformed(evt);
+            }
+        });
+        btnConsultaNCMSH.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnConsultaNCMSHKeyPressed(evt);
+            }
+        });
+        jPanel5.add(btnConsultaNCMSH, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 230, 80, -1));
 
         btnConsultaGrupo.setText("Consulta");
         btnConsultaGrupo.addActionListener(new java.awt.event.ActionListener() {
@@ -1293,10 +1257,10 @@ public class CadProduto extends MetodosGlobais {
                 edtCodigoUnidadeMedidaKeyPressed(evt);
             }
         });
-        jPanel5.add(edtCodigoUnidadeMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, 39, -1));
+        jPanel5.add(edtCodigoUnidadeMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(104, 307, 39, -1));
 
         jLabel12.setText("Unidade Medida");
-        jPanel5.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, 90, -1));
+        jPanel5.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 90, -1));
 
         cbGrupo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbGrupo.addActionListener(new java.awt.event.ActionListener() {
@@ -1311,7 +1275,7 @@ public class CadProduto extends MetodosGlobais {
                 edtCodigoNCMSHKeyPressed(evt);
             }
         });
-        jPanel5.add(edtCodigoNCMSH, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 270, 80, -1));
+        jPanel5.add(edtCodigoNCMSH, new org.netbeans.lib.awtextra.AbsoluteConstraints(104, 232, 120, -1));
 
         cbSubGrupo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbSubGrupo.addActionListener(new java.awt.event.ActionListener() {
@@ -1351,7 +1315,7 @@ public class CadProduto extends MetodosGlobais {
                 cbUnidadeMedidaActionPerformed(evt);
             }
         });
-        jPanel5.add(cbUnidadeMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 230, 289, -1));
+        jPanel5.add(cbUnidadeMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(149, 307, 289, -1));
 
         btnConsultaUnidadeMedida.setText("Consulta");
         btnConsultaUnidadeMedida.addActionListener(new java.awt.event.ActionListener() {
@@ -1364,107 +1328,84 @@ public class CadProduto extends MetodosGlobais {
                 btnConsultaUnidadeMedidaKeyPressed(evt);
             }
         });
-        jPanel5.add(btnConsultaUnidadeMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 230, 80, -1));
+        jPanel5.add(btnConsultaUnidadeMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 310, 80, -1));
 
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Formação de Preços", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.ABOVE_TOP));
+        jPanel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel18.setText("Preço de Custo:");
-        jPanel7.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, -1));
+        jPanel7.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         jLabel17.setText("Preço de Venda:");
-        jPanel7.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
+        jPanel7.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
 
         edtPrecoVenda.setText("0,00");
-        jPanel7.add(edtPrecoVenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, 74, -1));
+        jPanel7.add(edtPrecoVenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 74, -1));
 
         edtPrecoCusto.setText("0,00");
-        jPanel7.add(edtPrecoCusto, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 74, -1));
+        jPanel7.add(edtPrecoCusto, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 74, -1));
 
         jLabel22.setText("Custo Médio:");
-        jPanel7.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, 80, -1));
+        jPanel7.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 10, 80, -1));
 
         edtCustoMedio.setText("0,00");
-        jPanel7.add(edtCustoMedio, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 30, 60, -1));
+        jPanel7.add(edtCustoMedio, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 10, 60, -1));
 
         edtMargemVenda.setText("0,00");
-        jPanel7.add(edtMargemVenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 70, 60, -1));
+        jPanel7.add(edtMargemVenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 50, 60, -1));
 
         edtMargemPromocao.setText("0,00");
-        jPanel7.add(edtMargemPromocao, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 110, 60, -1));
+        jPanel7.add(edtMargemPromocao, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 90, 60, -1));
 
         edtMargemEspecial.setText("0,00");
-        jPanel7.add(edtMargemEspecial, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 150, 60, -1));
+        jPanel7.add(edtMargemEspecial, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 130, 60, -1));
 
         jLabel23.setText("Tx.Margem Lucro Especial:");
-        jPanel7.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 150, 150, -1));
+        jPanel7.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, 150, -1));
 
         jLabel25.setText("Tx. Margem Lucro Promocao:");
-        jPanel7.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 110, 160, -1));
+        jPanel7.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, 160, -1));
 
         jLabel24.setText("Tx. Margem Lucro Venda:");
-        jPanel7.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 70, 140, -1));
+        jPanel7.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, 140, -1));
 
         edtPrecoPromocao.setText("0,00");
-        jPanel7.add(edtPrecoPromocao, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 74, -1));
+        jPanel7.add(edtPrecoPromocao, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 90, 74, -1));
 
         jLabel20.setText("Preço Promoção:");
-        jPanel7.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, -1, -1));
+        jPanel7.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
 
         jLabel21.setText("Preço Especial:");
-        jPanel7.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 90, -1));
+        jPanel7.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 90, -1));
 
         edtPrecoEspecial.setText("0,00");
-        jPanel7.add(edtPrecoEspecial, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 74, -1));
+        jPanel7.add(edtPrecoEspecial, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, 74, -1));
 
-        jPanel5.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 330, 410, 200));
+        jPanel5.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 10, 410, 170));
 
-        jLabel26.setText("Cód.Fabrica:");
-        jPanel5.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 270, 90, -1));
+        jLabel26.setText("Cod.Fabrica:");
+        jPanel5.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 90, -1));
 
-        jLabel28.setText("Taxa de IPI:");
-        jPanel5.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 90, -1));
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        edtTXIPI.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                edtTXIPIKeyPressed(evt);
-            }
-        });
-        jPanel5.add(edtTXIPI, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 300, 80, -1));
+        LabelEstoque.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        LabelEstoque.setText("0,00");
+        jPanel4.add(LabelEstoque, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, 70, 20));
 
-        jLabel29.setText("Taxa de ISS:");
-        jPanel5.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 300, 90, -1));
+        jLabel27.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel27.setText("Estoque:");
+        jPanel4.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 80, -1));
 
-        edtTXISS.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                edtTXISSKeyPressed(evt);
-            }
-        });
-        jPanel5.add(edtTXISS, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 300, 120, -1));
+        jPanel5.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 190, 120, 40));
 
         jTabbedPane1.addTab("Registro", jPanel5);
 
-        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 570, 590));
+        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 950, 493));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel16.setText("Cadastro de Produto");
-        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 0, -1, -1));
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 640, 800, 20));
-
-        jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 0, -1, -1));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1534,20 +1475,20 @@ public class CadProduto extends MetodosGlobais {
         });
         jPanel1.add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 120, 40));
 
-        jPanel8.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 170, 258));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 60, 160, 258));
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 930, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
 
-        LabelEstoque.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        LabelEstoque.setText("0,00");
-        jPanel4.add(LabelEstoque, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 70, 20));
-
-        jLabel27.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel27.setText("Estoque:");
-        jPanel4.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 80, -1));
-
-        jPanel8.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 170, 40));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, 930, 20));
 
         jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -1629,22 +1570,7 @@ public class CadProduto extends MetodosGlobais {
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
-        jPanel8.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 170, -1));
-
-        getContentPane().add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 60, 190, 560));
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 520, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 60, 20, 520));
+        getContentPane().add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 340, 170, 150));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1661,15 +1587,42 @@ public class CadProduto extends MetodosGlobais {
         // TODO add your handling code here:
     }//GEN-LAST:event_edtHoraCadastroActionPerformed
 
+    private void btnConsultaNCMSHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaNCMSHActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_btnConsultaNCMSHActionPerformed
+
     private void edtCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtCodigoKeyPressed
+        // TODO add your handling code here:
+        //OBS para funcionar deve ter os metodos do Generator
+        String auxTexto = edtCodigo.getText();
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            validaCodigoReferencia();
+            if (auxTexto.equals("")) {
+                ValidaCodigoGenerator();
+                edtReferencia.grabFocus();
+            } else {
+                ValidaCampoCodigoNaoNulo();
+            }
         }
     }//GEN-LAST:event_edtCodigoKeyPressed
 
     private void edtReferenciaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtReferenciaKeyPressed
+        // TODO add your handling code here:
+        String auxCodigo = edtCodigo.getText();
+
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            validaCodigoReferencia();
+            if (auxCodigo.equals("")) {
+                String auxReferencia = edtReferencia.getText();
+                if (!auxReferencia.equals("")) {
+                    int referencia = Integer.parseInt(auxReferencia);
+                    if (referencia > 0) {
+                        ValidaCampoReferenciaNaoNulo();
+                        edtReferencia.grabFocus();
+                    } else {
+                        edtDesricao.grabFocus();
+                    }
+                }
+            }
         }
     }//GEN-LAST:event_edtReferenciaKeyPressed
 
@@ -1719,6 +1672,13 @@ public class CadProduto extends MetodosGlobais {
             btnConsultaMarca.grabFocus();
         }
     }//GEN-LAST:event_edtCodigoMarcaKeyPressed
+
+    private void btnConsultaNCMSHKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnConsultaNCMSHKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            edtCodigoFabrica.grabFocus();
+        }
+    }//GEN-LAST:event_btnConsultaNCMSHKeyPressed
 
     private void edtCodigoFabricaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtCodigoFabricaKeyPressed
         // TODO add your handling code here:
@@ -1897,14 +1857,6 @@ public class CadProduto extends MetodosGlobais {
         ComboBoxUnidadeMedida();
     }//GEN-LAST:event_cbUnidadeMedidaActionPerformed
 
-    private void edtTXIPIKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtTXIPIKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_edtTXIPIKeyPressed
-
-    private void edtTXISSKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtTXISSKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_edtTXISSKeyPressed
-
     /**
      * @param args the command line arguments
      */
@@ -1925,6 +1877,7 @@ public class CadProduto extends MetodosGlobais {
     private javax.swing.JButton btnConsultaGrupo;
     private javax.swing.JButton btnConsultaGrupoFiscal;
     private javax.swing.JButton btnConsultaMarca;
+    private javax.swing.JButton btnConsultaNCMSH;
     private javax.swing.JButton btnConsultaSubGrupo;
     private javax.swing.JButton btnConsultaUnidadeMedida;
     private javax.swing.JButton btnExcluir;
@@ -1959,8 +1912,6 @@ public class CadProduto extends MetodosGlobais {
     private javax.swing.JTextField edtPrecoPromocao;
     private javax.swing.JTextField edtPrecoVenda;
     private javax.swing.JTextField edtReferencia;
-    private javax.swing.JTextField edtTXIPI;
-    private javax.swing.JTextField edtTXISS;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1981,8 +1932,6 @@ public class CadProduto extends MetodosGlobais {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1995,8 +1944,6 @@ public class CadProduto extends MetodosGlobais {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel labelRadioAtivo;
     // End of variables declaration//GEN-END:variables

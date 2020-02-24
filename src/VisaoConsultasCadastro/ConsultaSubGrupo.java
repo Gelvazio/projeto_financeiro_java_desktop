@@ -203,35 +203,32 @@ public class ConsultaSubGrupo extends MetodosGlobais {
         //Caso nao seja repassado ele nao da certo pois nao pega nada do edtPesquisa
         PegaValorCamposComboboxCampo_E_Valor("");
         ArrayList listaUsuario = new ArrayList();
-        /*
-         Connection conn = null;
-         Statement stmt = null;
-         ResultSet rs = null;
-         try {
-         conn = Conexao.getConexao();
-         stmt = conn.createStatement();
-         //Nessa Parte é passado po parametro os Dados da Variavel "SQLConsulta_Usuario" que contem o sql da pesquisa.
-         rs = stmt.executeQuery(SQLConsulta_Usuario);
-         while (rs.next()) {
-         int cd_usuario = rs.getInt("cd_usuario");
-         String ds_usuario = rs.getString("ds_usuario");
-         String ds_senha = rs.getString("ds_senha");
-         int cd_filial = rs.getInt("cd_filial");
-         Usuario usuario = new Usuario(
-         ds_usuario,
-         ds_senha,
-         cd_filial,
-         cd_usuario);
-         listaUsuario.add(usuario);
-         }
-         } catch (SQLException erro) {
-         JOptionPane.showMessageDialog(null, "Erro no sql, SQLConsultagetTodos_Completo: \n" + erro.getMessage());
-         } finally {
-         Conexao.closeAll(conn);
-            
-         }
-         */
-        return listaUsuario;
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.createStatement();
+            //Nessa Parte é passado po parametro os Dados da Variavel "SQLConsulta_Usuario" que contem o sql da pesquisa.
+            rs = stmt.executeQuery(SQLConsulta_Usuario);
+            while (rs.next()) {
+                int cd_usuario = rs.getInt("cd_usuario");
+                String ds_usuario = rs.getString("ds_usuario");
+                String ds_senha = rs.getString("ds_senha");
+                int cd_filial = rs.getInt("cd_filial");
+                Usuario usuario = new Usuario(
+                        ds_usuario,
+                        ds_senha,
+                        cd_filial,
+                        cd_usuario);
+                listaUsuario.add(usuario);
+            }
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "Erro no sql, SQLConsultagetTodos_Completo: \n" + erro.getMessage());
+        } finally {
+            Conexao.closeAll(conn);
+            return listaUsuario;
+        }
     }
 
     public void ListaTodosUsuarios() {

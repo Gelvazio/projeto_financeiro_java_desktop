@@ -193,7 +193,6 @@ public class ConsultaUsuario extends MetodosGlobais {
             ListaUsuariosParametrosCompleto();
         }
     }
-
     public ArrayList SQLConsultagetTodos_Completo() {
         //Aqui é chamado o Metodo "PegaValorCamposComboboxCampo_E_Valor("");" para pegar os valores da tela
         //Caso nao seja repassado ele nao da certo pois nao pega nada do edtPesquisa
@@ -209,21 +208,14 @@ public class ConsultaUsuario extends MetodosGlobais {
             rs = stmt.executeQuery(SQLConsulta_Usuario);
             while (rs.next()) {
                 int cd_usuario = rs.getInt("cd_usuario");
-                String ds_login = rs.getString("ds_login");
                 String ds_usuario = rs.getString("ds_usuario");
                 String ds_senha = rs.getString("ds_senha");
-                int cd_grupo = rs.getInt("cd_grupo");
                 int cd_filial = rs.getInt("cd_filial");
-                int fg_ativo = rs.getInt("fg_ativo");
                 Usuario usuario = new Usuario(
-                        cd_usuario,
-                        ds_login,
                         ds_usuario,
                         ds_senha,
-                        cd_grupo,
                         cd_filial,
-                        fg_ativo
-                );
+                        cd_usuario);
                 listaUsuario.add(usuario);
             }
         } catch (SQLException erro) {

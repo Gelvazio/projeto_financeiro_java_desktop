@@ -21,31 +21,22 @@ public class UnidadeMedidaDB extends MetodosGlobais {
     private static final String sqlTodos
             = "SELECT * FROM unidade_medida order by unidade_medida.cd_unidade";
     private static final String sqlInserir
-            = "INSERT INTO UNIDADE_MEDIDA ("
-            + " CD_UNIDADE,"
-            + " DS_UNIDADE,"
-            + " DT_ALT,"
-            + " DT_CAD, "
-            + "HR_CAD, "
-            + "HR_ALT, "
-            + "CD_USUARIO,"
-            + " CD_FILIAL,"
-            + " DS_SIGLA"
-            + ") VALUES "
-            + "(?,?,        "
+            = "INSERT INTO UNIDADE_MEDIDA"
+            + "(CD_UNIDADE, DS_SIGLA,    "
+            + "DS_UNIDADE, TX_FATOR, "
+            + "FG_VENDA_FRACIONARIA, "
+            + "DT_ALT, DT_CAD, HR_CAD, "
+            + "HR_ALT, CD_USUARIO, "
+            + "CD_FILIAL)"
+            + "VALUES"
+            + "(?,?,?,?,?,        "
             + "CAST('NOW' AS DATE),"
             + "CAST('NOW' AS DATE),"
             + "CAST('NOW' AS TIME),"
             + "CAST('NOW' AS TIME),"
-            + "?,?,?)";
+            + "?,?)";
     private static final String sqlExcluir = "DELETE FROM UNIDADE_MEDIDA WHERE CD_UNIDADE = ?";
-    private static final String sqlAlterar = "UPDATE UNIDADE_MEDIDA SET DS_UNIDADE = ?,"
-            + "    DT_ALT =CAST('NOW' AS DATE),"
-            + "    HR_ALT = CAST('NOW' AS TIME),"
-            + "    CD_USUARIO = ?,"
-            + "    CD_FILIAL = ?,"
-            + "    DS_SIGLA = ?"
-            + "WHERE (CD_UNIDADE = ?);";
+    private static final String sqlAlterar = "UPDATE UNIDADE_MEDIDA SET DS_SIGLA = ?,DS_UNIDADE =?,TX_FATOR =?,FG_VENDA_FRACIONARIA = ?,DT_ALT = CAST('NOW' AS DATE),HR_ALT =CAST('NOW' AS TIME),CD_USUARIO = ?,CD_FILIAL = ? WHERE (CD_UNIDADE = ?);";
     private static final String sqlUnidadeMedida = "SELECT count(*) as total FROM UNIDADE_MEDIDA WHERE CD_UNIDADE=?";
 
     public DefaultComboBoxModel getComboUnidadeMedida() {
@@ -75,10 +66,10 @@ public class UnidadeMedidaDB extends MetodosGlobais {
         try {
             conn = Conexao.getConexao();
             pstmt = conn.prepareStatement(sqlAlterar);
-            pstmt.setString(1, unidademedida.getDs_unidade());
-            pstmt.setInt(2, unidademedida.getCd_usuario());
-            pstmt.setInt(3, unidademedida.getCd_filial());
-            pstmt.setString(4, unidademedida.getDs_sigla());
+            pstmt.setString(1, unidademedida.getDs_sigla());
+            pstmt.setString(2, unidademedida.getDs_unidade());
+            pstmt.setInt(3, unidademedida.getCd_usuario());
+            pstmt.setInt(4, unidademedida.getCd_filial());
             pstmt.setInt(5, unidademedida.getCd_unidade());
             pstmt.executeUpdate();
             alterou = true;
@@ -116,10 +107,10 @@ public class UnidadeMedidaDB extends MetodosGlobais {
             conn = Conexao.getConexao();
             pstmt = conn.prepareStatement(sqlInserir);
             pstmt.setInt(1, unidademedida.getCd_unidade());
-            pstmt.setString(2, unidademedida.getDs_unidade());
-            pstmt.setInt(3, unidademedida.getCd_usuario());
-            pstmt.setInt(4, unidademedida.getCd_filial());
-            pstmt.setString(5, unidademedida.getDs_sigla());
+            pstmt.setString(2, unidademedida.getDs_sigla());
+            pstmt.setString(3, unidademedida.getDs_unidade());
+            pstmt.setInt(4, unidademedida.getCd_usuario());
+            pstmt.setInt(5, unidademedida.getCd_filial());
             pstmt.executeUpdate();
             inseriu = true;
         } catch (SQLException erro) {
@@ -182,29 +173,4 @@ public class UnidadeMedidaDB extends MetodosGlobais {
         }
         return existe;
     }
-
-    public int ValidaCodigoGenerator() {
-        int codigoGenerator = 0;
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-            conn = Conexao.getConexao();
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT GEN_ID(CD_UNIDADE, 1) FROM RDB$DATABASE");
-            while (rs.next()) {
-                int auxCodigoGenerator = rs.getInt("GEN_ID");
-                int auxCodigo = auxCodigoGenerator + 1;
-                codigoGenerator = auxCodigo;
-            }
-        } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro de conexão! \n" + erro.getMessage());
-        } catch (Exception erro) {
-            mensagemErro("Erro no método ValidaCodigoGenerator()\n" + erro.getMessage());
-        } finally {
-            Conexao.closeAll(conn);
-        }
-        return codigoGenerator;
-    }
-
 }

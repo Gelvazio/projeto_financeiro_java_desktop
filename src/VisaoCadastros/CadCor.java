@@ -25,7 +25,7 @@ public class CadCor extends MetodosGlobais {
         habilitaCampos(false);
     }
 
-    private void habilitaCampos(boolean habilita) {
+    public void habilitaCampos(boolean habilita) {
         edtCodigo.requestFocus();
         edtCodigo.setEnabled(!habilita);
         edtDescricao.setEnabled(habilita);
@@ -45,7 +45,8 @@ public class CadCor extends MetodosGlobais {
         }
     }
 
-    private void GravarAlterar() {      
+    private void GravarAlterar() {
+        //Validado apenas os campos NOT NULL  do banco de dados        
         String auxTexto = edtCodigo.getText();
         String auxNome = edtDescricao.getText();
         if (auxTexto.equals("")) {
@@ -55,6 +56,7 @@ public class CadCor extends MetodosGlobais {
             JOptionPane.showMessageDialog(null, "Favor Preencher o nome da Cor!");
             edtDescricao.grabFocus();
         } else {
+
             int codigo = Integer.parseInt(auxTexto);
             int auxcd_usuario = 1;
             Cor cor = new Cor(
@@ -73,6 +75,7 @@ public class CadCor extends MetodosGlobais {
                     edtCodigo.grabFocus();
                 }
             } else {
+                //Insere
                 if (cordb.inserirCor(cor)) {
                     JOptionPane.showMessageDialog(null, "Registro incluído com sucesso!");
                     habilitaCampos(false);
@@ -97,16 +100,24 @@ public class CadCor extends MetodosGlobais {
         habilitaCampos(true);
     }
 
-    private void validaCodigoNaoNulo() {
-        if (cordb.getCor(Integer.parseInt(edtCodigo.getText()))) {
+    private void ValidaCodigoNaoNulo() {
+
+        int cd_cor = Integer.parseInt(edtCodigo.getText());
+
+        if (cordb.getCor(cd_cor)) {
             habilitaCampos(true);
-            ArrayList<Cor> cores = cordb.listaCores(Integer.parseInt(edtCodigo.getText()));
+
+            //Aqui deve chamar o ArrayList com as cores
+            //Tendo como parâmetro o código da cor
+            ArrayList<Cor> cores = cordb.listaCores(cd_cor);
             for (Cor auxCor : cores) {
+                //Passa os dados aqui neste "for" de objetos 
                 edtDescricao.setText(auxCor.getDs_cor());
             }
             edtDescricao.requestFocus();
         } else {
-            String auxCodigoGenerator = "" + cordb.ValidaCodigoGenerator("GEN_ID","CD_COR");
+            //Passa o código do generator para o campo
+            String auxCodigoGenerator = "" + cordb.ValidaCodigoGenerator();
             edtCodigo.setText(auxCodigoGenerator);
             edtDescricao.requestFocus();
         }
@@ -151,7 +162,7 @@ public class CadCor extends MetodosGlobais {
                 edtCodigoKeyPressed(evt);
             }
         });
-        getContentPane().add(edtCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 80, 25));
+        getContentPane().add(edtCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 340, 25));
 
         edtDescricao.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -223,48 +234,53 @@ public class CadCor extends MetodosGlobais {
                 btnSairActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 240, 120, 40));
+        getContentPane().add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 230, 120, 40));
 
         setBounds(0, 0, 686, 350);
     }// </editor-fold>//GEN-END:initComponents
 
     private void edtCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtCodigoKeyPressed
+        // TODO add your handling code here:
         String auxTexto = edtCodigo.getText();
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (auxTexto.equals("")) {
                 habilitaCampos(true);
                 //Passa o código do generator para o campo
-                //String auxCodigoGenerator = "" + cordb.ValidaCodigoGenerator();
-                String auxCodigoGenerator = "" + cordb.ValidaCodigoGenerator("GEN_ID","CD_COR");
+                String auxCodigoGenerator = "" + cordb.ValidaCodigoGenerator();
                 edtCodigo.setText(auxCodigoGenerator);
                 edtDescricao.requestFocus();
             } else {
-                validaCodigoNaoNulo();
+                ValidaCodigoNaoNulo();
             }
         }
     }//GEN-LAST:event_edtCodigoKeyPressed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnExcluirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnExcluirKeyPressed
+        // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             btnConsulta.grabFocus();
         }
     }//GEN-LAST:event_btnExcluirKeyPressed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        // TODO add your handling code here:
         ExcluirRegistro();
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnCancelarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnCancelarKeyPressed
+        // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             btnExcluir.grabFocus();
         }
     }//GEN-LAST:event_btnCancelarKeyPressed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
         int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente Cancelar a Edição?");
         if (resposta == JOptionPane.YES_OPTION) {
             habilitaCampos(false);
@@ -273,12 +289,14 @@ public class CadCor extends MetodosGlobais {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnGravarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnGravarKeyPressed
+        // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             btnCancelar.grabFocus();
         }
     }//GEN-LAST:event_btnGravarKeyPressed
 
     private void btnGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGravarActionPerformed
+        // TODO add your handling code here:
         int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente gravar o registro?");
         if (resposta == JOptionPane.YES_OPTION) {
             GravarAlterar();
@@ -286,18 +304,21 @@ public class CadCor extends MetodosGlobais {
     }//GEN-LAST:event_btnGravarActionPerformed
 
     private void edtDescricaoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtDescricaoKeyPressed
+        // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             btnGravar.grabFocus();
         }
     }//GEN-LAST:event_edtDescricaoKeyPressed
 
     private void btnConsultaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnConsultaKeyPressed
+        // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             btnSair.grabFocus();
         }
     }//GEN-LAST:event_btnConsultaKeyPressed
 
     private void btnConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaActionPerformed
+        // TODO add your handling code here:
         ConsultaCor form = new ConsultaCor(edtCodigo);
         this.getDesktopPane().add(form);
         form.setVisible(true);
@@ -320,14 +341,15 @@ public class CadCor extends MetodosGlobais {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(CadCor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(CadCor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(CadCor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CadCor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

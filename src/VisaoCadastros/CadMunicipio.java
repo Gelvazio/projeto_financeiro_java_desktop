@@ -30,22 +30,15 @@ public class CadMunicipio extends MetodosGlobais {
 
     }
 
-    private void habilitaCampos(boolean habilita) {
-        edtCodigo.setEnabled(!habilita);
-        cbEstado.setEnabled(!habilita);
+    public void habilitaCampos(boolean habilita) {
+        edtCodigo.setEnabled(habilita);
         edtDescricao.setEnabled(habilita);
         edtCEP.setEnabled(habilita);
         edtIBGE.setEnabled(habilita);
         edtCodigo.requestFocus();
-
-        btnGravar.setEnabled(habilita);
-        btnCancelar.setEnabled(habilita);
-        btnConsulta.setEnabled(!habilita);
-        btnExcluir.setEnabled(habilita);
         if (habilita) {
-            edtDescricao.requestFocus();
-        } else {
-            LimpaTela();
+            EstadoDB estadodb = new EstadoDB();
+            cbEstado.setModel(estadodb.getComboEstado());
         }
     }
 
@@ -54,7 +47,7 @@ public class CadMunicipio extends MetodosGlobais {
         edtDescricao.setText("");
         edtCEP.setText("");
         edtIBGE.setText("");
-        edtCodigo.requestFocus();
+        edtCodigo.grabFocus();
     }
 
     private void Excluir_Registro() {
@@ -65,7 +58,7 @@ public class CadMunicipio extends MetodosGlobais {
             int auxCodigo = Integer.parseInt(edtCodigo.getText());
             if (cidadedb.excluirCidade(auxEstado, auxCodigo)) {
                 JOptionPane.showMessageDialog(null, "Exclusão efetuada com sucesso!");
-                habilitaCampos(false);
+                LimpaTela();
             } else {
                 JOptionPane.showMessageDialog(null, "Não foi possivel excluir o registro!!");
             }
@@ -136,7 +129,7 @@ public class CadMunicipio extends MetodosGlobais {
         habilitaCampos(false);
     }
 
-    private void validaCodigoNaoNulo() {
+    private void ValidaCampoCodigoNãoNulo() {
         String auxEstado = cbEstado.getSelectedItem().toString();
         String auxTexto = edtCodigo.getText();
         Connection conn = null;
@@ -145,7 +138,6 @@ public class CadMunicipio extends MetodosGlobais {
         MunicipioDB cidadedb = new MunicipioDB();
         int cd_cidade = Integer.parseInt(auxTexto);
         if (cidadedb.getCidade(auxEstado, cd_cidade)) {
-            habilitaCampos(true);
             try {
                 conn = Conexao.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaCidade);
@@ -169,12 +161,11 @@ public class CadMunicipio extends MetodosGlobais {
                 JOptionPane.showMessageDialog(null, "Erro de conexão! " + erro);
             }
         } else {
-            int resposta = JOptionPane.showConfirmDialog(null, "Cidade Não Cadastrada! \n Deseja cadastrar o registro?");
-            if (resposta == JOptionPane.YES_OPTION) {
-                habilitaCampos(true);
-            } else {
-                habilitaCampos(false);
-            }
+            JOptionPane.showMessageDialog(null, "Cidade Não Cadastrada!");
+            edtDescricao.setText("");
+            edtCEP.setText("");
+            edtIBGE.setText("");
+            edtDescricao.grabFocus();
         }
     }
 
@@ -220,35 +211,68 @@ public class CadMunicipio extends MetodosGlobais {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        edtCodigo = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        edtDescricao = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        edtCEP = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        edtIBGE = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        cbEstado = new javax.swing.JComboBox();
+        jLabel9 = new javax.swing.JLabel();
         btnGravar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnConsulta = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        edtIBGE = new javax.swing.JTextField();
-        edtCEP = new javax.swing.JTextField();
-        edtDescricao = new javax.swing.JTextField();
-        edtCodigo = new javax.swing.JTextField();
-        cbEstado = new javax.swing.JComboBox();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        edtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                edtCodigoKeyPressed(evt);
+            }
+        });
+
+        jLabel7.setText("Código:");
+
+        jLabel2.setText("Nome:");
+
+        edtDescricao.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                edtDescricaoKeyPressed(evt);
+            }
+        });
+
+        jLabel8.setText("CEP:");
+
+        edtCEP.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                edtCEPKeyPressed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel1.setText("Cadastro de Municípios");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 0, 270, 39));
+        jLabel1.setText("Cadastro de Cidade");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        edtIBGE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                edtIBGEKeyPressed(evt);
+            }
+        });
+
+        jLabel11.setText("Cod.ibge:");
+
+        cbEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbEstado.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cbEstadoKeyPressed(evt);
+            }
+        });
+
+        jLabel9.setText("Estado:");
 
         btnGravar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Valid Green.png"))); // NOI18N
         btnGravar.setText("Gravar");
@@ -262,7 +286,6 @@ public class CadMunicipio extends MetodosGlobais {
                 btnGravarKeyPressed(evt);
             }
         });
-        jPanel1.add(btnGravar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 120, -1));
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Cancel.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
@@ -276,7 +299,6 @@ public class CadMunicipio extends MetodosGlobais {
                 btnCancelarKeyPressed(evt);
             }
         });
-        jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 120, -1));
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Remove Red.png"))); // NOI18N
         btnExcluir.setText("Excluir");
@@ -290,7 +312,6 @@ public class CadMunicipio extends MetodosGlobais {
                 btnExcluirKeyPressed(evt);
             }
         });
-        jPanel1.add(btnExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 120, -1));
 
         btnConsulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Search.png"))); // NOI18N
         btnConsulta.setText("Consulta");
@@ -304,7 +325,6 @@ public class CadMunicipio extends MetodosGlobais {
                 btnConsultaKeyPressed(evt);
             }
         });
-        jPanel1.add(btnConsulta, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 120, -1));
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Red.png"))); // NOI18N
         btnSair.setText("Sair");
@@ -313,78 +333,98 @@ public class CadMunicipio extends MetodosGlobais {
                 btnSairActionPerformed(evt);
             }
         });
-        jPanel1.add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 120, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 50, 150, 270));
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        edtIBGE.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                edtIBGEKeyPressed(evt);
-            }
-        });
-        jPanel2.add(edtIBGE, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 170, 100, -1));
-
-        edtCEP.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                edtCEPKeyPressed(evt);
-            }
-        });
-        jPanel2.add(edtCEP, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 130, 100, -1));
-
-        edtDescricao.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                edtDescricaoKeyPressed(evt);
-            }
-        });
-        jPanel2.add(edtDescricao, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, 270, -1));
-
-        edtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                edtCodigoKeyPressed(evt);
-            }
-        });
-        jPanel2.add(edtCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, 60, -1));
-
-        cbEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbEstado.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                cbEstadoKeyPressed(evt);
-            }
-        });
-        jPanel2.add(cbEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 30, 79, -1));
-
-        jLabel7.setText("Código:");
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
-
-        jLabel9.setText("Estado:");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
-
-        jLabel2.setText("Nome:");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1, -1));
-
-        jLabel8.setText("CEP:");
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, -1, -1));
-
-        jLabel11.setText("Cod.ibge:");
-        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, -1, -1));
-
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 360, 220));
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jLabel11)
+                                .addGap(2, 2, 2))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(edtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(edtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(edtIBGE, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addGap(4, 4, 4)
+                                .addComponent(cbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(4, 4, 4)
+                                .addComponent(edtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnConsulta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGravar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(224, 224, 224)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(66, 66, 66)
+                                .addComponent(jLabel9))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(jLabel7))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(edtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(edtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(edtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(edtIBGE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnGravar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCancelar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnExcluir)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnConsulta)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSair)))))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
-
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 560, 20));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -395,7 +435,7 @@ public class CadMunicipio extends MetodosGlobais {
             if (auxTexto.equals("")) {
                 JOptionPane.showMessageDialog(null, "Digite um codigo de cidade valido!");
             } else {
-                validaCodigoNaoNulo();
+                ValidaCampoCodigoNãoNulo();
             }
         }
     }//GEN-LAST:event_edtCodigoKeyPressed
@@ -421,7 +461,10 @@ public class CadMunicipio extends MetodosGlobais {
 
     private void cbEstadoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cbEstadoKeyPressed
         // TODO add your handling code here:
-
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            edtCodigo.grabFocus();
+            habilitaCampos(true);
+        }
     }//GEN-LAST:event_cbEstadoKeyPressed
 
     private void btnGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGravarActionPerformed
@@ -443,7 +486,8 @@ public class CadMunicipio extends MetodosGlobais {
         // TODO add your handling code here:
         int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente Cancelar a Edição?");
         if (resposta == JOptionPane.YES_OPTION) {
-            habilitaCampos(false);
+            LimpaTela();
+            edtCodigo.grabFocus();
         }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -518,12 +562,6 @@ public class CadMunicipio extends MetodosGlobais {
         }
         //</editor-fold>
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -549,8 +587,5 @@ public class CadMunicipio extends MetodosGlobais {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 }

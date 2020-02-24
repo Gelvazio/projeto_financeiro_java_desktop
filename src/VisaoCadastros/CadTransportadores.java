@@ -11,7 +11,6 @@ import Principal.MetodosGlobais;
 import VisaoConsultasCadastro.ConsultaEstadoPessoa;
 import VisaoConsultasCadastro.ConsultaMunicipio;
 import VisaoConsultasCadastro.ConsultaPaises;
-import VisaoConsultasCadastro.ConsultaTransportadora;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,8 +48,7 @@ public class CadTransportadores extends MetodosGlobais {
     SimpleDateFormat formatadata = new SimpleDateFormat("dd/MM/yyyy");
     GregorianCalendar hora = new GregorianCalendar();
     SimpleDateFormat formatahora = new SimpleDateFormat("HH:mm:hh");
-    boolean VerificaHabilitacaoCampos = false;
-
+ boolean VerificaHabilitacaoCampos = false;
     /**
      * Creates new form CadPessoa
      */
@@ -92,7 +90,7 @@ public class CadTransportadores extends MetodosGlobais {
         btnCancelar.setEnabled(habilita);
         btnConsulta.setEnabled(!habilita);
         btnExcluir.setEnabled(habilita);
-
+        
         //Botoes Radio
         RadioAtivo.setEnabled(habilita);
         RadioConsumo.setEnabled(habilita);
@@ -104,20 +102,21 @@ public class CadTransportadores extends MetodosGlobais {
         RadioVendedor.setEnabled(habilita);
         RadioFornecedor.setEnabled(habilita);
         RadioTransportadora.setEnabled(habilita);
-
+        
         //Datas
         edtDataAlteracao.setEnabled(habilita);
         edtDataCadastro.setEnabled(habilita);
         edtHoraAlteracao.setEnabled(habilita);
         edtHoraCadastro.setEnabled(habilita);
-
+        
         edtInscricaoEstadual.setEnabled(habilita);
+        
 
         if (habilita) {
-            VerificaHabilitacaoCampos = true;
+            VerificaHabilitacaoCampos=true;
             edtCodigo.requestFocus();
         } else {
-            VerificaHabilitacaoCampos = false;
+            VerificaHabilitacaoCampos=false;
             LimpaTela();
         }
     }
@@ -752,8 +751,8 @@ public class CadTransportadores extends MetodosGlobais {
         cbEstado.removeAllItems();
         cbSiglaEstado.removeAllItems();
         cbPais.removeAllItems();
-
-        //Botoes Radio
+        
+         //Botoes Radio
         RadioAtivo.setSelected(false);
         RadioConsumo.setSelected(false);
         Radiorevenda.setSelected(false);
@@ -764,7 +763,7 @@ public class CadTransportadores extends MetodosGlobais {
         RadioVendedor.setSelected(false);
         RadioFornecedor.setSelected(false);
         RadioTransportadora.setSelected(false);
-
+        
         //Datas
         edtDataAlteracao.setText("");
         edtDataCadastro.setText("");
@@ -869,90 +868,90 @@ public class CadTransportadores extends MetodosGlobais {
     }
 
     private void ComboBoxEstado() {
-        if (VerificaHabilitacaoCampos) {
-            Connection conn = null;
-            Statement stmt = null;
-            ResultSet rs = null;
-            String sql
-                    = "SELECT                "
-                    + "    ESTADO.*          "
-                    + "FROM                  "
-                    + "     ESTADO           "
-                    + "WHERE                 "
-                    + "    ESTADO.DS_ESTADO='" + cbEstado.getSelectedItem() + "'";
-            try {
-                conn = Conexao.getConexao();
-                stmt = conn.createStatement();
-                rs = stmt.executeQuery(sql);
-                rs.next();
-                String auxcd_estado = rs.getString("cd_estado");
-                cbSiglaEstado.setSelectedItem(auxcd_estado);
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Estado não encontrado!Erro na funcao ComboBoxEstado()!:" + ex.getMessage());
-            }
+        if(VerificaHabilitacaoCampos){
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        String sql
+                = "SELECT                "
+                + "    ESTADO.*          "
+                + "FROM                  "
+                + "     ESTADO           "
+                + "WHERE                 "
+                + "    ESTADO.DS_ESTADO='" + cbEstado.getSelectedItem() + "'";
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            rs.next();
+            String auxcd_estado = rs.getString("cd_estado");
+            cbSiglaEstado.setSelectedItem(auxcd_estado);            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Estado não encontrado!Erro na funcao ComboBoxEstado()!:" + ex.getMessage());
         }
+      }
     }
 
     private void ComboBoxCidade() {
-        if (VerificaHabilitacaoCampos) {
-            Connection conn = null;
-            PreparedStatement pstmt = null;
-            ResultSet rs = null;
-
-            String auxCodigoEstado = cbSiglaEstado.getSelectedItem().toString();
-            String nomeCidade = cbCidade.getSelectedItem().toString();
-            String sql
-                    = "SELECT                      "
-                    + "    MUNICIPIO.*             "
-                    + "FROM                        "
-                    + "    MUNICIPIO               "
-                    + "WHERE                       "
-                    + "     MUNICIPIO.CD_ESTADO=?   "
-                    + "     AND                     "
-                    + "     MUNICIPIO.DS_MUNICIPIO=?";// + cbCidade.getSelectedItem() + "'";
-            try {
-                conn = Conexao.getConexao();
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, auxCodigoEstado);
-                pstmt.setString(2, nomeCidade);
-                rs = pstmt.executeQuery();
-                rs.next();
-                int auxcd_municipio = rs.getInt("cd_municipio");
-                String aux = "";
-                aux = "" + auxcd_municipio;
-                edtCodigoCidade.setText(aux);
-                edtCodigoCidade.setVisible(true);
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Cidade não encontrada!Erro na funcao ComboBoxCidade()!:" + ex.getMessage());
-            }
+        if(VerificaHabilitacaoCampos){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        
+        String auxCodigoEstado = cbSiglaEstado.getSelectedItem().toString();
+        String nomeCidade=cbCidade.getSelectedItem().toString();
+        String sql
+                = "SELECT                      "
+                + "    MUNICIPIO.*             "
+                + "FROM                        "
+                + "    MUNICIPIO               "
+                + "WHERE                       "
+                + "     MUNICIPIO.CD_ESTADO=?   "
+                + "     AND                     "
+                + "     MUNICIPIO.DS_MUNICIPIO=?";// + cbCidade.getSelectedItem() + "'";
+        try {
+            conn = Conexao.getConexao();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, auxCodigoEstado);
+            pstmt.setString(2, nomeCidade);
+            rs = pstmt.executeQuery();
+            rs.next();
+            int auxcd_municipio = rs.getInt("cd_municipio");
+            String aux = "";
+            aux = "" + auxcd_municipio;
+            edtCodigoCidade.setText(aux);
+            edtCodigoCidade.setVisible(true);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Cidade não encontrada!Erro na funcao ComboBoxCidade()!:" + ex.getMessage());
+        }
         }
     }
 
     private void ComboBoxPais() {
-        if (VerificaHabilitacaoCampos) {
-            Connection conn = null;
-            Statement stmt = null;
-            ResultSet rs = null;
-            String sql
-                    = "SELECT            "
-                    + "    PAIS.*        "
-                    + "FROM              "
-                    + "    PAIS          "
-                    + "WHERE             "
-                    + "    PAIS.NM_PAIS='" + cbPais.getSelectedItem() + "'";
-            try {
-                conn = Conexao.getConexao();
-                stmt = conn.createStatement();
-                rs = stmt.executeQuery(sql);
-                rs.next();
-                int auxcd_pais = rs.getInt("cd_pais");
-                String aux = "";
-                aux = "" + auxcd_pais;
-                edtCodigoPais.setText(aux);
-                edtCodigoPais.setVisible(true);
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Pais não encontrado!Erro na funcao ComboBoxPais()!:" + ex.getMessage());
-            }
+        if(VerificaHabilitacaoCampos){
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        String sql
+                = "SELECT            "
+                + "    PAIS.*        "
+                + "FROM              "
+                + "    PAIS          "
+                + "WHERE             "
+                + "    PAIS.NM_PAIS='" + cbPais.getSelectedItem() + "'";
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            rs.next();
+            int auxcd_pais = rs.getInt("cd_pais");
+            String aux = "";
+            aux = "" + auxcd_pais;
+            edtCodigoPais.setText(aux);
+            edtCodigoPais.setVisible(true);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Pais não encontrado!Erro na funcao ComboBoxPais()!:" + ex.getMessage());
+        }
         }
     }
 
@@ -1102,43 +1101,43 @@ public class CadTransportadores extends MetodosGlobais {
         } else if (nm_pessoa.equals("")) {
             JOptionPane.showMessageDialog(null, "Favor Preencher o Nome da Pessoa!");
             edtNome.grabFocus();
-        } else {
-
-            if (nr_inscricao_estadual.equals("")) {
-                nr_inscricao_estadual = "ISENTO";
-            }
+        } else  {
+            
+        if (nr_inscricao_estadual.equals("")) {
+            nr_inscricao_estadual="ISENTO";
+        }
             //Dados da classe
-            Pessoa pessoa = new Pessoa(
-                    cd_pessoa,
-                    nm_pessoa,
-                    fg_cliente,
-                    fg_vendedor,
-                    fg_fornecedor,
-                    ds_endereco,
-                    nr_endereco,
-                    ds_bairro,
-                    cd_estado,
-                    cd_cidade,
-                    cd_pais,
-                    cd_cep,
-                    ds_email,
-                    nr_telefone,
-                    cd_cgccpf,
-                    cd_usuario,
-                    DataAlteracao,
-                    javasqltimehoraAlteracao,
-                    DataCadastro,
-                    javasqltimehoraCadastro,
-                    cd_filial,
-                    nr_inscricao_estadual,
-                    tipo_consumo,
-                    regime_tributacao,
-                    fg_transportador,
-                    fg_ativo
-            );
-
-            if (pessoadb.getPessoa(cd_pessoa)) {
-                if (pessoadb.alterarPessoa(pessoa)) {
+        Pessoa pessoa = new Pessoa(
+                cd_pessoa,
+                nm_pessoa,
+                fg_cliente,
+                fg_vendedor,
+                fg_fornecedor,
+                ds_endereco,
+                nr_endereco,
+                ds_bairro,
+                cd_estado,
+                cd_cidade,
+                cd_pais,
+                cd_cep,
+                ds_email,
+                nr_telefone,
+                cd_cgccpf,
+                cd_usuario,
+                DataAlteracao,
+                javasqltimehoraAlteracao,
+                DataCadastro,
+                javasqltimehoraCadastro,
+                cd_filial,
+                nr_inscricao_estadual,
+                tipo_consumo,
+                regime_tributacao,
+                fg_transportador,
+                fg_ativo
+        );
+        
+        if(pessoadb.getPessoa(cd_pessoa)){
+            if (pessoadb.alterarPessoa(pessoa)) {
                     JOptionPane.showMessageDialog(null, "Registro alterado com sucesso!");
                     habilitaCampos(false);
                 } else {
@@ -1233,7 +1232,7 @@ public class CadTransportadores extends MetodosGlobais {
                     int auxfg_vendedor = rs.getInt("fg_vendedor");
                     int auxfg_fornecedor = rs.getInt("fg_fornecedor");
                     int auxfg_transportador = rs.getInt("fg_transportador");
-
+                    
                     //Campos de Data
                     Date dt_alt = rs.getDate("dt_alt");
                     Time hr_alt = rs.getTime("hr_alt");
@@ -1283,7 +1282,7 @@ public class CadTransportadores extends MetodosGlobais {
                     cbSiglaEstado.setSelectedItem(auxCD_ESTADO);
                     edtCodigoCidade.setText(auxCD_CIDADE_String);
                     edtCodigoPais.setText(auxCD_PAIS_String);
-
+                    
                     edtNome.setText(auxNM_PESSOA);
                     edtEndereco.setText(auxDS_ENDERECO);
                     edtNumero.setText(auxNR_ENDERECO);
@@ -1296,9 +1295,9 @@ public class CadTransportadores extends MetodosGlobais {
 
                     //Validacao dos combobox da tela
                     ValidaCampoCodigoEstadoNaoNulo();
-
+                                     
                     ValidaCampoCodigoPaisNaoNulo();
-                    AlteraParaDataHoraAtual();
+                    AlteraParaDataHoraAtual() ;
                 }
             } catch (SQLException erro) {
                 JOptionPane.showMessageDialog(null, "Erro de conexão no Método ValidaCampoCodigoNãoNulo()! " + erro.getMessage());
@@ -1318,8 +1317,8 @@ public class CadTransportadores extends MetodosGlobais {
 
     private void btnLocalizaPaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocalizaPaisActionPerformed
         ConsultaPaises form = new ConsultaPaises(edtCodigoPais);
-        this.getDesktopPane().add(form);
-        form.setVisible(true);
+         this.getDesktopPane().add(form);
+         form.setVisible(true);
     }//GEN-LAST:event_btnLocalizaPaisActionPerformed
 
     private void edtCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtCodigoKeyPressed
@@ -1344,7 +1343,7 @@ public class CadTransportadores extends MetodosGlobais {
                 //Combobox Pais
                 cbPais.setModel(paisdb.getComboPais());
                 ComboBoxPais();
-
+                
                 AlteraParaDataHoraAtual();
 
             } else {
@@ -1439,6 +1438,7 @@ private void edtEmailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         this.getDesktopPane().add(formulario);
         formulario.setVisible(true);
 
+
     }//GEN-LAST:event_btnLocalizaEstadoActionPerformed
 
     private void btnLocalizaEstadoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnLocalizaEstadoKeyPressed
@@ -1503,7 +1503,7 @@ private void edtEmailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     }//GEN-LAST:event_btnExcluirKeyPressed
 
     private void btnConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaActionPerformed
-        ConsultaTransportadora form = new ConsultaTransportadora(edtCodigo);
+        ConsultaPessoa form = new ConsultaPessoa(edtCodigo);
         this.getDesktopPane().add(form);
         form.setVisible(true);
         edtCodigo.grabFocus();
@@ -1582,7 +1582,7 @@ private void edtEmailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     private void RadiorevendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadiorevendaActionPerformed
         // TODO add your handling code here:
-        RadioConsumo.setSelected(false);
+       RadioConsumo.setSelected(false);
     }//GEN-LAST:event_RadiorevendaActionPerformed
 
     private void RadioPessoaFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioPessoaFisicaActionPerformed
@@ -1592,7 +1592,7 @@ private void edtEmailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     private void RadioSimplesNacionalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioSimplesNacionalActionPerformed
         // TODO add your handling code here:
-        RadioPessoaFisica.setSelected(false);
+       RadioPessoaFisica.setSelected(false);
         RadioRegimeNormal.setSelected(false);
     }//GEN-LAST:event_RadioSimplesNacionalActionPerformed
 

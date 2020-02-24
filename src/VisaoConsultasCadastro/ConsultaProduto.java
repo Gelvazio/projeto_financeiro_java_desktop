@@ -43,7 +43,7 @@ public class ConsultaProduto extends MetodosGlobais {
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Erro no Método getComboCampo(): \n" + erro.getMessage());
         } finally {
-
+            
         }
         return modelo;
     }
@@ -68,7 +68,7 @@ public class ConsultaProduto extends MetodosGlobais {
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Erro no Método getComboValor(): \n" + erro.getMessage());
         } finally {
-
+            
         }
         return modelo;
     }
@@ -217,7 +217,7 @@ public class ConsultaProduto extends MetodosGlobais {
             //Nessa Parte é passado po parametro os Dados da Variavel "SQLConsulta_Produto" que contem o sql da pesquisa.
             rs = stmt.executeQuery(SQLConsulta_Produto);
             while (rs.next()) {
-                int CD_PROD = rs.getInt("CD_PROD");
+                             int CD_PROD = rs.getInt("CD_PROD");
                 String DS_PROD = rs.getString("DS_PROD");
                 int CD_GRUPO = rs.getInt("CD_GRUPO");
                 int CD_SUB_GRUPO = rs.getInt("CD_SUB_GRUPO");
@@ -231,28 +231,23 @@ public class ConsultaProduto extends MetodosGlobais {
                 int cd_usuario = rs.getInt("cd_usuario");
                 int cd_filial = rs.getInt("cd_filial");
                 int cd_unidade_medida = rs.getInt("cd_unidade_medida");
-                int qt_estoque = rs.getInt("qt_estoque");
-                int tx_ipi = rs.getInt("tx_ipi");
-                int tx_iss = rs.getInt("tx_iss");
-
+int qt_estoque = rs.getInt("qt_estoque");
                 ProdutoSimples produto = new ProdutoSimples(
                         CD_PROD,
-                        DS_PROD,
+                        DS_PROD, 
                         CD_GRUPO,
                         CD_SUB_GRUPO,
                         FG_ATIVO,
-                        CD_COR,
+                        CD_COR, 
                         CD_FABRICA,
                         CD_MARCA,
                         CD_GP_FISCAL,
-                        CD_NCM_SH,
-                        CD_REF,
+                        CD_NCM_SH, 
+                        CD_REF, 
                         cd_usuario,
                         cd_filial,
                         cd_unidade_medida,
-                        qt_estoque,
-                        tx_ipi,
-                        tx_iss
+                        qt_estoque
                 );
                 listaProduto.add(produto);
             }
@@ -261,7 +256,7 @@ public class ConsultaProduto extends MetodosGlobais {
         } finally {
             Conexao.closeAll(conn);
         }
-        return listaProduto;
+                    return listaProduto;
     }
 
     private void ListaTodosProdutos() {
@@ -457,21 +452,24 @@ public class ConsultaProduto extends MetodosGlobais {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cbCampo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(edtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbCampo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(edtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(10, 10, 10))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(cbValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(3, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -496,7 +494,7 @@ public class ConsultaProduto extends MetodosGlobais {
                 .addContainerGap()
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
                 .addContainerGap())

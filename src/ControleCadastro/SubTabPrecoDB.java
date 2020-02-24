@@ -32,8 +32,8 @@ import java.util.ArrayList;
  *
  * @author Gelvazio Camargo
  */
-public class SubTabPrecoDB extends MetodosGlobais {
-
+public class SubTabPrecoDB extends MetodosGlobais{
+    
     private static final String sqlTodos
             = "SELECT * FROM SUB_TAB_PRECO BY SUB_TAB_PRECO.CD_REF";
     private static final String sqlExcluir
@@ -62,7 +62,7 @@ public class SubTabPrecoDB extends MetodosGlobais {
             + "CAST('NOW' AS TIME),"
             + " CAST('NOW' AS DATE),"
             + " CAST('NOW' AS TIME),?); ";
-    private static final String sqlAlterar = "UPDATE SUB_TAB_PRECO SET VL_CUSTO = ?,"
+    private static final String sqlAlterar= "UPDATE SUB_TAB_PRECO SET VL_CUSTO = ?,"
             + "    VL_VENDA = ?,"
             + "    VL_PROMOCAO = ?,"
             + "    VL_ESPECIAL = ?,"
@@ -83,7 +83,6 @@ public class SubTabPrecoDB extends MetodosGlobais {
             + "    SUB_TAB_PRECO     "
             + "WHERE                 "
             + "    SUB_TAB_PRECO.CD_REF=?          ";
-
     public boolean alterarSubTabPreco(SubTabPreco subtabpreco) {
         boolean alterou = false;
         Connection conn = null;
@@ -98,7 +97,7 @@ public class SubTabPrecoDB extends MetodosGlobais {
             pstmt.setDouble(5, subtabpreco.getVl_custo_med());
             pstmt.setDouble(6, subtabpreco.getTx_margem_lucro_venda());
             pstmt.setDouble(7, subtabpreco.getTx_margem_lucro_promocao());
-            pstmt.setDouble(8, subtabpreco.getTx_margem_lucro_especial());
+            pstmt.setDouble(8, subtabpreco.getTx_margem_lucro_especial());            
             pstmt.setInt(9, subtabpreco.getCd_usuario());
             pstmt.setInt(10, subtabpreco.getCd_filial());
             pstmt.setLong(11, subtabpreco.getCd_ref());
@@ -127,13 +126,13 @@ public class SubTabPrecoDB extends MetodosGlobais {
             pstmt.setDouble(6, subtabpreco.getVl_custo_med());
             pstmt.setDouble(7, subtabpreco.getTx_margem_lucro_venda());
             pstmt.setDouble(8, subtabpreco.getTx_margem_lucro_promocao());
-            pstmt.setDouble(9, subtabpreco.getTx_margem_lucro_especial());
+            pstmt.setDouble(9, subtabpreco.getTx_margem_lucro_especial());            
             pstmt.setInt(10, subtabpreco.getCd_usuario());
-            pstmt.setInt(11, subtabpreco.getCd_filial());
+            pstmt.setInt(11, subtabpreco.getCd_filial());            
             pstmt.executeUpdate();
             inseriu = true;
         } catch (SQLException erro) {
-            mensagemErro("Erro de sql. inserirSubTabPreco(): \n" + erro.getMessage());
+           mensagemErro("Erro de sql. inserirSubTabPreco(): \n" + erro.getMessage());
         } finally {
             Conexao.closeAll(conn);
         }

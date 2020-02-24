@@ -51,14 +51,14 @@ public class SubCondPagDB {
             + "(?,?,?,?,?,CAST('NOW' AS DATE),           "
             + "CAST('NOW' AS TIME), CAST('NOW' AS DATE), "
             + "CAST('NOW' AS TIME));                     ";
-    private static final String sqlAlterar = "UPDATE SUB_COND_PAG SET                       "
-            + "    NR_DIAS_PARCELA = ?,                    "
-            + "    CD_COBRANCA = ?,                        "
-            + "    CD_USUARIO = ?,                         "
-            + "    DT_ALT =CAST('NOW' AS DATE),            "
-            + "    HR_ALT =CAST('NOW' AS TIME)             "
-            + "WHERE (CD_CONDICAO = ?) AND (CD_PARCELA = ?)";
-    private static final String sqlExcluirTodooGrid
+    private static final String sqlAlterar ="UPDATE SUB_COND_PAG SET                       "
+                                            + "    NR_DIAS_PARCELA = ?,                    "
+                                            + "    CD_COBRANCA = ?,                        "
+                                            + "    CD_USUARIO = ?,                         "
+                                            + "    DT_ALT =CAST('NOW' AS DATE),            "
+                                            + "    HR_ALT =CAST('NOW' AS TIME)             "
+                                            + "WHERE (CD_CONDICAO = ?) AND (CD_PARCELA = ?)";
+        private static final String sqlExcluirTodooGrid
             = "DELETE FROM                    "
             + "    SUB_COND_PAG               "
             + "WHERE                          "
@@ -245,7 +245,6 @@ public class SubCondPagDB {
         }
         return codigoParcelas;
     }
-
     public boolean excluirGridInteiro(int cd_condicao_pagamento) {
         boolean excluiu = false;
         Connection conn = null;

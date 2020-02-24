@@ -90,7 +90,8 @@ public class MarkupDB {
             + "    MARKUP.CD_GRUPO_FISCAL=?"
             + "    AND                     "
             + "    MARKUP.CD_ESTADO=?      ";
-
+            
+            
     private static final String sqlMarkupPeloGrupoFiscal
             = "SELECT                 "
             + "    COUNT(*) AS TOTAL  "
@@ -98,14 +99,14 @@ public class MarkupDB {
             + "    MARKUP             "
             + "WHERE                  "
             + "    CD_GRUPO_FISCAL=?  ";
-
+    
     private static final String sqlBuscaMarkup
             = "SELECT                      "
             + "    MARKUP.*                "
             + "FROM                        "
             + "    MARKUP                  "
             + "WHERE                       "
-            + "    MARKUP.CD_GRUPO_FISCAL=?";
+            + "    MARKUP.CD_GRUPO_FISCAL=?";    
 
     public DefaultComboBoxModel getComboMarkup() {
         DefaultComboBoxModel modelo = new DefaultComboBoxModel();
@@ -160,7 +161,7 @@ public class MarkupDB {
             pstmt.setString(2, markup.getCd_estado());
             pstmt.setInt(3, markup.getTx_icms_interno());
             pstmt.setInt(4, markup.getTx_icms_interestadual());
-            pstmt.setInt(5, markup.getCd_usuario());
+            pstmt.setInt(5, markup.getCd_usuario());            
             pstmt.executeUpdate();
             inseriu = true;
         } catch (SQLException erro) {
@@ -240,10 +241,10 @@ public class MarkupDB {
                 int auxcdgrupofiscal = rs.getInt("CD_GRUPO_FISCAL");
                 String cdestado = rs.getString("CD_ESTADO");
                 int auxtxicmsinterno = rs.getInt("TX_ICMS_INTERNO");
-                int auxtxicmsinterestadual = rs.getInt("TX_ICMS_INTERESTADUAL");
+                int auxtxicmsinterestadual= rs.getInt("TX_ICMS_INTERESTADUAL");
                 int auxcdusuario = rs.getInt("CD_USUARIO");
 
-                Markup markup = new Markup(
+                Markup markup  = new Markup(
                         auxcdgrupofiscal,
                         cdestado,
                         auxtxicmsinterno,
@@ -259,7 +260,7 @@ public class MarkupDB {
         return listaMarkup;
     }
 
-    public boolean getMarkup(int cdgrupofiscal, String cdestado) {
+    public boolean getMarkup(int cdgrupofiscal,String cdestado ) {
         boolean existe = false;
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -269,7 +270,7 @@ public class MarkupDB {
             pstmt = conn.prepareStatement(sqlMarkup);
             pstmt.setInt(1, cdgrupofiscal);
             pstmt.setString(2, cdestado);
-
+            
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 existe = rs.getInt("TOTAL") > 0;
@@ -302,36 +303,36 @@ public class MarkupDB {
         }
         return existe;
     }
-
-    public ArrayList listaMarkups(int codigo) {
+        
+    public ArrayList listaMarkups( int codigo) {
         ArrayList listaMarkup = new ArrayList();
         Connection conn = null;
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            conn = Conexao.getConexao();
-            pstmt = conn.prepareStatement(sqlBuscaMarkup);
-            pstmt.setInt(1, codigo);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
+        ResultSet rs = null;       
+            try {
+                conn = Conexao.getConexao();
+                pstmt = conn.prepareStatement(sqlBuscaMarkup);
+                pstmt.setInt(1, codigo);
+                rs = pstmt.executeQuery();  
+                while (rs.next()) {
                 int auxcdgrupofiscal = rs.getInt("CD_GRUPO_FISCAL");
                 String cdestado = rs.getString("CD_ESTADO");
                 int auxtxicmsinterno = rs.getInt("TX_ICMS_INTERNO");
-                int auxtxicmsinterestadual = rs.getInt("TX_ICMS_INTERESTADUAL");
+                int auxtxicmsinterestadual= rs.getInt("TX_ICMS_INTERESTADUAL");
                 int auxcdusuario = rs.getInt("CD_USUARIO");
 
-                Markup markup = new Markup(
+                Markup markup  = new Markup(
                         auxcdgrupofiscal,
                         cdestado,
                         auxtxicmsinterno,
                         auxtxicmsinterestadual,
                         auxcdusuario);
                 listaMarkup.add(markup);
-            }
-        } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro no Método listaMarkups()! " + erro.getMessage());
-        } finally {
-            Conexao.closeAll(conn);
+                }
+            } catch (SQLException erro) {
+                JOptionPane.showMessageDialog(null, "Erro no Método listaMarkups()! " + erro.getMessage());
+            } finally {
+            Conexao.closeAll(conn);            
         }
         return listaMarkup;
     }

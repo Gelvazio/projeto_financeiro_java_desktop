@@ -8,6 +8,7 @@ public class Cpf {
 
     /**
      * Realiza a validação do Cpf.
+     *
      * @param strCPF número de Cpf a ser validado
      * @return true se o Cpf é válido e false se não é válido
      */

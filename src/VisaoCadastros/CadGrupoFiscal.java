@@ -9,7 +9,6 @@ import ModeloCadastro.MarkupOO;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import VisaoConsultasCadastro.ConsultaGrupo;
-import VisaoConsultasCadastro.ConsultaGrupoFiscal;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -41,7 +40,7 @@ public class CadGrupoFiscal extends MetodosGlobais {
 
     int iteradorarrayCodigosSubgrupo = 0;
     int arrayCodigosSubgrupo[] = new int[iteradorarrayCodigosSubgrupo];
-
+    
     private static String codigosParaNaoDeletarSubGrupo = "";
 
     private static String sqlexcluirItemForaGrid
@@ -234,7 +233,6 @@ public class CadGrupoFiscal extends MetodosGlobais {
     public void limpabancoegridsubgrup() {
         excluirItemForaGrid();
     }
-
     public void adicionarAlterarGrid() {
         boolean existeNoGrid = false;
         DefaultTableModel modelo = (DefaultTableModel) TabelaMarkup.getModel();
@@ -349,7 +347,7 @@ public class CadGrupoFiscal extends MetodosGlobais {
 
         int auxcodigogrupo = Integer.parseInt(edtCodigo.getText());
 
-        ArrayList<Markup> markup = markupdb.listaMarkups(auxcodigogrupo);
+        ArrayList<Markup> markup =markupdb.listaMarkups(auxcodigogrupo);
 
         if (markupdb.getMarkupPeloGrupo(auxcodigogrupo)) {
             for (Markup auxmarkup : markup) {
@@ -425,7 +423,6 @@ public class CadGrupoFiscal extends MetodosGlobais {
             int auxCodigo = Integer.parseInt(edtCodigo.getText());
             if (grupofiscaldb.excluir(auxCodigo)) {
                 JOptionPane.showMessageDialog(null, "Exclusão efetuada com sucesso!");
-                habilitaCampos(false);
             } else {
                 JOptionPane.showMessageDialog(null, "Não foi possivel excluir o registro!!");
             }
@@ -439,7 +436,7 @@ public class CadGrupoFiscal extends MetodosGlobais {
         if (grupofiscaldb.getGrupoFiscal(cd_grupo)) {
 
             habilitaCampos(true);
-
+            
             //Passa os dados do ArrayList para a classe GrupoFiscal
             ArrayList<GrupoFiscal> gruposfiscais = grupofiscaldb.listarGruposFiscais(cd_grupo);
             //Faz um For para incrementar na tela os dados 
@@ -573,17 +570,17 @@ public class CadGrupoFiscal extends MetodosGlobais {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel5.setText("Código:");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 50, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         jLabel2.setText("Descrição:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 60, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, -1, -1));
 
         edtNomeGrupoFiscal.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 edtNomeGrupoFiscalKeyPressed(evt);
             }
         });
-        jPanel1.add(edtNomeGrupoFiscal, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, 320, 30));
+        jPanel1.add(edtNomeGrupoFiscal, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, 490, 30));
 
         edtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -593,7 +590,7 @@ public class CadGrupoFiscal extends MetodosGlobais {
         jPanel1.add(edtCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 80, 30));
 
         jLabel8.setText("Estado:");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 50, -1));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, -1, -1));
 
         cbEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbEstado.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -614,7 +611,7 @@ public class CadGrupoFiscal extends MetodosGlobais {
                 edtNomeEstadoKeyPressed(evt);
             }
         });
-        jPanel1.add(edtNomeEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, 90, 30));
+        jPanel1.add(edtNomeEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, 260, 30));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel6.setText("Markup");
@@ -764,7 +761,7 @@ public class CadGrupoFiscal extends MetodosGlobais {
 
     private void btnConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaActionPerformed
         // TODO add your handling code here:
-        ConsultaGrupoFiscal form = new ConsultaGrupoFiscal(edtCodigo);
+        ConsultaGrupo form = new ConsultaGrupo(edtCodigo);
         this.getDesktopPane().add(form);
         form.setVisible(true);
         edtCodigo.grabFocus();

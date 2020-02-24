@@ -1,4 +1,9 @@
-package ModeloCadastro;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Model_Cadastro;
 
 /**
  *
@@ -15,9 +20,8 @@ public class Marca {
 
     int cd_marca;
     String ds_marca;
-    int cd_usuario;
 
-    public Marca(int cd_marca, String ds_marca, int cd_usuario) {
+    public Marca(int cd_marca, String ds_marca) {
         this.cd_marca = cd_marca;
         this.ds_marca = ds_marca;
     }
@@ -36,14 +40,6 @@ public class Marca {
 
     public void setDs_marca(String ds_marca) {
         this.ds_marca = ds_marca;
-    }
-
-    public int getCd_usuario() {
-        return cd_usuario;
-    }
-
-    public void setCd_usuario(int cd_usuario) {
-        this.cd_usuario = cd_usuario;
     }
 
 }

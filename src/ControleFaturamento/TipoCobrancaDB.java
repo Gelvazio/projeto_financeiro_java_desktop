@@ -87,7 +87,7 @@ public class TipoCobrancaDB {
             + "WHERE                 "
             + "    CD_COBRANCA=?     ";
 
-    private static final String SQLCONSULTANOMETIPOCOBRANCAS
+   private static final String SQLCONSULTANOMETIPOCOBRANCAS
             = "SELECT                                                  "
             + "    TIPO_COBRANCA.*                                     "
             + "FROM                                                    "
@@ -97,6 +97,7 @@ public class TipoCobrancaDB {
             + "WHERE                                                   "
             + "    SUB_COND_PAG.CD_CONDICAO=?                          ";
 
+   
     public DefaultComboBoxModel getComboRegistro() {
         DefaultComboBoxModel modelo = new DefaultComboBoxModel();
         Connection conn = null;

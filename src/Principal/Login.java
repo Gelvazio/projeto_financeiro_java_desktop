@@ -18,7 +18,8 @@ import javax.swing.JOptionPane;
  */
 public class Login extends JFrame {
 
-    private static final String SQL_BUSCA_USUARIO = "SELECT * FROM usuario WHERE ds_login = ?";
+    private static final String sqlBuscaUsuario
+            = "SELECT * FROM usuario WHERE ds_login=?";
 
     public static void iniciaLogin() {
         try {
@@ -26,14 +27,23 @@ public class Login extends JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Login.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
             public void run() {
                 new Login().setVisible(true);
             }
@@ -52,6 +62,7 @@ public class Login extends JFrame {
         int screenHeigth = screenSize.height - this.getHeight();
         //Divide o tamanho da tela para ficar no centro
         setLocation(screenWidth / 2, screenHeigth / 2);
+
     }
 
     /**
@@ -82,32 +93,25 @@ public class Login extends JFrame {
         Panel_Principal.setForeground(new java.awt.Color(153, 255, 153));
         Panel_Principal.setName(""); // NOI18N
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setText("Login:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
 
         jLabel3.setText("Senha:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, -1, -1));
 
         jLabel4.setText("Filial:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, -1, -1));
 
         edtFilial.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 edtFilialKeyPressed(evt);
             }
         });
-        jPanel1.add(edtFilial, new org.netbeans.lib.awtextra.AbsoluteConstraints(89, 101, 99, -1));
 
         edtSenha.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 edtSenhaKeyPressed(evt);
             }
         });
-        jPanel1.add(edtSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 99, -1));
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Red.png"))); // NOI18N
         btnSair.setText("Sair");
@@ -116,7 +120,6 @@ public class Login extends JFrame {
                 btnSairActionPerformed(evt);
             }
         });
-        jPanel1.add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(134, 139, 105, -1));
 
         btnEntrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagens/Faturamento/Knob Valid Green.png"))); // NOI18N
         btnEntrar.setText("Entrar");
@@ -135,14 +138,61 @@ public class Login extends JFrame {
                 btnEntrarKeyPressed(evt);
             }
         });
-        jPanel1.add(btnEntrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, -1, -1));
 
         edtLogin.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 edtLoginKeyPressed(evt);
             }
         });
-        jPanel1.add(edtLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 99, -1));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jLabel4))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(edtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(edtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(edtFilial, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(btnEntrar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSair, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(edtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(edtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(edtFilial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEntrar)
+                    .addComponent(btnSair))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         Panel_Principal.add(jPanel1);
         jPanel1.setBounds(80, 100, 250, 210);
@@ -182,7 +232,7 @@ public class Login extends JFrame {
         if (usuariodb.getLogin(auxLoginTela)) {
             try {
                 conn = Conexao.getConexao();
-                pstmt = conn.prepareStatement(SQL_BUSCA_USUARIO);
+                pstmt = conn.prepareStatement(sqlBuscaUsuario);
                 pstmt.setString(1, auxLoginTela);
                 rs = pstmt.executeQuery();
                 while (rs.next()) {
@@ -251,24 +301,23 @@ public class Login extends JFrame {
     }
 
     private void ValidaDadosUsuarioTela() {
-        ChamaTelaPrincipal();
-//        String auxSenha = edtSenha.getText();
-//        String auxFilial = edtFilial.getText();
-//        String ds_usuario = edtLogin.getText();
-//        if (ds_usuario.equals("")) {
-//            JOptionPane.showMessageDialog(null, "Favor Preencher o Login do Usuário!");
-//            edtLogin.grabFocus();
-//        } else if (auxSenha.equals("")) {
-//            JOptionPane.showMessageDialog(null, "Favor Preencher a Senha do Usuário!");
-//            edtSenha.grabFocus();
-//        } else if (auxFilial.equals("")) {
-//            JOptionPane.showMessageDialog(null, "Favor Preencher a Filial do Usuário!");
-//            edtFilial.grabFocus();
-//        } else {
-//            if (validaSenhaUsuario()) {
-//                ChamaTelaPrincipal();
-//            }
-//        }
+        String auxSenha = edtSenha.getText();
+        String auxFilial = edtFilial.getText();
+        String ds_usuario = edtLogin.getText();
+        if (ds_usuario.equals("")) {
+            JOptionPane.showMessageDialog(null, "Favor Preencher o Login do Usuário!");
+            edtLogin.grabFocus();
+        } else if (auxSenha.equals("")) {
+            JOptionPane.showMessageDialog(null, "Favor Preencher a Senha do Usuário!");
+            edtSenha.grabFocus();
+        } else if (auxFilial.equals("")) {
+            JOptionPane.showMessageDialog(null, "Favor Preencher a Filial do Usuário!");
+            edtFilial.grabFocus();
+        } else {
+            if (validaSenhaUsuario()) {
+                ChamaTelaPrincipal();
+            }
+        }
     }
 
     private void ChamaTelaPrincipal() {
@@ -346,13 +395,16 @@ public class Login extends JFrame {
 
         int numero = 0;
         //Se acessa o banco de dados,habilita 1 para abrir o login
-        if (Conexao.testaConexao()) {
+        if (Conexao.verificagetConexao()) {
             numero = 1;
         } else {
             numero = 2;
         }
         switch (numero) {
             case 1:
+                System.out.println("Deu Certo!");
+                //Executa um codigo
+                //Mantem o login
                 iniciaLogin();
                 break;
             case 2:
