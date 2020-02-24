@@ -1,7 +1,8 @@
 package ControleCadastro;
 
-import ModeloCadastro.Usuario;
+import ModelCadastro.Usuario;
 import Principal.Conexao;
+import Principal.Log;
 import Principal.MetodosGlobais;
 import static Principal.MetodosGlobais.mensagemErro;
 import java.sql.Connection;
@@ -19,15 +20,15 @@ public class UsuarioDB extends MetodosGlobais {
 
     //Parte dos SQL de Consultas
     private static final String sqlTodos = "SELECT * FROM USUARIO";
-    private static final String sqlInserir
-            = "INSERT INTO USUARIO (CD_USUARIO,DS_LOGIN,DS_USUARIO, "
-            + "DS_SENHA,CD_GRUPO ,DT_ALT, HR_ALT, DT_CAD, HR_CAD,CD_FILIAL,FG_ATIVO)"
-            + "VALUES( ?, ?, ?, ? ,? "
-            + "CAST('NOW' AS DATE),"
-            + "CAST('NOW' AS TIME),"
-            + "CAST('NOW' AS DATE),"
-            + "CAST('NOW' AS TIME),"
-            + "?,? )";
+    private final String sqlInserir
+        = "INSERT INTO USUARIO (CD_USUARIO,DS_LOGIN,DS_USUARIO, "
+        + "DS_SENHA,CD_GRUPO ,DT_ALT, HR_ALT, DT_CAD, HR_CAD,CD_FILIAL,FG_ATIVO)"
+        + "VALUES( ?, ?, ?, ? ,?," 
+        + "CAST('NOW' AS DATE),             "
+        + "CAST('NOW' AS TIME),             "
+        + "CAST('NOW' AS DATE),             "            
+        + "CAST('NOW' AS TIME),             "
+        + "?,? )";
     private static final String sqlExcluir = "DELETE FROM usuario WHERE CD_usuario= ?";
     private static final String sqlAlterar = "UPDATE USUARIO SET DS_LOGIN = ?,"
             + "    DS_USUARIO = ?,"
@@ -39,10 +40,10 @@ public class UsuarioDB extends MetodosGlobais {
             + "    CD_FILIAL=?"
             + "WHERE (CD_USUARIO = ?);";
 
-    private static final String sqlConsultaUsuario = "SELECT (usuario.cd_usuario)as codigosql FROM usuario where usuario.cd_usuario=?";
+    private static final String SQLCONSULTAUSUARIO = "SELECT (usuario.cd_usuario)as codigosql FROM usuario where usuario.cd_usuario=?";
     private static final String sqlConsultaUsuarioLogin = "SELECT (usuario.CD_USUARIO)as codigosql FROM usuario where usuario.ds_login=?";
     private static final String sqlUnicoUsuario = "SELECT count(*) as total FROM usuario where usuario.ds_login=?";
-
+    
     public boolean getUsuario(int CD_USUARIO) {
         boolean existe = false;
         Connection conn = null;
@@ -50,7 +51,7 @@ public class UsuarioDB extends MetodosGlobais {
         ResultSet rs = null;
         try {
             conn = Conexao.getConexao();
-            pstmt = conn.prepareStatement(sqlConsultaUsuario);
+            pstmt = conn.prepareStatement(SQLCONSULTAUSUARIO);
             pstmt.setInt(1, CD_USUARIO);
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -134,17 +135,20 @@ public class UsuarioDB extends MetodosGlobais {
         try {
             conn = Conexao.getConexao();
             pstmt = conn.prepareStatement(sqlInserir);
-            pstmt.setInt(1, usuario.getCd_usuario());
+            pstmt.setInt(   1, usuario.getCd_usuario());
             pstmt.setString(2, usuario.getDs_login());
             pstmt.setString(3, usuario.getDs_usuario());
             pstmt.setString(4, usuario.getDs_senha());
-            pstmt.setInt(5, usuario.getCd_grupo());
-            pstmt.setInt(6, usuario.getCd_filial());
-            pstmt.setInt(7, usuario.getFg_ativo());
+            pstmt.setInt(   5, usuario.getCd_grupo());
+            pstmt.setInt(   6, usuario.getCd_filial());
+            pstmt.setInt(   7, usuario.getFg_ativo());
             pstmt.executeUpdate();
             inseriu = true;
         } catch (SQLException erro) {
-            mensagemErro("Erro no sql. inserirUsuarios(): \n" + erro.getMessage());
+            String sMensagemErro = "Erro no sql. inserirUsuarios(): \n" + erro.getMessage()+"sql \n"+sqlInserir;
+            Log log = new Log();
+            log.gravarLog(sMensagemErro);
+            mensagemErro(sMensagemErro);
         } finally {
             Conexao.closeAll(conn);
         }
@@ -169,13 +173,13 @@ public class UsuarioDB extends MetodosGlobais {
                 int cd_filial = rs.getInt("cd_filial");
                 int fg_ativo = rs.getInt("fg_ativo");
                 Usuario usuario = new Usuario(
-                        cd_usuario,
-                        ds_login,
-                        ds_usuario,
-                        ds_senha,
-                        cd_grupo,
-                        cd_filial,
-                        fg_ativo
+                    cd_usuario,
+                    ds_login,
+                    ds_usuario,
+                    ds_senha,
+                    cd_grupo,
+                    cd_filial,
+                    fg_ativo
                 );
                 listaUsuario.add(usuario);
             }
@@ -201,7 +205,10 @@ public class UsuarioDB extends MetodosGlobais {
                 existe = rs.getInt("total") == 1;
             }
         } catch (SQLException e) {
-            mensagemErro("Erro de SQL. getPessoa(): \n" + e.getMessage());
+            String sMensagemErro = "Erro de SQL. getPessoa(): \n" + e.getMessage();
+            Log log = new Log();
+            log.gravarLog(sMensagemErro);
+            mensagemErro(sMensagemErro);
         } finally {
             Conexao.closeAll(conn);
         }

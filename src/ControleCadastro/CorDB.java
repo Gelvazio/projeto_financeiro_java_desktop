@@ -1,6 +1,6 @@
 package ControleCadastro;
 
-import ModeloCadastro.Cor;
+import ModelCadastro.Cor;
 import Principal.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -191,7 +191,7 @@ public class CorDB {
         return existe;
     }
 
-    public int ValidaCodigoGenerator() {
+    public int ValidaCodigoGeneratorAtual() {
         int codigoGenerator = 0;
         Connection conn = null;
         Statement stmt = null;
@@ -202,6 +202,37 @@ public class CorDB {
             rs = stmt.executeQuery("SELECT GEN_ID(CD_COR, 1) FROM RDB$DATABASE");
             while (rs.next()) {
                 int auxCodigoGenerator = rs.getInt("GEN_ID");
+                int auxCodigo = auxCodigoGenerator + 1;
+                codigoGenerator = auxCodigo;
+            }
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "Erro de conexão! \n" + erro.getMessage());
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, "Erro no método ValidaCodigoGenerator()\n" + erro.getMessage());
+        } finally {
+            Conexao.closeAll(conn);
+        }
+        return codigoGenerator;
+    }
+
+    public int ValidaCodigoGenerator(String sNomeGenerator,String sNomeCampoGenerator) {
+        
+        int codigoGenerator = 0;
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = Conexao.getConexao();
+            stmt = conn.createStatement();
+            
+            String sSQL = "SELECT" + sNomeGenerator + "("+sNomeCampoGenerator+", 1) FROM RDB$DATABASE";
+            
+            rs = stmt.executeQuery(sSQL);
+            //rs = stmt.executeQuery("SELECT GEN_ID(CD_COR, 1) FROM RDB$DATABASE");
+            while (rs.next()) {
+                //int auxCodigoGenerator = rs.getInt("GEN_ID");
+                int auxCodigoGenerator = rs.getInt(sNomeGenerator);
                 int auxCodigo = auxCodigoGenerator + 1;
                 codigoGenerator = auxCodigo;
             }

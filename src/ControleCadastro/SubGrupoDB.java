@@ -1,6 +1,6 @@
 package ControleCadastro;
 
-import ModeloCadastro.SubGrupo;
+import ModelCadastro.SubGrupo;
 import Principal.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

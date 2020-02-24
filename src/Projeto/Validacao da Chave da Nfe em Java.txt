@@ -1,0 +1,229 @@
+
+
+Estou tentando assinar uma nfe de teste com um certificado digital auto assinado através do código abaixo. O código a principio funciona, a assinatura é gerada no arquivo e a validação feita através da keystore funciona, mas quando utilizo um outro código para validar a assinatura pela chave da própria assinatura ela não valida. Se for algum problema pelo certificado auto assinado, poderiam me informar como gerar um de teste que funcione sem ter comprar.
+
+String C14N_TRANSFORM_METHOD = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
+String PROVIDER_CLASS_NAME = "org.jcp.xml.dsig.internal.dom.XMLDSigRI";
+String PROVIDER_NAME = "jsr105Provider";
+DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+    factory.setNamespaceAware(false);
+
+    try {
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse( new File("nota.xml") );
+        NodeList elements = doc.getElementsByTagName( "infNFe" );
+        Element el = (Element) elements.item(0);
+        String idNota = el.getAttribute("Id");
+        el.setIdAttribute("Id", true);
+
+
+        System.out.println("ID: "+idNota);
+
+        String providerName = System.getProperty( PROVIDER_NAME , PROVIDER_CLASS_NAME );
+
+        XMLSignatureFactory factorySignature = XMLSignatureFactory.getInstance("DOM" , (Provider) Class.forName(providerName).newInstance()  );
+
+        ArrayList transformList = new ArrayList();
+        TransformParameterSpec  transParamSpec  = null;
+
+        Transform envelopedTransform = factorySignature.newTransform(Transform.ENVELOPED, transParamSpec );
+        Transform c14NTransform = factorySignature.newTransform(C14N_TRANSFORM_METHOD, transParamSpec );
+
+        transformList.add( envelopedTransform );
+        transformList.add( c14NTransform );
+
+        Reference ref = factorySignature.newReference("#"+idNota ,  factorySignature.newDigestMethod(DigestMethod.SHA1, null) , transformList , null , null );
+
+        SignedInfo signedInfo = factorySignature.newSignedInfo( factorySignature.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null),
+                                                                factorySignature.newSignatureMethod(SignatureMethod.RSA_SHA1, null), 
+                                                                Collections.singletonList( ref ) );
+
+        KeyStore  ks = KeyStore.getInstance("PKCS12");
+        ks.load(new FileInputStream("boteco_assinado.pfx"), "rd1234".toCharArray() );
+
+        Enumeration aliasesEnum = ks.aliases();
+        String alias = "";
+        while( aliasesEnum.hasMoreElements() ){
+            alias = (String) aliasesEnum.nextElement();
+            System.out.println(alias);
+            break;//encontrou um certificado
+        }
+
+        KeyStore.PrivateKeyEntry  keyEntry = (KeyStore.PrivateKeyEntry) ks.getEntry( alias , new KeyStore.PasswordProtection("rd1234".toCharArray() )  );
+
+        X509Certificate cert = (X509Certificate) keyEntry.getCertificate();
+
+        KeyInfoFactory factoryKeyInfo = factorySignature.getKeyInfoFactory();
+        List x509Content = new ArrayList();
+
+        x509Content.add(cert);
+
+        X509Data x509Data = factoryKeyInfo.newX509Data(x509Content);
+
+        KeyInfo keyInfo = factoryKeyInfo.newKeyInfo( Collections.singletonList(x509Data) );
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+        dbf.setNamespaceAware(true);
+
+        //Document doc = dbf.newDocumentBuilder().parse(new FileInputStream("nota.xml") );
+
+        DOMSignContext domSignContext = new DOMSignContext(keyEntry.getPrivateKey() , doc.getDocumentElement() );
+
+
+
+        XMLSignature signature = factorySignature.newXMLSignature(signedInfo, keyInfo );
+
+        signature.sign( domSignContext );
+
+        ///gera arquivo assinado
+        OutputStream out = new FileOutputStream(new File("nota_assinada.xml") );
+        TransformerFactory transformFactory = TransformerFactory.newInstance();
+        Transformer trans = transformFactory.newTransformer();
+        trans.transform(new DOMSource(doc) , new StreamResult(out) );
+
+
+        /*======================================================================*/
+        // Encontra o elemente Signature
+        NodeList nl = doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
+
+        if (nl.getLength() == 0) {
+            throw new Exception("Não foi possível encontrar o elemente Signature");
+        }
+
+        // Cria um DOMValidateContext
+        DOMValidateContext valContext = new DOMValidateContext( new X509KeySelector(ks), nl.item(0));
+
+        // Dsempacota (unmarshal) a XMLSignature
+        XMLSignature signatures = factorySignature.unmarshalXMLSignature(valContext);
+
+        // Valida a XMLSignature.
+        boolean coreValidity = signatures.validate(valContext);
+
+        // Checa o status da validação
+        if (coreValidity == false) {
+            System.err.println("Falha na Assinatura!");
+        } else {
+            System.out.println("Assinatura Correta!");
+        }
+    } catch ( Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+
+Segue código que utilizo para validar pela assinatura
+
+String C14N_TRANSFORM_METHOD = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
+    String PROVIDER_CLASS_NAME = "org.jcp.xml.dsig.internal.dom.XMLDSigRI";
+    String PROVIDER_NAME = "jsr105Provider";
+
+
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+    factory.setNamespaceAware(true);
+
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.parse( new File("nota_assinada.xml") );
+    NodeList elements = doc.getElementsByTagName( "infNFe" );
+    Element el = (Element) elements.item(0);
+    String idNota = el.getAttribute("Id");
+    el.setIdAttribute("Id", true);
+
+    String providerName = System.getProperty( PROVIDER_NAME , PROVIDER_CLASS_NAME );
+
+    XMLSignatureFactory factorySignature = XMLSignatureFactory.getInstance("DOM" , (Provider) Class.forName(providerName).newInstance()  );
+
+
+
+    NodeList nl = doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
+
+    if (nl.getLength() == 0) {
+        throw new Exception("Não foi possível encontrar o elemente Signature");
+    }
+
+    // Cria um DOMValidateContext
+    DOMValidateContext valContext = new DOMValidateContext( new KeyValueKeySelector(), nl.item(0));
+
+    // Dsempacota (unmarshal) a XMLSignature
+    XMLSignature signatures = factorySignature.unmarshalXMLSignature(valContext);
+
+    // Valida a XMLSignature.
+    boolean coreValidity = signatures.validate(valContext);
+
+    // Checa o status da validação
+    if (coreValidity == false) {
+        System.err.println("Falha na Assinatura!");
+    } else {
+        System.out.println("Assinatura Correta!");
+    }
+    boolean sv = signatures.getSignatureValue().validate(valContext);
+    System.out.println("signature validation status: " + sv); 
+
+e o keySelect
+
+public class KeyValueKeySelector extends KeySelector {
+
+  public KeySelectorResult select(KeyInfo keyInfo,  KeySelector.Purpose purpose, AlgorithmMethod method,  XMLCryptoContext context) throws KeySelectorException {
+
+    if (keyInfo == null) {
+      throw new KeySelectorException("Null KeyInfo object!");
+    }
+
+    SignatureMethod sm = (SignatureMethod) method;
+    List list = keyInfo.getContent();
+
+    for (int i = 0; i < list.size(); i++) {
+
+        XMLStructure xmlStructure = (XMLStructure) list.get(i);
+
+        PublicKey pk = null;
+
+        if(xmlStructure instanceof X509Data){                   
+              for (Object data : ((X509Data) xmlStructure).getContent()) {
+                  if (data instanceof X509Certificate) {
+                      System.out.println("x509Certificate");
+                      pk = ((X509Certificate)data).getPublicKey();
+                      System.out.println( ((X509Certificate) data).getSubjectDN().getName() );
+                      // make sure algorithm is compatible with method
+                      if (algEquals(sm.getAlgorithm(),pk.getAlgorithm())) {
+                          return new SimpleKeySelectorResult(pk);
+                      }
+                  }
+              }
+
+        }
+    }
+    throw new KeySelectorException("No KeyValue element     found!");
+  }
+
+  public boolean algEquals(String algURI, String algName) {
+    if (algName.equalsIgnoreCase("DSA") &&
+        algURI.equalsIgnoreCase(SignatureMethod.DSA_SHA1)) {
+      return true;
+    } else if (algName.equalsIgnoreCase("RSA") &&
+        algURI.equalsIgnoreCase(SignatureMethod.RSA_SHA1)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+  public class SimpleKeySelectorResult implements KeySelectorResult {
+        private PublicKey pk;
+
+        SimpleKeySelectorResult(PublicKey pk) {
+                this.pk = pk;
+        }
+
+        @Override
+        public Key getKey() {
+                return this.pk;
+        }
+}
+
+} 
+
+java certificado
+compartilhareditar

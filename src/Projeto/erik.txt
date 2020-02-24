@@ -1,0 +1,49 @@
+Sistema deve ser um chat.
+- Sistema deve ser executável
+- Deve permitir login
+- Deve gerenciar contatos
+- Sistema deve contatar o servidor deve fazer o meio de campo no processo de login
+- Sistema deve exibir contatos adicionados
+- Sistema deve exibir contatos online e offline
+- Sistema tem que ter uma tela de contato com outra pessoa online
+- Sistema deve identificar quem esta online ou offline (por imagem, por grupo, cores);
+- Sistema deve ter logout.
+- Sistema deve ser automatizado
+- Sistema deve permitir a aceitaçãod e um contato automaticamente
+- Sistema deve avisar SUCESSO ou INVÁLIDO ao cadastrar um contato
+- Sistema deve avisao SUCESSO ou INVÁLIDO ao fazer login
+- Sistema deve emitr aviso de contato duplicado adicionado
+- Sistema deve emitr um som e piscar ao alguem falar 
+- Sistema deve abrir a tela
+
+RNF - não precisa de mensagem  status
+RNF2 - Pode ser usado em qualquer plataforma.
+RNF3 - nao precisa de emotcions
+
+RN - Sistema so pode entrar no chat se tiver o login e senha
+RN2 - So pode falar com outra pessoa no chat se a outra pessoa tiver online
+RN3 - Não vai ter histórico
+RN4 - tem que usar o protocolo TCP-IP.
+RN5 - Mensagens geradas por um cliente devem serenviadas atraves da porta 56000
+RN6 - Mensagens geradas pelo servidor para um cliente devem ser enviadas atraves da porta 56001 - CLIENTE NAO PODE RESPONDER ESSAS MENSAGENS.
+RN7 - Sistema é desktop
+
+Opcional = Transferencia de arquivo
+
+
+nome = 100 caracteres
+email = 250 caracteres
+senha = 3 
+ip = 15
+porta = integer entre 56000 e 56999
+status = intero 1=offline , 2 = onlie
+detalhes_erro = 500 caracteres
+
+
+bsi.ceavi.udesc.br:8080/Prg3MessengerWeb
+
+
+
+
+
+

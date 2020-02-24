@@ -1,0 +1,81 @@
+CADASTRO,INCLUSAO,ALTERACAO, GENERATOR
+	Cor->ok
+	Estado->ok
+	Grupo/Sub-Grupo-ok	
+	Grupo Fiscal-ok	
+	Municipio-ok
+	Pessoa-ok
+	Produto->Falta Todos os combobox da tela
+
+	Unidade Medida-Esta com erro 
+	Usuario-Esta com erros
+	
+Telas de Consultas->Antes Revisar a programacao dos campos e diminui-la
+
+Função de Habilita Desabilita
+
+Padrao de Nome de variavel,
+	Nao deve ter _   underline
+	
+	Padrao de nome de Classe deve ser
+			UsuarioTeste
+Padrao de nome de metodo, comeca minusculo e nadefinicao e maiusculo
+				getTodos
+				inserirUsuario
+				
+Gerenciador de Layout do Livro da IBS "Use a cabeça Java"				
+	Paginas 281 ate pagina 300
+	Mostra como criar e gerenciar layouts em Java.
+	
+-----------------------------------
+Tamanho Padrao das Telas-Ir na tela e ir em Codigo Fonte,Redimensionar 
+
+Tamanho Botão Gravar,Excluir,sair  ->Largura-120  Altura -40
+
+	Mesmo Tamanho- [460, 350]
+		Cor-ok
+		Tamanho-ok
+		Unidade Medida-ok
+		Usuario-ok
+		NCMSH-ok
+	
+	Mesmo Tamanho
+		Grupo SubGrupo
+		Grupo Fiscal
+		Condicao de Pagamento
+		Grupo de Usuarios
+		
+	Mesmo Tamanho
+		DAV-Pedido
+		DAV-Orcamento
+		DAV-Ordem de Compra
+		Nota Fiscal Saida
+		
+	Cad Produto-tamanho unico
+	
+	Cad Pessoa-tamanho unico
+		
+--Inserir Titulo em todos os formularios	
+
+	Grupo Usuario-Nao tem nem a tela-Deixar por ultimo
+	Marca-Nao tem nem a tela
+	NCMSH-Falta Programação
+	Pais-Falta Programação	
+
+	Implementar MSG de erro personalzada.
+		
+		
+	
+	
+	
+	
+	
+		
+			
+			
+	
+	
+
+	
+	
+	

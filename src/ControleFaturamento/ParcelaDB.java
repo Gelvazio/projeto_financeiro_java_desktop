@@ -2,7 +2,7 @@ package ControleFaturamento;
 
 import ModeloFaturamento.Parcela;
 import ModeloFaturamento.ParcelaDados;
-import Principal.Conexao;
+import Principal.ConexaoFirebird;
 import Principal.MetodosGlobais;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -120,7 +120,7 @@ public class ParcelaDB extends MetodosGlobais {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlAlterar);
             //pstmt.setString(1, cor.getDs_cor());
             //pstmt.setInt(2, cor.getCd_usuario());
@@ -130,7 +130,7 @@ public class ParcelaDB extends MetodosGlobais {
         } catch (SQLException erro) {
             mensagemErro("Erro de sql. alterarParcela(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return alterou;
     }
@@ -140,7 +140,7 @@ public class ParcelaDB extends MetodosGlobais {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlInserir);
             //pstmt.setInt(1, cor.getCd_cor());
             // pstmt.setString(2, cor.getDs_cor());
@@ -150,7 +150,7 @@ public class ParcelaDB extends MetodosGlobais {
         } catch (SQLException erro) {
             mensagemErro("Erro de sql. inserirParcela(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return inseriu;
     }
@@ -161,7 +161,7 @@ public class ParcelaDB extends MetodosGlobais {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlBuscaParcelas);
             pstmt.setInt(1, cd_filial);
             pstmt.setInt(2, cd_movimento);
@@ -174,7 +174,7 @@ public class ParcelaDB extends MetodosGlobais {
         } catch (SQLException e) {
             mensagemErro("Erro de SQL. getParcela(): \n" + e.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return existe;
     }
@@ -185,7 +185,7 @@ public class ParcelaDB extends MetodosGlobais {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT GEN_ID(CD_COR, 1) FROM RDB$DATABASE");
             while (rs.next()) {
@@ -198,7 +198,7 @@ public class ParcelaDB extends MetodosGlobais {
         } catch (Exception erro) {
             mensagemErro("Erro no método ValidaCodigoGenerator()\n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return codigoGenerator;
     }
@@ -209,7 +209,7 @@ public class ParcelaDB extends MetodosGlobais {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlListaParcelas);
             pstmt.setInt(1, cd_condicao_pagamento);
             rs = pstmt.executeQuery();
@@ -230,7 +230,7 @@ public class ParcelaDB extends MetodosGlobais {
         } catch (SQLException erro) {
             mensagemErro("Erro no ArrayList listaParcelas: \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return listaParcelas;
     }

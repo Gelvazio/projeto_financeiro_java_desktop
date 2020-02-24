@@ -1,6 +1,6 @@
 package Testes;
 
-import Principal.Conexao;
+import Principal.ConexaoFirebird;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +19,7 @@ public class Teste_Generator {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT GEN_ID(GEN_CD_USUARIO, 0) FROM RDB$DATABASE");
             while (rs.next()) {
@@ -28,7 +28,7 @@ public class Teste_Generator {
         } catch (SQLException erro) {
             System.out.println("Erro de conexão! " + erro);
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
     }
 }

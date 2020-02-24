@@ -1,0 +1,41 @@
+O Usuario deve poder Cadastrar nos Cadastros Básicos:
+		-Usuarios do Sistema;
+		-Pessoas;
+		-Produtos;
+		-Estados;
+		-Paises;
+		-Municipios
+O Usuario deve  poder Cadastrar no Faturamentos:
+		-Pedidos
+		-Nota de Entrada
+		-Nota de Venda
+O Usuario deve  poder Cadastrar no Financeiro:
+		-Contas a Pagar
+		-Contas a Receber
+		-Baixar Contas a Pagar 
+		-Baixar Contas a Receber 
+O Usuario deve  poder Tirar Relatorios de:
+		-Usuarios do Sistema;
+		-Pessoas;
+		-Produtos;
+		-Estados;
+		-Paises;
+		-Municipios
+		-Pedidos
+		-Nota de Entrada
+		-Nota de Venda
+		-Contas a Pagar
+		-Contas a Receber
+		-Baixar Contas a Pagar 
+		-Baixar Contas a Receber 
+O Usuario deve  poder fazer configuracoes de:
+		-Limites de:
+				-Limite de Credito por Cliente;
+				-Limite de Desconto Por Cliente;
+				-Limite de Desconto Por Produto;
+				-Limite de Desconto Por Venda/Pedido;
+		-Permissoes de Acesso Todas as Telas por grupo de permissao.
+		
+			
+		
+		

@@ -1,8 +1,8 @@
 package VisaoConsultasCadastro;
 
 import ControleCadastro.NCMSHDB;
-import ModeloCadastro.NCMSH;
-import ModeloCadastro.Usuario;
+import ModelCadastro.NCMSH;
+import ModelCadastro.Usuario;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import java.awt.event.KeyEvent;

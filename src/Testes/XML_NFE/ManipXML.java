@@ -17,7 +17,7 @@ public class ManipXML {
     final static String LOCALHOST = "src/xml/";
 
     public static void gravarXMLCriptografia(List<Criptografia> listaCriptografia) {		//
-        // Cria o elemento que ser? o root
+        // Cria o elemento que sera o root
         Element config = new Element("Mensagens_criptografias") {
         };
 
@@ -44,8 +44,10 @@ public class ManipXML {
 
             Element tituloCrip = new Element("tituloDaCriptografia");
             tituloCrip.setText(listaCriptografia.get(x).getMensagem().getTitulo());
+            
             Element texto = new Element("texto");
             texto.setText(listaCriptografia.get(x).getMensagem().getTexto());
+            
             Element chave = new Element("chave");
             chave.setText(listaCriptografia.get(x).getMensagem().getChave());
 

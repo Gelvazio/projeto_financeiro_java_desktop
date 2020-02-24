@@ -16,8 +16,8 @@
  */
 package ControleCadastro;
 
-import ModeloCadastro.Cor;
-import ModeloCadastro.SubTabPreco;
+import ModelCadastro.Cor;
+import ModelCadastro.SubTabPreco;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import static Principal.MetodosGlobais.mensagemErro;

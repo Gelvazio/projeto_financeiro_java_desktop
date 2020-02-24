@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @since 18/05/2016
  */
 
-    /*Responsável por realizar obter os modelos e realizar as operações no banco de dados*/
+    /*Responsável por obter os modelos e realizar as operações no banco de dados*/
     abstract class PersistenciaPadrao{
     
     ModelPadrao oModelPadrao = new ModelPadrao();

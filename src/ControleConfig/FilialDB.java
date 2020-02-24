@@ -5,7 +5,7 @@
  */
 package ControleConfig;
 
-import Principal.Conexao;
+import Principal.ConexaoFirebird;
 import Principal.MetodosGlobais;
 import static Principal.MetodosGlobais.mensagemErro;
 import java.sql.Connection;
@@ -26,7 +26,7 @@ public class FilialDB extends MetodosGlobais{
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlBuscaDadosEstado);
             pstmt.setInt(1, cd_filial);
             rs = pstmt.executeQuery();
@@ -37,7 +37,7 @@ public class FilialDB extends MetodosGlobais{
         } catch (SQLException erro) {
             mensagemErro("Erro no método retornaCodigoEstadoFilial: \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return codigoEstado;
     }

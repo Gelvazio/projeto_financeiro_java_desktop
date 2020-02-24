@@ -2,8 +2,8 @@ package VisaoConsultasCadastro;
 
 import ControleCadastro.GrupoDB;
 import ControleCadastro.GrupoFiscalDB;
-import ModeloCadastro.Grupo;
-import ModeloCadastro.GrupoFiscal;
+import ModelCadastro.Grupo;
+import ModelCadastro.GrupoFiscal;
 import Principal.MetodosGlobais;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;

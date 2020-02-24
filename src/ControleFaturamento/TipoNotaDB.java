@@ -1,6 +1,6 @@
 package ControleFaturamento;
 
-import Principal.Conexao;
+import Principal.ConexaoFirebird;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,7 +37,7 @@ public class TipoNotaDB {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sqlTodos);
             while (rs.next()) {
@@ -46,7 +46,7 @@ public class TipoNotaDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql getComboTipoNota(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return modelo;
     }
@@ -57,7 +57,7 @@ public class TipoNotaDB {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlTipoNota);
             pstmt.setInt(1, cd_tipo);
             rs = pstmt.executeQuery();
@@ -71,7 +71,7 @@ public class TipoNotaDB {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro de SQL. getCor(): \n" + e.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return existe;
     }

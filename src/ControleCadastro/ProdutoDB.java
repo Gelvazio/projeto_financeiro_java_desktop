@@ -1,6 +1,6 @@
 package ControleCadastro;
 
-import ModeloCadastro.ProdutoSimples;
+import ModelCadastro.ProdutoSimples;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import java.sql.Connection;

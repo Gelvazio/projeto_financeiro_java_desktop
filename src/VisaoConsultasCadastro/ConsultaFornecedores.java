@@ -1,7 +1,7 @@
 package VisaoConsultasCadastro;
 
 import ControleCadastro.PessoaDB;
-import ModeloCadastro.Pessoa;
+import ModelCadastro.Pessoa;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import java.awt.event.KeyEvent;
@@ -142,7 +142,7 @@ public class ConsultaFornecedores extends MetodosGlobais {
             auxValor = "LIKE UPPER('" + auxedtPesquisa + "%')";
         }
 
-        SQLValorCamposComboboxCampo_E_Valor = "select * from PESSOA where pessoa.fg_fornecedor=1 and " + auxCampo + " " + auxValor;
+        SQLValorCamposComboboxCampo_E_Valor = "select * from cadastro.TBPESSOA where fg_fornecedor=1 and " + auxCampo + " " + auxValor;
         //A Variavel global "SQLConsulta_Pessoa" recebe por parametro a variavel "SQLValorCamposComboboxCampo_E_Valor"
         SQLConsultaFornecedores = SQLValorCamposComboboxCampo_E_Valor;
     }

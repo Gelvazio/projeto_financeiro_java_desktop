@@ -6,7 +6,7 @@ import ControleFaturamento.TipoCobrancaDB;
 import ModeloFaturamento.CondicaoPagamento;
 import ModeloFaturamento.SubCondPag;
 import ModeloFaturamento.TipoCobranca;
-import Principal.Conexao;
+import Principal.ConexaoFirebird;
 import Principal.MetodosGlobais;
 import VisaoConsultasCadastro.ConsultaGrupo;
 import java.awt.event.KeyEvent;
@@ -211,7 +211,7 @@ public class CadCondicaoPagamento extends MetodosGlobais {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlexcluirItemForaGrid);
             pstmt.executeUpdate();
             //Limpa  SQL para usar em nova exclusão  
@@ -221,7 +221,7 @@ public class CadCondicaoPagamento extends MetodosGlobais {
             JOptionPane.showMessageDialog(null, "Erro no sql. excluirItemForaGrid(): \n" + erro.getMessage());
             JOptionPane.showMessageDialog(null, "vl fim string: \n" + sqlexcluirItemForaGrid);
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
 
     }
@@ -518,7 +518,7 @@ public class CadCondicaoPagamento extends MetodosGlobais {
                 + "WHERE                                 "
                 + "    TIPO_COBRANCA.DS_COBRANCA='" + cbTipoCobranca.getSelectedItem() + "'";
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             rs.next();

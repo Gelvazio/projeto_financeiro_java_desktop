@@ -6,21 +6,20 @@ import Testes.CadClienteModelo_3;
 import Testes.FormularioCadastroPadrao;
 import Testes.FormularioDAVPadrao;
 import Testes.TestesdoSistema;
-import VisaoCadastros.CadCor;
-import VisaoCadastros.CadMunicipio;
-import VisaoCadastros.CadEstado;
-import VisaoCadastros.CadFornecedores;
-import VisaoCadastros.CadGrupoSubGrupo;
-import VisaoCadastros.CadGrupoFiscal;
-import VisaoCadastros.CadMarca;
-import VisaoCadastros.CadNCMSH;
-import VisaoCadastros.CadPais;
-import VisaoCadastros.CadPessoa;
-import VisaoCadastros.CadUnidadeMedida;
-import VisaoCadastros.CadUsuario;
-import VisaoCadastros.CadProduto;
-import VisaoCadastros.CadTransportadores;
-import VisaoCadastros.CadVendedores;
+import ViewCadastros.CadCor;
+import ViewCadastros.CadMunicipio;
+import ViewCadastros.CadEstado;
+import ViewCadastros.CadFornecedores;
+import ViewCadastros.CadGrupoSubGrupo;
+import ViewCadastros.CadGrupoFiscal;
+import ViewCadastros.CadMarca;
+import ViewCadastros.CadNCMSH;
+import ViewCadastros.CadPais;
+import ViewCadastros.CadUnidadeMedida;
+import ViewCadastros.CadUsuario;
+import ViewCadastros.CadProduto;
+import ViewCadastros.CadTransportadores;
+import ViewCadastros.CadVendedores;
 import VisaoFaturamento.CadCondicaoPagamento;
 import VisaoFaturamento.CadNotaEntrada;
 import VisaoFaturamento.CadTipoCobranca;
@@ -28,6 +27,8 @@ import VisaoFaturamento.CadTipoNota;
 import Testes.FormularioPedido;
 import VisaoFaturamento.FormularioPedidoCompleto;
 import Testes.TesteData;
+//import ViewCadastros.CadEstadoPadrao;
+//import ViewCadastros.CadEstadoPadraoTeste;
 import VisaoFaturamento.FormularioNotaFederal;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import javax.swing.JFrame;
@@ -155,6 +156,7 @@ public class FormularioPrincipal extends JFrame {
         Panel_Principal.setForeground(new java.awt.Color(153, 255, 153));
         Panel_Principal.setName(""); // NOI18N
 
+        Menu_Principal.setFocusable(false);
         Menu_Principal.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 Menu_PrincipalMouseMoved(evt);
@@ -754,7 +756,8 @@ private void Menu_FaturamentoActionPerformed(java.awt.event.ActionEvent evt) {//
     }//GEN-LAST:event_FornecedorActionPerformed
 
     private void EstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EstadoActionPerformed
-        // TODO add your handling code here:
+        //CadEstado formulario          = new CadEstado();
+        //CadEstadoPadrao formulario    = new CadEstadoPadrao();
         CadEstado formulario = new CadEstado();
         Panel_Principal.add(formulario);
         formulario.setClosable(true);
@@ -776,14 +779,14 @@ private void Menu_FaturamentoActionPerformed(java.awt.event.ActionEvent evt) {//
     }//GEN-LAST:event_CidadeActionPerformed
 
     private void ClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClienteActionPerformed
-        // TODO add your handling code here:
-        CadPessoa formulario = new CadPessoa();
-        Panel_Principal.add(formulario);
-        formulario.setClosable(true);
-        formulario.setIconifiable(true);
-        formulario.setResizable(true);
-        formulario.setMaximizable(true);
-        formulario.setVisible(true);
+//        // TODO add your handling code here:
+//        CadPessoa formulario = new CadPessoa();
+//        Panel_Principal.add(formulario);
+//        formulario.setClosable(true);
+//        formulario.setIconifiable(true);
+//        formulario.setResizable(true);
+//        formulario.setMaximizable(true);
+//        formulario.setVisible(true);
     }//GEN-LAST:event_ClienteActionPerformed
 
     private void VendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VendedorActionPerformed

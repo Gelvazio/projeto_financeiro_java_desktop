@@ -6,10 +6,10 @@ import ControleFaturamento.CondicaoPagamentoDB;
 import ControleFaturamento.TipoNotaDB;
 import ControleFaturamento.VendaSimplesDB;
 import ControleFaturamento.VendaProdutoDB;
-import ModeloCadastro.ProdutoSimples;
+import ModelCadastro.ProdutoSimples;
 import ModeloFaturamento.VendaClasse;
 import ModeloFaturamento.VendaProdutoClassse;
-import Principal.Conexao;
+import Principal.ConexaoFirebird;
 import Principal.MetodosGlobais;
 import VisaoConsultasCadastro.ConsultaPessoa;
 //import VisaoConsultasFaturamento.ConsultaCondicaoPagamento;
@@ -227,7 +227,7 @@ public class FormularioPedido extends MetodosGlobais {
             cbCondicaoPagamento.setModel(condicaopagamentodb.getComboCondPag());
             ComboBoxCondicaoPagamento();
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaVendaPeloMovimento);
                 pstmt.setInt(1, cd_movimento);
                 rs = pstmt.executeQuery();
@@ -300,7 +300,7 @@ public class FormularioPedido extends MetodosGlobais {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(SQLConsulta_itens_dav);
             pstmt.setInt(1, codigomovimento);
             rs = pstmt.executeQuery();
@@ -347,7 +347,7 @@ public class FormularioPedido extends MetodosGlobais {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql,  SQLConsultagetTodos_Completo_NomeProduto(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return listaProduto;
     }
@@ -381,7 +381,7 @@ public class FormularioPedido extends MetodosGlobais {
                 ResultSet rs = null;
                 for (int x = aux_sequencia; x < TabelaProdutos.getRowCount(); x++) {
                     try {
-                        conn = Conexao.getConexao();
+                        conn = ConexaoFirebird.getConexao();
                         pstmt = conn.prepareStatement(sqlBuscaQuantidadeEPreco);
                         pstmt.setInt(1, aux_movimento);
                         pstmt.setInt(2, aux_contador);
@@ -395,7 +395,7 @@ public class FormularioPedido extends MetodosGlobais {
                     } catch (SQLException erro) {
                         JOptionPane.showMessageDialog(null, "Erro no sql, Nome Produto Itens:\n" + erro.getMessage());
                     } finally {
-                        Conexao.closeAll(conn);
+                        ConexaoFirebird.closeAll(conn);
                     }
                 }
                 aux_sequencia++;//Incrementa a sequencia
@@ -598,7 +598,7 @@ public class FormularioPedido extends MetodosGlobais {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT GEN_ID(CD_ORC, 1) FROM RDB$DATABASE");
             while (rs.next()) {
@@ -612,7 +612,7 @@ public class FormularioPedido extends MetodosGlobais {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de conexão! \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
     }
 
@@ -624,7 +624,7 @@ public class FormularioPedido extends MetodosGlobais {
                 = "select * from tipo_nota_simples where "
                 + "tipo_nota_simples.ds_tipo_nota='" + cbTipo_Nota.getSelectedItem() + "'";
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             rs.next();
@@ -641,7 +641,7 @@ public class FormularioPedido extends MetodosGlobais {
         ResultSet rs = null;
         String sql = "select * from pessoa_simples where pessoa_simples.nm_pessoa= '" + cbVendedor.getSelectedItem() + "'";
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             rs.next();
@@ -661,7 +661,7 @@ public class FormularioPedido extends MetodosGlobais {
         ResultSet rs = null;
         String sql = "select * from pessoa_simples where pessoa_simples.nm_pessoa= '" + cbCliente.getSelectedItem() + "'";
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             rs.next();
@@ -681,7 +681,7 @@ public class FormularioPedido extends MetodosGlobais {
         ResultSet rs = null;
         String sql = "SELECT * FROM COND_PAG WHERE ds_cond='" + cbCondicaoPagamento.getSelectedItem() + "'";
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             rs.next();
@@ -703,7 +703,7 @@ public class FormularioPedido extends MetodosGlobais {
         int cd_tipo = 1;//Passado Fixos
         if (tiponotadb.getTipoNota(cd_tipo)) {
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaTipoNota);
                 pstmt.setInt(1, cd_tipo);
                 rs = pstmt.executeQuery();
@@ -715,7 +715,7 @@ public class FormularioPedido extends MetodosGlobais {
             } catch (SQLException erro) {
                 JOptionPane.showMessageDialog(null, "Erro no sql, ValidaCampoTipoNota(): \n" + erro.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Tipo de Nota 1 não cadastrado!");
@@ -733,7 +733,7 @@ public class FormularioPedido extends MetodosGlobais {
         ResultSet rs = null;
         if (pessoadb.getPessoa(cd_pessoa)) {
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaPessoa);
                 pstmt.setInt(1, cd_pessoa);
                 rs = pstmt.executeQuery();
@@ -745,7 +745,7 @@ public class FormularioPedido extends MetodosGlobais {
             } catch (SQLException erro) {
                 JOptionPane.showMessageDialog(null, "Erro no sql, getComboPessoa(): \n" + erro.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Pessoa nao cadastrada");
@@ -763,7 +763,7 @@ public class FormularioPedido extends MetodosGlobais {
         ResultSet rs = null;
         if (pessoadb.getPessoa(cd_pessoa)) {
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaPessoa);
                 pstmt.setInt(1, cd_pessoa);
                 rs = pstmt.executeQuery();
@@ -775,7 +775,7 @@ public class FormularioPedido extends MetodosGlobais {
             } catch (SQLException erro) {
                 JOptionPane.showMessageDialog(null, "Erro no sql, ValidaCampoCodigoVendedorNãoNulo() \n" + erro.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Vendedor nao cadastrado!");
@@ -793,7 +793,7 @@ public class FormularioPedido extends MetodosGlobais {
         ResultSet rs = null;
         if (condicaopagamentodb.getCondicaoPagamento(cd_cond)) {
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaCondicaoPagamento);
                 pstmt.setInt(1, cd_cond);
                 rs = pstmt.executeQuery();
@@ -805,7 +805,7 @@ public class FormularioPedido extends MetodosGlobais {
             } catch (SQLException erro) {
                 JOptionPane.showMessageDialog(null, "Erro no sql, ValidaCampoCodigoCondicaoPagamentoNãoNulo():\n" + erro.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Condicao de Pagamento nao cadastrada!");
@@ -823,7 +823,7 @@ public class FormularioPedido extends MetodosGlobais {
         ResultSet rs = null;
         if (produtosimplesdb.getProdutoCD_REF(cd_ref)) {
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaProduto);
                 pstmt.setInt(1, cd_ref);
                 rs = pstmt.executeQuery();
@@ -851,7 +851,7 @@ public class FormularioPedido extends MetodosGlobais {
             } catch (SQLException erro) {
                 JOptionPane.showMessageDialog(null, "Erro no sql, ValidaCampoCodigoProdutoNaoNulo():\n" + erro.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Produto nao cadastrado!");

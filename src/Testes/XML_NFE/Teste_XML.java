@@ -249,15 +249,15 @@ public class Teste_XML {
         xNome = new Element("xNome");
         Element enderDest = new Element("enderDest");
 
-        xLgr = new Element("xLgr");
-        nro = new Element("nro");
+        xLgr    = new Element("xLgr");
+        nro     = new Element("nro");
         xBairro = new Element("xBairro");
-        cMun = new Element("cMun");
-        xMun = new Element("xMun");
-        UF = new Element("UF");
-        CEP = new Element("CEP");
-        cPais = new Element("cPais");
-        xPais = new Element("xPais");
+        cMun    = new Element("cMun");
+        xMun    = new Element("xMun");
+        UF      = new Element("UF");
+        CEP     = new Element("CEP");
+        cPais   = new Element("cPais");
+        xPais   = new Element("xPais");
 
         //Adcionando tags acima á enderDest
         enderDest.addContent(xLgr);

@@ -1,11 +1,10 @@
 package Testes;
 
-import VisaoCadastros.*;
 import ControleCadastro.GrupoDB;
 import ControleCadastro.SubGrupoDB;
-import ModeloCadastro.Grupo;
-import ModeloCadastro.SubGrupo;
-import Principal.Conexao;
+import ModelCadastro.Grupo;
+import ModelCadastro.SubGrupo;
+import Principal.ConexaoFirebird;
 import Principal.MetodosGlobais;
 import VisaoConsultasCadastro.ConsultaGrupo;
 import java.awt.event.KeyEvent;
@@ -200,7 +199,7 @@ public class CadGrupoSubGrupo1 extends javax.swing.JFrame {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlConsultaSubGrupo);
             pstmt.setInt(1, codigogrupo);
             rs = pstmt.executeQuery();
@@ -220,7 +219,7 @@ public class CadGrupoSubGrupo1 extends javax.swing.JFrame {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql,  sqlCarregaNomeSubGrupos(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return listaSubGrupo;
     }
@@ -373,7 +372,7 @@ public class CadGrupoSubGrupo1 extends javax.swing.JFrame {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT GEN_ID(CD_GRUPO, 1) FROM RDB$DATABASE");
             while (rs.next()) {
@@ -387,7 +386,7 @@ public class CadGrupoSubGrupo1 extends javax.swing.JFrame {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de conexão! \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
     }
 
@@ -400,7 +399,7 @@ public class CadGrupoSubGrupo1 extends javax.swing.JFrame {
         if (grupodb.getGrupo(cd_grupo)) {
             edtNomeGrupo.grabFocus();
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaGrupo);
                 pstmt.setInt(1, cd_grupo);
                 rs = pstmt.executeQuery();

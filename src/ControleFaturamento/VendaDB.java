@@ -5,7 +5,7 @@ package ControleFaturamento;
  * @author Gelvazio
  */
 import ModeloFaturamento.Venda;
-import Principal.Conexao;
+import Principal.ConexaoFirebird;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -138,7 +138,7 @@ public class VendaDB {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlInserir);
             pstmt.setInt(1, venda.getCd_filial());
             pstmt.setInt(2, venda.getCd_movimento());
@@ -196,7 +196,7 @@ public class VendaDB {
         } catch (SQLException erro) {
             mensagemErro("sql. gravarVenda: \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return inseriu;
     }
@@ -206,7 +206,7 @@ public class VendaDB {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlAlterar);
             pstmt.setInt(1, venda.getCd_vende());
             pstmt.setInt(2, venda.getCd_pagto());
@@ -265,7 +265,7 @@ public class VendaDB {
             mensagemErro("sql. alterarVenda: \n" + erro.getMessage());
             System.out.println("" + erro.getSQLState());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return alterou;
     }
@@ -276,7 +276,7 @@ public class VendaDB {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlConsultaVenda);
             pstmt.setInt(1, cd_filial);
             pstmt.setInt(2, cd_movimento);
@@ -291,7 +291,7 @@ public class VendaDB {
         } catch (SQLException e) {
             mensagemErro("SQL. getVenda: \n" + e.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return existe;
     }

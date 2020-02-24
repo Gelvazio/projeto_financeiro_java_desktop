@@ -20,10 +20,10 @@ package Testes;
  *
  * @author Gelvazio Camargo
  */
-import VisaoCadastros.CadFornecedores;
-import VisaoCadastros.CadPessoa;
-import VisaoCadastros.CadProduto;
-import VisaoCadastros.CadVendedores;
+import ViewCadastros.CadFornecedores;
+import ViewCadastros.CadPessoa;
+import ViewCadastros.CadProduto;
+import ViewCadastros.CadVendedores;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -480,10 +480,10 @@ public class Interface extends javax.swing.JFrame implements ActionListener, Ite
         if (e.getSource() == this.cliente) {
             CadPessoa formulario = new CadPessoa();
             this.barraMenu.add(formulario);
-            formulario.setClosable(true);
-            formulario.setIconifiable(true);
-            formulario.setResizable(true);
-            formulario.setMaximizable(true);
+//            formulario.setClosable(true);
+//            formulario.setIconifiable(true);
+//            formulario.setResizable(true);
+//            formulario.setMaximizable(true);
             formulario.setVisible(true);
         }
         if (e.getSource() == this.fornecedor) {

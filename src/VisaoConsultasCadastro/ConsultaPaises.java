@@ -1,8 +1,8 @@
 package VisaoConsultasCadastro;
 
 import ControleCadastro.PaisDB;
-import ModeloCadastro.Pais;
-import ModeloCadastro.Usuario;
+import ModelCadastro.Pais;
+import ModelCadastro.Usuario;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import java.awt.event.KeyEvent;

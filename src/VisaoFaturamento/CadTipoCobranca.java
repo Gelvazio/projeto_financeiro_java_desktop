@@ -1,7 +1,7 @@
 package VisaoFaturamento;
 
 import ControleFaturamento.TipoCobrancaDB;
-import ModeloCadastro.Cor;
+import ModelCadastro.Cor;
 import ModeloFaturamento.TipoCobranca;
 import Principal.MetodosGlobais;
 import VisaoConsultasCadastro.ConsultaNCMSH;

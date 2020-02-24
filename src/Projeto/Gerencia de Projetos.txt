@@ -1,0 +1,24 @@
+Algumas das ferramentas clássicas de Gestão de Tempo de Projeto são o PERT/CPM e o Diagrama de Gantt.
+Na administração, o Program Evaluation and Review Technique (PERT) é uma ferramenta utilizada no gerenciamento de projetos.
+Gráfico de rede PERT para um projeto de 7 meses com cinco marcos (10 até 50) e seis atividades (A até F).
+
+As técnicas denominadas PERT e CPM foram independentemente desenvolvidas para a Gestão e Controle de Projetos em torno de 1950, porém a grande semelhança entre estas fez com que o termo PERT/CPM fosse utilizado corriqueiramente como apenas uma técnica.
+
+Os termos PERT e CPM são acrônimos de Program Evaluation and Review Technique (PERT) e Critical Path Method (CPM).
+
+Exemplos de Projetos que podem utilizar PERT/CPM:
+
+1. Construção de uma planta
+2. Pesquisa e desenvolvimento de um produto
+3. Produção de filmes
+4. Construção de navios
+5. Instalação de um sistema de informações
+6. Condução de campanhas publicitárias, entre outras.
+
+PERT e CPM utilizam principalmente os conceitos de Redes (Grafos) para planejar e visualizar a coordenação das atividades do projeto.
+
+Enquanto PERT é o cálculo a partir da média ponderada de 3 durações possíveis de uma atividade 
+(otimista, mais provável e pessimista), CPM é um método de apuração do caminho crítico dada uma
+ sequência de atividades, isto é, quais atividades de uma sequência não podem sofrer alteração
+ de duração sem que isso reflita na duração total de um projeto. Desta maneira, classificando-os
+ em função do tratamento, a rede PERT é probabilística e o CPM é determinístico.

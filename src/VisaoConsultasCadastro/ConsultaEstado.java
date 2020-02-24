@@ -1,7 +1,7 @@
 package VisaoConsultasCadastro;
 
 import ControleCadastro.EstadoDB;
-import ModeloCadastro.Estado;
+import ModelCadastro.Estado;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import java.awt.event.KeyEvent;
@@ -133,7 +133,7 @@ public class ConsultaEstado extends MetodosGlobais {
         }
         //E passado por parametro os valores do Edit  mais os valores selecionados do Combobox  para o SQL
         //A Variavel "SQLValorCamposComboboxCampo_E_Valor" recebe o SQL
-        SQLValorCamposComboboxCampo_E_Valor = "select * from estado where " + auxCampo + " " + auxValor;
+        SQLValorCamposComboboxCampo_E_Valor = "select * from cadastro.tbestado where " + auxCampo + " " + auxValor;
         //A Variavel global "SQLConsulta_Estado" recebe por parametro a variavel "SQLValorCamposComboboxCampo_E_Valor"
         SQLConsulta_Estado = SQLValorCamposComboboxCampo_E_Valor;
     }
@@ -229,6 +229,7 @@ public class ConsultaEstado extends MetodosGlobais {
         initComponents();
         cbCampo.setModel(getComboCampo());
         cbValor.setModel(getComboValor());
+        ListaTodosEstados();
         Centro();
         this.campoCodigo = campoCodigo;
     }
@@ -420,7 +421,6 @@ public class ConsultaEstado extends MetodosGlobais {
     }//GEN-LAST:event_tbGridMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -439,7 +439,6 @@ public class ConsultaEstado extends MetodosGlobais {
     }//GEN-LAST:event_edtPesquisaKeyPressed
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
-        // TODO add your handling code here:
         int linha = tbGrid.getSelectedRow();
         if (linha >= 0) {
             String auxCodigo = tbGrid.getValueAt(linha, 0).toString();

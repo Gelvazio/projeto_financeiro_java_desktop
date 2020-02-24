@@ -1,6 +1,6 @@
 package Testes;
 
-import Principal.Conexao;
+import Principal.ConexaoFirebird;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,7 +15,7 @@ public class TesteConexao {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT * FROM ESTADO where estado.cd_estado='SC'");
             while (rs.next()) {
@@ -29,7 +29,7 @@ public class TesteConexao {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de conexão!!! Erro abaixo! \n" + erro);
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
     }
 
@@ -38,7 +38,7 @@ public class TesteConexao {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT * FROM ESTADO where estado.cd_estado='SC'");
             while (rs.next()) {
@@ -52,7 +52,7 @@ public class TesteConexao {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de conexão!!! Erro abaixo! \n" + erro);
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
     }
 

@@ -8,14 +8,13 @@ import ControleFaturamento.ItemDB;
 import ControleFaturamento.ParcelaDB;
 import ControleFaturamento.TipoNotaDB;
 import ControleFaturamento.VendaDB;
-import ModeloCadastro.Pessoa;
-import ModeloCadastro.ProdutoSimples;
-import ModeloCadastro.Tributacao;
+import ModelCadastro.Pessoa;
+import ModelCadastro.ProdutoSimples;
+import ModelCadastro.Tributacao;
 import ModeloFaturamento.Item;
 import ModeloFaturamento.ParcelaDados;
 import ModeloFaturamento.Venda;
-import Principal.Conexao;
-import Principal.MetodosGlobais;
+import Principal.ConexaoFirebird;
 import static Principal.MetodosGlobais.mensagemErro;
 import VisaoConsultasCadastro.ConsultaPessoa;
 import VisaoConsultasCadastro.ConsultaProduto;
@@ -32,7 +31,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
@@ -2565,7 +2563,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
             cbCondicaoPagamento.setModel(condicaopagamentodb.getComboCondPag());
             ComboBoxCondicaoPagamento();
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaVendaPeloMovimento);
                 pstmt.setInt(1, cd_filial);
                 pstmt.setInt(2, cd_movimento);
@@ -2799,7 +2797,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(SQLConsulta_itens_dav);
             pstmt.setInt(1, codigomovimento);
             rs = pstmt.executeQuery();
@@ -2846,7 +2844,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
         } catch (SQLException erro) {
             mensagemErro("Erro no sql,  SQLConsultagetTodos_Completo_NomeProduto(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return listaProduto;
     }
@@ -2882,7 +2880,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
                 //JOptionPane.showMessageDialog(null, "Valor de sequencia na linha: " + aux_sequencia);
                 for (int x = aux_sequencia; x < TabelaProdutos.getRowCount(); x++) {
                     try {
-                        conn = Conexao.getConexao();
+                        conn = ConexaoFirebird.getConexao();
                         pstmt = conn.prepareStatement(sqlBuscaQuantidadeEPreco);
                         pstmt.setInt(1, aux_movimento);
                         pstmt.setInt(2, aux_contador);
@@ -2896,7 +2894,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
                     } catch (SQLException erro) {
                         mensagemErro("Erro no sql, Nome Produto Itens:\n" + erro.getMessage());
                     } finally {
-                        Conexao.closeAll(conn);
+                        ConexaoFirebird.closeAll(conn);
                     }
                 }
                 aux_sequencia++;//Incrementa a sequencia
@@ -2976,7 +2974,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT GEN_ID(CD_ORC, 1) FROM RDB$DATABASE");
             while (rs.next()) {
@@ -2991,7 +2989,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
         } catch (SQLException erro) {
             mensagemErro("Erro no ValidaCodigoGenerator()! \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
     }
 
@@ -3004,7 +3002,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
                     = "select * from tipo_nota_simples where "
                     + "tipo_nota_simples.ds_tipo_nota='" + cbTipo_Nota.getSelectedItem() + "'";
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 stmt = conn.createStatement();
                 rs = stmt.executeQuery(sql);
                 rs.next();
@@ -3026,7 +3024,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
             ResultSet rs = null;
             String sql = "select * from pessoa where pessoa.nm_pessoa= '" + cbVendedor.getSelectedItem() + "'";
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 stmt = conn.createStatement();
                 rs = stmt.executeQuery(sql);
                 rs.next();
@@ -3048,7 +3046,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
             ResultSet rs = null;
             String sql = "select * from pessoa where pessoa.nm_pessoa= '" + cbCliente.getSelectedItem() + "'";
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 stmt = conn.createStatement();
                 rs = stmt.executeQuery(sql);
                 rs.next();
@@ -3070,7 +3068,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
             ResultSet rs = null;
             String sql = "SELECT * FROM COND_PAG WHERE ds_cond='" + cbCondicaoPagamento.getSelectedItem() + "'";
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 stmt = conn.createStatement();
                 rs = stmt.executeQuery(sql);
                 rs.next();
@@ -3096,7 +3094,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
         ResultSet rs = null;
         if (tiponotadb.getTipoNota(cd_tipo_nota)) {
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaTipoNota);
                 pstmt.setInt(1, cd_filial);
                 pstmt.setInt(2, cd_tipo_nota);
@@ -3108,7 +3106,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
             } catch (SQLException erro) {
                 mensagemErro("Erro no sql, ValidaCampoCodigoTipoNotaNaoNulo(): \n" + erro.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
         } else {
             mensagemErro("Tipo de Nota nao cadastrada!");
@@ -3126,7 +3124,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
         ResultSet rs = null;
         if (pessoadb.getPessoa(cd_pessoa)) {
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaPessoa);
                 pstmt.setInt(1, cd_pessoa);
                 rs = pstmt.executeQuery();
@@ -3138,7 +3136,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
             } catch (SQLException erro) {
                 mensagemErro("Erro no sql, getComboPessoa(): \n" + erro.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
         } else {
             mensagemErro("Pessoa nao cadastrada");
@@ -3156,7 +3154,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
         ResultSet rs = null;
         if (pessoadb.getPessoa(cd_pessoa)) {
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaPessoa);
                 pstmt.setInt(1, cd_pessoa);
                 rs = pstmt.executeQuery();
@@ -3168,7 +3166,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
             } catch (SQLException erro) {
                 mensagemErro("Erro no sql, ValidaCampoCodigoVendedorNãoNulo() \n" + erro.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
         } else {
             mensagemErro("Vendedor nao cadastrado!");
@@ -3186,7 +3184,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
         ResultSet rs = null;
         if (condicaopagamentodb.getCondicaoPagamento(cd_cond)) {
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaCondicaoPagamento);
                 pstmt.setInt(1, cd_cond);
                 rs = pstmt.executeQuery();
@@ -3198,7 +3196,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
             } catch (SQLException erro) {
                 mensagemErro("Erro no sql, ValidaCampoCodigoCondicaoPagamentoNãoNulo():\n" + erro.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
         } else {
             mensagemErro("Condicao de Pagamento nao cadastrada!");
@@ -3216,7 +3214,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
         if (produtosimplesdb.getProdutoCD_REF(cd_ref)) {
             if (ValidaCodigoProdutoImpostos()) {
                 try {
-                    conn = Conexao.getConexao();
+                    conn = ConexaoFirebird.getConexao();
                     pstmt = conn.prepareStatement(sqlBuscaProduto);
                     pstmt.setInt(1, cd_ref);
                     rs = pstmt.executeQuery();
@@ -3244,7 +3242,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
                 } catch (SQLException erro) {
                     mensagemErro("Erro no sql, ValidaCampoCodigoProdutoNaoNulo():\n" + erro.getMessage());
                 } finally {
-                    Conexao.closeAll(conn);
+                    ConexaoFirebird.closeAll(conn);
                 }
             }
         } else {
@@ -3412,7 +3410,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
             ResultSet rs = null;
             if (pessoadb.getPessoaTransportadora(cd_transportadora)) {
                 try {
-                    conn = Conexao.getConexao();
+                    conn = ConexaoFirebird.getConexao();
                     pstmt = conn.prepareStatement(sqlBuscaTransportadora);
                     pstmt.setInt(1, cd_transportadora);
                     rs = pstmt.executeQuery();
@@ -3424,7 +3422,7 @@ public class PedidoTeste30_10_2015 extends JFrame {    //JInternalFrame {
                 } catch (SQLException erro) {
                     mensagemErro("Erro no sql, ValidaCampoCodigoTransportadoraNaoNulo():\n" + erro.getMessage());
                 } finally {
-                    Conexao.closeAll(conn);
+                    ConexaoFirebird.closeAll(conn);
                 }
             } else {
                 mensagemErro("Pessoa nao cadastrada!");

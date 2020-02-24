@@ -1,7 +1,7 @@
 package ControleFaturamento;
 
 import ModeloFaturamento.VendaClasse;
-import Principal.Conexao;
+import Principal.ConexaoFirebird;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,7 +47,7 @@ public class VendaSimplesDB {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlInserir);
             pstmt.setInt(1, venda.getCd_filial());
             pstmt.setInt(2, venda.getCd_movimento());
@@ -64,7 +64,7 @@ public class VendaSimplesDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de sql. gravarVenda: \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return inseriu;
     }
@@ -74,7 +74,7 @@ public class VendaSimplesDB {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlAlterar);
             pstmt.setInt(1, venda.getCd_vende());
             pstmt.setInt(2, venda.getCd_pagto());
@@ -91,7 +91,7 @@ public class VendaSimplesDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de sql. alterarVenda: \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return alterou;
     }
@@ -102,7 +102,7 @@ public class VendaSimplesDB {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlConsultaVenda);
             pstmt.setInt(1, cd_movimento);
             rs = pstmt.executeQuery();
@@ -116,7 +116,7 @@ public class VendaSimplesDB {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro de SQL. getVenda: \n" + e.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return existe;
     }

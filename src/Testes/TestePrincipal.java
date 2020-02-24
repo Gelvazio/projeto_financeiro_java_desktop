@@ -16,7 +16,7 @@
  */
 package Testes;
 
-import VisaoCadastros.CadPais;
+import ViewCadastros.CadPais;
 import javax.swing.JFrame;
 
 /**

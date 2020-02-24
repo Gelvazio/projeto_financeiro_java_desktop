@@ -7,22 +7,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.DefaultComboBoxModel;
-import ModeloCadastro.Estado;
+import ModelCadastro.Estado;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Gelvazio Camargo Tabela Estado CREATE TABLE ESTADO ( CD_ESTADO
- * VARCHAR(2) NOT NULL, DS_ESTADO VARCHAR(40) NOT NULL, CD_IBGE INTEGER,
- * CD_FILIAL INTEGER NOT NULL, CD_USUARIO SMALLINT NOT NULL, DT_ALT DATE NOT
- * NULL, HR_ALT TIME NOT NULL, DT_CAD DATE NOT NULL, HR_CAD TIME NOT NULL );
+ * @author Gelvazio Camargo
  */
 public class EstadoDB {
 
-    private static final String sqlTodos = "SELECT * FROM estado order by estado.CD_ESTADO";
+    private static final String sqlTodos = "SELECT * FROM cadastro.tbestado order by CD_ESTADO";
     private static final String sqlInserir
-            = "INSERT INTO ESTADO (CD_ESTADO, DS_ESTADO,"
+            = "INSERT INTO CADASTRO.TBESTADO (CD_ESTADO, DS_ESTADO,"
             + " CD_IBGE, CD_FILIAL, CD_USUARIO, DT_ALT, HR_ALT, DT_CAD, HR_CAD)"
             + "VALUES "
             + "(?,?,?,?,?,"
@@ -30,9 +26,9 @@ public class EstadoDB {
             + "CAST('NOW' AS TIME),"
             + "CAST('NOW' AS DATE),"
             + "CAST('NOW' AS TIME))";
-    private static final String sqlExcluir = "DELETE FROM ESTADO WHERE CD_ESTADO = ?";
+    private static final String sqlExcluir = "DELETE FROM TBESTADO WHERE CD_ESTADO = ?";
     private static final String sqlAlterar
-            = "UPDATE ESTADO SET "
+            = "UPDATE CADASTRO.TBESTADO SET "
             + "DS_ESTADO = ?,"
             + "CD_USUARIO =?,"
             + "CD_IBGE = ?,"
@@ -40,7 +36,7 @@ public class EstadoDB {
             + "DT_ALT = CAST('NOW' AS DATE),"
             + "HR_ALT = CAST('NOW' AS TIME)"
             + " WHERE (CD_ESTADO = ?)";
-    private static final String sqlEstado = "SELECT count(*) as total FROM estado WHERE CD_ESTADO  LIKE UPPER(?)";
+    private static final String sqlEstado = "SELECT count(*) as total FROM cadastro.tbestado WHERE CD_ESTADO  LIKE UPPER(?)";
 
     public DefaultComboBoxModel getComboEstado() {
         DefaultComboBoxModel modelo = new DefaultComboBoxModel();
@@ -145,7 +141,6 @@ public class EstadoDB {
     }
 
     public ArrayList getTodos() {
-
         ArrayList listaEstado = new ArrayList();
         Connection conn = null;
         Statement stmt = null;
@@ -187,11 +182,7 @@ public class EstadoDB {
             pstmt.setString(1, CD_ESTADO);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                if (rs.getInt("total") > 0) {
-                    existe = true;
-                } else {
-                    existe = false;
-                }
+                existe = rs.getInt("total") > 0;
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro de SQL. getEstado(): \n" + e.getMessage());
@@ -212,11 +203,7 @@ public class EstadoDB {
             pstmt.setString(1, CD_ESTADO);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                if (rs.getInt("total") > 0) {
-                    existe = true;
-                } else {
-                    existe = false;
-                }
+                existe = rs.getInt("total") > 0;
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro de SQL. getEstadoPessoa(): \n" + e.getMessage());

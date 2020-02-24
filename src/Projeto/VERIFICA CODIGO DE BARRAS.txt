@@ -1,0 +1,126 @@
+SQL DE DADOS DUPLICADOS NO SISTEMA DA ibs
+    p.cd_ref,
+    p.cd_codigo_de_barras
+from produto p
+where
+    p.cd_ref>1000000000000
+    and
+    p.cd_prod in
+(
+select
+    p.cd_prod
+from
+produto p
+where
+    p.cd_codigo_de_barras is not null
+and
+p.cd_ref <>p.cd_codigo_de_barras
+group by 1
+)
+
+
+/
+*
+ * Criado por SharpDevelop.
+ * Usuário: Francisco
+ * Data: 24/02/2011
+ * Hora: 21:10
+ * 
+ * Para alterar este modelo use Ferramentas | Opções | Codificação | Editar Cabeçalhos Padrão.
+ */
+using System;
+
+namespace ValidaCodigoBarrasFrancisco
+{
+	class Program
+	{
+		/*
+ * Algoritmo de verificação de integridade de um BARCODE:
+ * 1) Pega-se um barcode, exemplo: 789100031550-7. Onde (7) é o dígito vericador.
+ * 2) Multiplica-se por 1 as posíções ímpares, e por 3 as posições pares. Exemplo:
+ *    7*1     8*3    9*1    1*3   ...
+ * 3) Soma-se o resultado das multiplicações, no exemplo é: 73
+ * 4) Pega-se o múltiplo de 10 mais próximo do resultado, sendo maior ou igual(nunca menor), no caso é o (80).
+ * 5) Diminui-se o múltiplo do resultado das somas e obtém-se o dígito verificador.
+ * 
+ *    80 - 73 = [7] <- Dígito Verificador
+ * 
+ *  Existem algumas variações de barcodes, como por exemplo a AEN-8(apenas 8 dígitos), porém, calcula-se com
+ * a mesma fórmula.
+ * 
+ *  Existem alguns addons para os barcodes, como por exemplo a AEN-5(5 dígitos extras), onde pode-se saber
+ * a moeda usada(R$,US$,GB$,etc). Porém não há como verificar autencidade neste barcode de 5 dígitos apenas.
+ * 
+ */
+
+		 		 //Função para verificação de erro de digitação do barcode.
+                public static bool verificaErro(string codigoBarra)
+                {   //Verifica se o número digitado não está vazio ou é nulo e se está entre 2 e 13.
+                        if (string.IsNullOrEmpty(codigoBarra) || !(codigoBarra.Length >= 2 && codigoBarra.Length <= 13))
+                                return false;
+                        else
+                        {      //Verifica se o número digitado é realmente um número.
+                                foreach (char caracter in codigoBarra)   //Com o foreach passamos caracter por caracter para dentro de uma 
+                                        if ( !(char.IsNumber(caracter)) )  //variável "caracter" e verificamos se ela é um número.
+                                                return false;            //Caso ache algo diferente de número retorna falso.      
+                                return true;//Sem erros, retorna verdadeiro.
+                        }
+                }
+                  //Função do algoritmo em si, onde verifica o código verificador do barcode.
+                public static bool verificaDigito(string codigoBarra)
+                {                 //Declaração de variáveis
+                        int i,somaTotal,somaPar=0,somaImpar=0,multiplo,digito;
+                        for( i=0 ; i<(codigoBarra.Length-1) ; i++) //Laço para percorrer a String flexível ao seu tamanho.
+                        {
+                                if( (i+1) % 2 == 0 ) //Verificação da posíção do número, se é par ou ímpar.
+                                        somaPar+=( ( (int)(codigoBarra[i]) - 48) * 3); //Caso Par, multiplica-se por 3.
+                                else somaImpar+=( ( (int)(codigoBarra[i]) - 48) * 1); //Caso Impar, multiplica-se por 1.
+                        }
+                        somaTotal = somaPar + somaImpar; // Soma de todos resultados.
+                        if(somaTotal%10 != 0 && somaTotal >10 ) //Algoritmo para encontrar o múltiplo de 10 mais perto, igual ou maior.
+                                multiplo = ( (somaTotal / 10) + 1) ;
+                        else
+                                if(somaTotal < 10) 
+                                        multiplo = 1;
+                                else multiplo = somaTotal / 10;  //fim
+                        digito = (multiplo*10) - somaTotal;//Diminui-se do múltiplo o valor da soma total.
+                        if( digito != ( (int)(codigoBarra[codigoBarra.Length-1]) - 48) ) //Verifica-se o dígito é igual ao 13º número do barcode.
+                                return false; //Caso não, retorna falso.
+                        return true;  //Caso igual, retorna verdadeiro.
+                                       
+                }                //Observação importante: Ao tentar utilizar diversos tipos de conversão e não obter sucesso, me basiei na tabela
+                              //ascii para ter o valor (-48), ao usar os valores de char, nos momentos que precisei comparar int com string.
+               
+               
+                public static void Main(string[] args)  //Main basicão que pede ao usuário que informe o barcode, chama a função de verificação
+                {                                    //se atende os requisitos, e depois chama a função de verificação do dígito, as duas funções
+                        string codigoBarra;         //retornam parâmetros boolean, e informam se o barcode está correto ou não.
+                       
+                        Console.WriteLine("PROGRAMA VERIFICADOR DE CÓDIGO DE BARRAS");
+                        Console.Write("DIGITE O CÓDIGO DE BARRAS: ");
+                        codigoBarra = Console.ReadLine();
+                        while( !(verificaErro(codigoBarra)) )
+                        {
+                                Console.Clear();
+                                Console.Write("ERRO! DIGITE O CÓDIGO DE BARRAS: ");
+                                codigoBarra = Console.ReadLine();
+                        }                      
+                       
+                        if(verificaDigito(codigoBarra))
+                        {
+                                Console.Clear();
+                                Console.WriteLine("CODIGO: {0}",codigoBarra);
+                                Console.WriteLine("CORRETO!");
+                        }
+                       
+                        else
+                        {
+                                Console.Clear();
+                                Console.WriteLine("CODIGO: {0}",codigoBarra);
+                                Console.WriteLine("INCORRETO!");
+                        }
+                        Console.ReadKey();
+
+		}
+	}
+}

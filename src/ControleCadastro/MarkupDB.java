@@ -16,8 +16,8 @@
  */
 package ControleCadastro;
 
-import ModeloCadastro.GrupoFiscal;
-import ModeloCadastro.Markup;
+import ModelCadastro.GrupoFiscal;
+import ModelCadastro.Markup;
 import Principal.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -18,8 +18,7 @@ import javax.swing.JOptionPane;
  */
 public class Login extends JFrame {
 
-    private static final String sqlBuscaUsuario
-            = "SELECT * FROM usuario WHERE ds_login=?";
+    private static final String SQL_BUSCA_USUARIO = "SELECT * FROM usuario WHERE ds_login = ?";
 
     public static void iniciaLogin() {
         try {
@@ -27,7 +26,6 @@ public class Login extends JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
@@ -183,8 +181,8 @@ public class Login extends JFrame {
         String auxLoginTela = edtLogin.getText();
         if (usuariodb.getLogin(auxLoginTela)) {
             try {
-                conn = Conexao.getConexao();
-                pstmt = conn.prepareStatement(sqlBuscaUsuario);
+                conn = ConexaoFirebird.getConexao();
+                pstmt = conn.prepareStatement(SQL_BUSCA_USUARIO);
                 pstmt.setString(1, auxLoginTela);
                 rs = pstmt.executeQuery();
                 while (rs.next()) {
@@ -253,23 +251,24 @@ public class Login extends JFrame {
     }
 
     private void ValidaDadosUsuarioTela() {
-        String auxSenha = edtSenha.getText();
-        String auxFilial = edtFilial.getText();
-        String ds_usuario = edtLogin.getText();
-        if (ds_usuario.equals("")) {
-            JOptionPane.showMessageDialog(null, "Favor Preencher o Login do Usuário!");
-            edtLogin.grabFocus();
-        } else if (auxSenha.equals("")) {
-            JOptionPane.showMessageDialog(null, "Favor Preencher a Senha do Usuário!");
-            edtSenha.grabFocus();
-        } else if (auxFilial.equals("")) {
-            JOptionPane.showMessageDialog(null, "Favor Preencher a Filial do Usuário!");
-            edtFilial.grabFocus();
-        } else {
-            if (validaSenhaUsuario()) {
-                ChamaTelaPrincipal();
-            }
-        }
+        ChamaTelaPrincipal();
+//        String auxSenha = edtSenha.getText();
+//        String auxFilial = edtFilial.getText();
+//        String ds_usuario = edtLogin.getText();
+//        if (ds_usuario.equals("")) {
+//            JOptionPane.showMessageDialog(null, "Favor Preencher o Login do Usuário!");
+//            edtLogin.grabFocus();
+//        } else if (auxSenha.equals("")) {
+//            JOptionPane.showMessageDialog(null, "Favor Preencher a Senha do Usuário!");
+//            edtSenha.grabFocus();
+//        } else if (auxFilial.equals("")) {
+//            JOptionPane.showMessageDialog(null, "Favor Preencher a Filial do Usuário!");
+//            edtFilial.grabFocus();
+//        } else {
+//            if (validaSenhaUsuario()) {
+//                ChamaTelaPrincipal();
+//            }
+//        }
     }
 
     private void ChamaTelaPrincipal() {
@@ -343,25 +342,27 @@ public class Login extends JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        ConfiguracaoBancoDados configuracaoBanco = new ConfiguracaoBancoDados();
-
-        int numero = 0;
-        //Se acessa o banco de dados,habilita 1 para abrir o login
-        if (Conexao.verificagetConexao()) {
-            numero = 1;
-        } else {
-            numero = 2;
-        }
-        switch (numero) {
-            case 1:
-                iniciaLogin();
-                break;
-            case 2:
-                System.out.println("Erro!");
-                //Abre a tela de configuracao do banco de dados
-                configuracaoBanco.setVisible(true);
-                break;
-        }
+        iniciaLogin();
+        
+//        ConfiguracaoBancoDados configuracaoBanco = new ConfiguracaoBancoDados();
+//
+//        int numero = 0;
+//        //Se acessa o banco de dados,habilita 1 para abrir o login
+//        if (ConexaoFirebird.verificagetConexao()) {
+//            numero = 1;
+//        } else {
+//            numero = 2;
+//        }
+//        switch (numero) {
+//            case 1:
+//                iniciaLogin();
+//                break;
+//            case 2:
+//                System.out.println("Erro!");
+//                //Abre a tela de configuracao do banco de dados
+//                configuracaoBanco.setVisible(true);
+//                break;
+//        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane Panel_Principal;

@@ -1,8 +1,8 @@
 package Testes;
 
 import ControleCadastro.UsuarioDB;
-import ModeloCadastro.Usuario;
-import Principal.Conexao;
+import ModelCadastro.Usuario;
+import Principal.ConexaoFirebird;
 import Principal.MetodosGlobais;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -207,7 +207,7 @@ public class ConsultadePesquisasPadrao extends MetodosGlobais {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             //Nessa Parte é passado po parametro os Dados da Variavel "SQLConsulta_Usuario" que contem o sql da pesquisa.
             rs = stmt.executeQuery(SQLConsulta_Usuario);
@@ -233,7 +233,7 @@ public class ConsultadePesquisasPadrao extends MetodosGlobais {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql, SQLConsultagetTodos_Completo: \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return listaUsuario;
     }

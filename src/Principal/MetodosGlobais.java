@@ -21,7 +21,6 @@ public class MetodosGlobais extends JInternalFrame {
         int screenHeigth = screenSize.height - this.getHeight();
         //Divide o tamanho da tela para ficar no centro
         setLocation(screenWidth / 2, screenHeigth / 2);
-
     }
 
     public static void mensagemErro(String mensagem) {

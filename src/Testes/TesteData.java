@@ -16,7 +16,7 @@
  */
 package Testes;
 
-import Principal.Conexao;
+import Principal.ConexaoFirebird;
 import Principal.MetodosGlobais;
 import VisaoFaturamento.FormularioPedidoCompleto;
 import java.awt.event.KeyEvent;
@@ -195,7 +195,7 @@ public class TesteData extends MetodosGlobais {
             Connection conn = null;
             PreparedStatement pstmt = null;
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlAlterar);
                 pstmt.setString(1, classetestedata.getNome());
                 //String DataEmissao;
@@ -214,7 +214,7 @@ public class TesteData extends MetodosGlobais {
             } catch (SQLException erro) {
                 mensagemErro("Erro no sql. alterar(): \n" + erro.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
             return alterou;
         }
@@ -224,7 +224,7 @@ public class TesteData extends MetodosGlobais {
             Connection conn = null;
             PreparedStatement pstmt = null;
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlAlterarAutomatico);
                 pstmt.setString(1, classetestedata.getNome());
                 pstmt.setInt(2, classetestedata.getCodigo());
@@ -233,7 +233,7 @@ public class TesteData extends MetodosGlobais {
             } catch (SQLException erro) {
                 mensagemErro("Erro no sql. alterarAutomatico(): \n" + erro.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
             return alterou;
         }
@@ -243,7 +243,7 @@ public class TesteData extends MetodosGlobais {
             Connection conn = null;
             PreparedStatement pstmt = null;
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlInserir);
                 pstmt.setInt(1, classetestedata.getCodigo());
                 pstmt.setString(2, classetestedata.getNome());
@@ -259,7 +259,7 @@ public class TesteData extends MetodosGlobais {
             } catch (SQLException erro) {
                 mensagemErro("sql. inserir(): \n" + erro.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
             return inseriu;
         }
@@ -269,7 +269,7 @@ public class TesteData extends MetodosGlobais {
             Connection conn = null;
             PreparedStatement pstmt = null;
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlInserirAutomatico);
                 pstmt.setInt(1, classetestedata.getCodigo());
                 pstmt.setString(2, classetestedata.getNome());
@@ -278,7 +278,7 @@ public class TesteData extends MetodosGlobais {
             } catch (SQLException erro) {
                 mensagemErro("sql. inserirAutomatico(): \n" + erro.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
             return inseriu;
         }
@@ -289,7 +289,7 @@ public class TesteData extends MetodosGlobais {
             PreparedStatement pstmt = null;
             ResultSet rs = null;
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlVerificaSeExiste);
                 pstmt.setInt(1, codigo);
                 rs = pstmt.executeQuery();
@@ -299,7 +299,7 @@ public class TesteData extends MetodosGlobais {
             } catch (SQLException e) {
                 mensagemErro("Erro de SQL. getTesteData: \n" + e.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
             return existe;
         }
@@ -450,7 +450,7 @@ public class TesteData extends MetodosGlobais {
         if (testedatadb.getTesteData(cd_pessoa)) {
 
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaDados);
                 pstmt.setInt(1, cd_pessoa);
                 rs = pstmt.executeQuery();

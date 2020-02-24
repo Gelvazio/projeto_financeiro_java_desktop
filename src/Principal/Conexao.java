@@ -16,16 +16,16 @@ import javax.swing.JOptionPane;
 public class Conexao {
 
     private static final String LOCALHOST = "Conexao.ini";//Aqruivo ini a ser lido
-    private static final String driver = "org.firebirdsql.jdbc.FBDriver"; //Classe do driver
+    private static final String driver = "org.postgresql.Driver"; //Classe do driver
     private static String banco = "";
     private static String str_conn = "";//// + banco; //URL de conexão
-    private static final String usuario = "SYSDBA"; //Usuário da base
-    private static final String senha = "masterkey"; //Senha da base
+    private static final String usuario = "postgres"; //Usuário da base
+    private static final String senha = "postgres"; //Senha da base
 
     public static boolean verificagetConexao() {
         boolean verifica = false;
-        banco = leIniBancoDados();
-        str_conn = "jdbc:firebirdsql://" + banco;
+       // banco = leIniBancoDados();
+        str_conn = "jdbc:postgresql://localhost/sistemacomercial";
         Connection conn = null;
         try {
             Class.forName(driver);
@@ -46,10 +46,9 @@ public class Conexao {
     }
 
     public static Connection getConexao() {
-        banco = leIniBancoDados();
+        //banco = leIniBancoDados();
 
-        str_conn = "jdbc:firebirdsql://" + banco;
-
+        str_conn = "jdbc:postgresql://localhost/sistemacomercial";
         Connection conn = null;
         try {
             Class.forName(driver);

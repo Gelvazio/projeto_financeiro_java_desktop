@@ -39,11 +39,11 @@ public class ConfiguracaoBancoDados extends JFrame {
     // public class ConfiguracaoBancoDados extends MetodosGlobais{
     final static String LOCALHOST = "Conexao.ini";
 
-    private static final String driver = "org.firebirdsql.jdbc.FBDriver"; //Classe do driver
-    private static String banco = "";
-    private static String str_conn = "";//URL de conexão
+    private static final String driver  = "org.firebirdsql.jdbc.FBDriver"; //Classe do driver
+    private static String banco         = "";
+    private static String str_conn      = "";//URL de conexão
     private static final String usuario = "SYSDBA"; //Usuário da base
-    private static final String senha = "masterkey"; //Senha da base
+    private static final String senha   = "masterkey"; //Senha da base
 
     /**
      * Creates new form ConfiguracaoBancoDados
@@ -65,7 +65,7 @@ public class ConfiguracaoBancoDados extends JFrame {
         }
     }
 
-    public static void carregaArquivoEmTexto() {
+    public void carregaArquivoEmTexto() {
         //Este método carrega o arquivo ini na tela
         try {
             java.awt.Desktop.getDesktop().open(new File(LOCALHOST));
@@ -80,7 +80,7 @@ public class ConfiguracaoBancoDados extends JFrame {
     }
 
     public boolean verificaCamposTela() {
-        boolean verifica = false;
+        boolean verifica;
         //Validacao dos campos da tela
         String auxRede = edtRede.getText();
         String auxPorta = edtPorta.getText();
@@ -172,7 +172,7 @@ public class ConfiguracaoBancoDados extends JFrame {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro de SQL. verificaConexaoTela(): \n" + e.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return existe;
     }
@@ -310,7 +310,7 @@ public class ConfiguracaoBancoDados extends JFrame {
             if (verificaConexaoTela()) {
                 JOptionPane.showMessageDialog(null, "Conexão ok!");
             } else {
-                JOptionPane.showMessageDialog(null, "Erro nos dados da tela!");
+                JOptionPane.showMessageDialog(null, "Nao existem usuarios cadastrados!");
             }
         }
     }//GEN-LAST:event_btnTestarConexaoActionPerformed

@@ -1,0 +1,54 @@
+Sistema de Controle Comercial  e Corporativo de Lojas e Pequenas Empresas
+Projeto 100% Java Desktop
+Possibilidade de migrar para JAVA WEB.
+
+#######################################
+PARTE DAS TABELAS DO BANCO DE DADOS
+Requisitos Funcionais
+	-Sistema deve permitir Fazer Cadastros de:
+		-RF 1-Produto-
+		-RF 2-Cliente-Deve juntar por fg:
+			-Vendedor;
+			-Fornecedor;
+			-Cliente;
+			-Transportadora;
+			-Motorista;			
+		-RF 3-Marca-
+		-RF 4-Estado-
+		-RF 5-Cidades-
+		-RF 6-Grupo-
+		-RF 7-Sub_Grupo-
+		-RF 8-Cor-
+		-RF 10-NCMSH-
+		-RF 11-Unidade Medida-
+		-RF 12-Usuario do Sistema-
+		-RF 13-Pais-
+		-RF 14-Tamanho-
+		-RF 15-Tabela de Precos
+	-Sistema deve permitir Fazer Notas/DAVS/Cupons de:
+		-RF 16-Nota de Entrada-Nota de Entrada das Mercadorias
+			Nesta Parte precisa de uma tabela para guardar os itens da nota de entrada:
+			Tabela ITEM_ENTRADA;
+			Tabela NOTA_ENTRADA;
+			Tabela PARC_ENTRADA;
+			
+		RF 17-Nota Fiscal-
+	
+Requisitos Nao Funcionais
+###########################################
+PARTE DAS TELAS DO SISTEMA
+Requisitos Funcionais
+	-Sistema deve permitir Fazer Cadastros de:
+		-RF 1-Produto-
+		-RF 2-Cliente-
+		-RF 3-Marca-
+		-RF 4-Estado-
+		-RF 5-Cidades-
+		-RF 6-Grupo-
+		-RF 7-Sub_Grupo-
+		-RF 8-Cor-
+		-RF 10-NCMSH-
+		-RF 11-Unidade Medida-
+		-RF 12-Usuario do Sistema-
+		-RF 13-Pais-
+Requisitos Nao Funcionais

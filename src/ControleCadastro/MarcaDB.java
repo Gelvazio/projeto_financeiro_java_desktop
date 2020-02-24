@@ -1,7 +1,7 @@
 package ControleCadastro;
 
-import ModeloCadastro.Cor;
-import ModeloCadastro.Marca;
+import ModelCadastro.Cor;
+import ModelCadastro.Marca;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import java.sql.Connection;

@@ -4,8 +4,8 @@
  */
 package ControleCadastro;
 
-import ModeloCadastro.Cor;
-import ModeloCadastro.Pais;
+import ModelCadastro.Cor;
+import ModelCadastro.Pais;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import java.sql.Connection;

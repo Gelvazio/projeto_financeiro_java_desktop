@@ -1,6 +1,6 @@
 package ControleCadastro;
 
-import ModeloCadastro.NCMSH;
+import ModelCadastro.NCMSH;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import java.sql.Connection;

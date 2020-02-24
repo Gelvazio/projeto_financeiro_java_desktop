@@ -1,6 +1,6 @@
 package ControleCadastro;
 
-import ModeloCadastro.UnidadeMedida;
+import ModelCadastro.UnidadeMedida;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import java.sql.Connection;

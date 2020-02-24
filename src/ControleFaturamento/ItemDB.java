@@ -1,8 +1,8 @@
 package ControleFaturamento;
 
-import ModeloCadastro.Tributacao;
+import ModelCadastro.Tributacao;
 import ModeloFaturamento.Item;
-import Principal.Conexao;
+import Principal.ConexaoFirebird;
 import Principal.MetodosGlobais;
 import java.sql.Connection;
 import java.sql.Date;
@@ -623,7 +623,7 @@ public class ItemDB extends MetodosGlobais {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlAlterar);
             pstmt.setLong(1, item.getCd_refer_pro());
             pstmt.setDouble(2, item.getQt_ite_pro());
@@ -681,7 +681,7 @@ public class ItemDB extends MetodosGlobais {
         } catch (SQLException erro) {
             mensagemErro("sql. alterarItem(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return alterou;
     }
@@ -691,7 +691,7 @@ public class ItemDB extends MetodosGlobais {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlInserir);
             pstmt.setInt(1, item.getCd_filial());
             pstmt.setInt(2, item.getCd_movimento());
@@ -749,7 +749,7 @@ public class ItemDB extends MetodosGlobais {
         } catch (SQLException erro) {
             mensagemErro("sql. inserirItem(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return inseriu;
     }
@@ -759,7 +759,7 @@ public class ItemDB extends MetodosGlobais {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlExcluir);
             pstmt.setInt(1, cd_filial);
             pstmt.setInt(2, cd_movimento);
@@ -769,7 +769,7 @@ public class ItemDB extends MetodosGlobais {
         } catch (SQLException erro) {
             mensagemErro("sql. excluirItem(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return excluiu;
     }
@@ -780,7 +780,7 @@ public class ItemDB extends MetodosGlobais {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlBuscaDados);
             pstmt.setInt(1, cd_filial);
             pstmt.setInt(2, cd_movimento);
@@ -792,7 +792,7 @@ public class ItemDB extends MetodosGlobais {
         } catch (SQLException e) {
             mensagemErro("SQL. getItem(): \n" + e.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return existe;
     }
@@ -804,7 +804,7 @@ public class ItemDB extends MetodosGlobais {
         ResultSet rs = null;
         //mensagemErro("SQL da Busca: \n"+sqlBuscaDadosVendaItem);
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlBuscaDadosVendaItem);
             pstmt.setInt(1, cd_filialparametro);
             pstmt.setInt(2, cd_filialparametro);
@@ -951,7 +951,7 @@ public class ItemDB extends MetodosGlobais {
         } catch (SQLException erro) {
             mensagemErro("Erro no ArrayList listaDadosItemNaVenda: \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return listaDadosItem;
     }
@@ -962,7 +962,7 @@ public class ItemDB extends MetodosGlobais {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlBuscaDadosVendaItem);
             pstmt.setInt(1, cd_filialparametro);
             pstmt.setInt(2, cd_filialparametro);
@@ -1031,7 +1031,7 @@ public class ItemDB extends MetodosGlobais {
         } catch (SQLException erro) {
             mensagemErro("Erro no ArrayList listaDadosTributacaoVenda: \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return listaDadosItem;
     }

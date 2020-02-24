@@ -1,8 +1,8 @@
 package VisaoConsultasFaturamento;
 
 import ControleCadastro.UnidadeMedidaDB;
-import ModeloCadastro.UnidadeMedida;
-import Principal.Conexao;
+import ModelCadastro.UnidadeMedida;
+import Principal.ConexaoFirebird;
 import Principal.MetodosGlobais;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -159,7 +159,7 @@ public class ConsultaPedido extends MetodosGlobais {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             //Nessa Parte é passado po parametro os Dados da Variavel "SQLConsulta_Unidade_Medida" que contem o sql da pesquisa.
             rs = stmt.executeQuery(SQLConsulta_Condicao_Pagamento);
@@ -180,7 +180,7 @@ public class ConsultaPedido extends MetodosGlobais {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql, SQLConsultagetTodos_Completo: \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return listaUnidadeMedida;
     }

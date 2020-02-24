@@ -17,7 +17,7 @@
 package ControleFaturamento;
 
 import ModeloFaturamento.TipoCobranca;
-import Principal.Conexao;
+import Principal.ConexaoFirebird;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -103,7 +103,7 @@ public class TipoCobrancaDB {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sqlTodos);
             while (rs.next()) {
@@ -112,7 +112,7 @@ public class TipoCobrancaDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql, getComboRegistro(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return modelo;
     }
@@ -122,7 +122,7 @@ public class TipoCobrancaDB {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlAlterar);
             pstmt.setString(1, tipocobranca.getDs_cobranca());
             pstmt.setInt(2, tipocobranca.getFg_imediato());
@@ -140,7 +140,7 @@ public class TipoCobrancaDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de sql. alterar(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return alterou;
     }
@@ -150,7 +150,7 @@ public class TipoCobrancaDB {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlInserir);
             pstmt.setInt(11, tipocobranca.getCd_cobranca());
             pstmt.setString(2, tipocobranca.getDs_cobranca());
@@ -168,7 +168,7 @@ public class TipoCobrancaDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de sql. inserir(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return inseriu;
     }
@@ -178,7 +178,7 @@ public class TipoCobrancaDB {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlExcluir);
             pstmt.setInt(1, cd_cobranca);
             pstmt.executeUpdate();
@@ -186,7 +186,7 @@ public class TipoCobrancaDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de sql. excluir(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return excluiu;
     }
@@ -198,7 +198,7 @@ public class TipoCobrancaDB {
         ResultSet rs = null;
 
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sqlTodos);
             while (rs.next()) {
@@ -232,7 +232,7 @@ public class TipoCobrancaDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de sql. getTodos(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return listaTiposCobranca;
     }
@@ -243,7 +243,7 @@ public class TipoCobrancaDB {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlVerificaRegistro);
             pstmt.setInt(1, cd_cor);
             rs = pstmt.executeQuery();
@@ -257,7 +257,7 @@ public class TipoCobrancaDB {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro de SQL. getCor(): \n" + e.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return existe;
     }
@@ -268,7 +268,7 @@ public class TipoCobrancaDB {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT GEN_ID(CD_TIPO_COBRANCA, 1) FROM RDB$DATABASE");
             while (rs.next()) {
@@ -281,7 +281,7 @@ public class TipoCobrancaDB {
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Erro no método ValidaCodigoGenerator()\n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return codigoGenerator;
     }
@@ -292,7 +292,7 @@ public class TipoCobrancaDB {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlBuscaRegistro);
             pstmt.setInt(1, cd_cobranca);
             rs = pstmt.executeQuery();
@@ -327,7 +327,7 @@ public class TipoCobrancaDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no ArrayList listaTiposCobranca: \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return listaTiposCobranca;
     }
@@ -338,7 +338,7 @@ public class TipoCobrancaDB {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(SQLCONSULTANOMETIPOCOBRANCAS);
             pstmt.setInt(1, cd_movimento);
             rs = pstmt.executeQuery();
@@ -373,7 +373,7 @@ public class TipoCobrancaDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql,  listaNomeTipoCobranca(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return listaNomeTipoCobranca;
     }

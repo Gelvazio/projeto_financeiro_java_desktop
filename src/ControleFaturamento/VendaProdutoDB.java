@@ -1,8 +1,8 @@
 package ControleFaturamento;
 
-import ModeloCadastro.Municipio;
+import ModelCadastro.Municipio;
 import ModeloFaturamento.VendaProdutoClassse;
-import Principal.Conexao;
+import Principal.ConexaoFirebird;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -65,7 +65,7 @@ public class VendaProdutoDB {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlInserir);
             pstmt.setInt(1, vendaprodutoclasse.getCd_filial());
             pstmt.setInt(2, vendaprodutoclasse.getCd_movimento());
@@ -80,7 +80,7 @@ public class VendaProdutoDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de sql. gravarProdutoDaVenda: \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return inseriu;
     }
@@ -90,7 +90,7 @@ public class VendaProdutoDB {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlAlterar);
             pstmt.setInt(1, vendaprodutoclasse.getCd_filial());
             pstmt.setInt(2, vendaprodutoclasse.getProduto());
@@ -105,7 +105,7 @@ public class VendaProdutoDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de sql. alterarProdutoDaVenda(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return alterou;
     }
@@ -116,7 +116,7 @@ public class VendaProdutoDB {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlConsultaProdutodaVenda);
             pstmt.setInt(1, cd_movimento);
             pstmt.setInt(2, aux_sequencia);
@@ -127,7 +127,7 @@ public class VendaProdutoDB {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro de SQL. getProdutoDaVenda(): \n" + e.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return existe;
     }
@@ -138,7 +138,7 @@ public class VendaProdutoDB {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sqlTodos);
             while (rs.next()) {
@@ -165,7 +165,7 @@ public class VendaProdutoDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de sql. getTodos(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return listaCidade;
     }

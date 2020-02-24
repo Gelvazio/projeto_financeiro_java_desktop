@@ -1,7 +1,7 @@
 package VisaoConsultasCadastro;
 
 import ControleCadastro.MunicipioDB;
-import ModeloCadastro.Municipio;
+import ModelCadastro.Municipio;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import java.awt.event.KeyEvent;

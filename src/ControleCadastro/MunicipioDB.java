@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import ModeloCadastro.Municipio;
+import ModelCadastro.Municipio;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 

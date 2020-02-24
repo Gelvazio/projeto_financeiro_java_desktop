@@ -1,7 +1,7 @@
 package VisaoConsultasCadastro;
 
 import ControleCadastro.UnidadeMedidaDB;
-import ModeloCadastro.UnidadeMedida;
+import ModelCadastro.UnidadeMedida;
 import Principal.MetodosGlobais;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;

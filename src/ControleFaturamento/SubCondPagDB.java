@@ -1,7 +1,7 @@
 package ControleFaturamento;
 
 import ModeloFaturamento.SubCondPag;
-import Principal.Conexao;
+import Principal.ConexaoFirebird;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -70,7 +70,7 @@ public class SubCondPagDB {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sqlBuscaTodosRegistros);
             while (rs.next()) {
@@ -79,7 +79,7 @@ public class SubCondPagDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql, getComboRegistro(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return modelo;
     }
@@ -89,7 +89,7 @@ public class SubCondPagDB {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlAlterar);
             pstmt.setInt(1, subcondpag.getNr_dias_parcela());
             pstmt.setInt(2, subcondpag.getCd_cobranca());
@@ -101,7 +101,7 @@ public class SubCondPagDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de sql. alterar(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return alterou;
     }
@@ -111,7 +111,7 @@ public class SubCondPagDB {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlInserir);
             pstmt.setInt(1, subcondpag.getCd_condicao());
             pstmt.setInt(2, subcondpag.getCd_parcela());
@@ -123,7 +123,7 @@ public class SubCondPagDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de sql. inserir(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return inseriu;
     }
@@ -133,7 +133,7 @@ public class SubCondPagDB {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlExcluir);
             pstmt.setInt(1, cd_condicao_pagamento);
             pstmt.setInt(2, cd_parcela);
@@ -142,7 +142,7 @@ public class SubCondPagDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de sql. excluir(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return excluiu;
     }
@@ -153,7 +153,7 @@ public class SubCondPagDB {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlBuscaRegistro);
             pstmt.setInt(1, cd_condicao);
             rs = pstmt.executeQuery();
@@ -176,7 +176,7 @@ public class SubCondPagDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no ArrayList listaSubCondPag: \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return listaSubCondPag;
     }
@@ -187,7 +187,7 @@ public class SubCondPagDB {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlbuscaSubCondPag);
             pstmt.setInt(1, codigo);
             rs = pstmt.executeQuery();
@@ -197,7 +197,7 @@ public class SubCondPagDB {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro de SQL. getSubCondPag(): \n" + e.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return existe;
     }
@@ -208,7 +208,7 @@ public class SubCondPagDB {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlBuscaParcelas);
             pstmt.setInt(1, codigoCondicaoPagamento);
             pstmt.setInt(2, codigoParcela);
@@ -219,7 +219,7 @@ public class SubCondPagDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql,sqlBuscaParcelas:\n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return codigoParcelas;
     }
@@ -230,7 +230,7 @@ public class SubCondPagDB {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlBuscaParcelas);
             pstmt.setInt(1, codigoCondicaoPagamento);
             pstmt.setInt(2, codigoParcela);
@@ -241,7 +241,7 @@ public class SubCondPagDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql,sqlBuscaParcelas:\n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return codigoParcelas;
     }
@@ -251,7 +251,7 @@ public class SubCondPagDB {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             pstmt = conn.prepareStatement(sqlExcluirTodooGrid);
             pstmt.setInt(1, cd_condicao_pagamento);
             pstmt.executeUpdate();
@@ -259,7 +259,7 @@ public class SubCondPagDB {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro no sql. excluirGridInteiro(): \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
         return excluiu;
     }

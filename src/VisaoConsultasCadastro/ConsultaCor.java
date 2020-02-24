@@ -1,6 +1,6 @@
 package VisaoConsultasCadastro;
 
-import ModeloCadastro.Cor;
+import ModelCadastro.Cor;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import java.awt.event.KeyEvent;

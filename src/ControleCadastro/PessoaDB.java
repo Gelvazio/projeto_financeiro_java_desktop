@@ -1,6 +1,6 @@
 package ControleCadastro;
 
-import ModeloCadastro.Pessoa;
+import ModelCadastro.Pessoa;
 import Principal.Conexao;
 import Principal.MetodosGlobais;
 import java.sql.Connection;
@@ -24,18 +24,13 @@ public class PessoaDB extends MetodosGlobais {
      *
      * @author Gelvazio Camargo
      */
-    private static final String sqlBuscaDadosPessoa = "SELECT PESSOA.CD_ESTADO,PESSOA.TIPO_CONSUMO FROM PESSOA WHERE PESSOA.CD_PESSOA=?";
-
-    private static final String sqlTodos= " SELECT * FROM PESSOA    ORDER BY PESSOA.CD_PESSOA; ";
- 
-    private static final String sqlTodosFornecedores= "	SELECT * FROM	PESSOA  WHERE PESSOA.FG_FORNECEDOR =1  ORDER BY PESSOA.CD_PESSOA; ";
-      
-   private static final String sqlTodosVendedores= "SELECT * FROM	PESSOA  WHERE PESSOA.FG_VENDEDOR =1  ORDER BY PESSOA.CD_PESSOA; ";
-    private static final String sqlBuscaDadosPessoaImpostos
-            = "	SELECT PESSOA.* FROM	PESSOA WHERE PESSOA.CD_PESSOA=?";
-    private static final String sqlTodasTransportadoras
-            = "	SELECT * FROM	PESSOA  WHERE PESSOA.FG_TRANSPORTADOR=1  ORDER BY PESSOA.CD_PESSOA; ";
-    private static final String sqlInserir = "INSERT INTO PESSOA ("
+    private static final String sqlBuscaDadosPessoa         = " SELECT CD_ESTADO,TIPO_CONSUMO FROM TBPESSOA WHERE CD_PESSOA=?";
+    private static final String sqlTodos                    = " SELECT * FROM cadastro.tbpessoa  ORDER BY CD_PESSOA; ";
+    private static final String sqlTodosFornecedores        = "	SELECT * FROM cadastro.TBPESSOA  WHERE FG_FORNECEDOR =1  ORDER BY CD_PESSOA; ";
+    private static final String sqlTodosVendedores          = " SELECT * FROM cadastro.TBPESSOA  WHERE FG_VENDEDOR =1  ORDER BY CD_PESSOA; ";
+    private static final String sqlBuscaDadosPessoaImpostos = "	SELECT * FROM cadastro.tbpessoa  WHERE CD_PESSOA=?";
+    private static final String sqlTodasTransportadoras     = "	SELECT * FROM cadastro.tbpessoa  WHERE FG_TRANSPORTADOR=1  ORDER by CD_PESSOA; ";
+    private static final String sqlInserir = "INSERT INTO cadastro.tbpessoa ("
             + " CD_PESSOA,"
             + " NM_PESSOA,"
             + " FG_CLIENTE,"
@@ -94,9 +89,9 @@ public class PessoaDB extends MetodosGlobais {
             + "    FG_ATIVO =  ?"
             + "WHERE (CD_PESSOA = ?);";
 
-    private static final String sqlPessoa = "SELECT count(*) as total FROM PESSOA WHERE CD_PESSOA=?";
-    private static final String sqlConsultaPessoa = "SELECT (PESSOA.cd_pessoa)as codigosql FROM PESSOA where PESSOA.cd_pessoa=?";
-    private static final String sqlConsultaPessoaTransportadora = "SELECT (PESSOA.cd_pessoa)as codigosql FROM PESSOA where PESSOA.FG_TRANSPORTADOR=1 AND PESSOA.cd_pessoa=?";
+    private static final String sqlPessoa                       = "SELECT count(*) as total FROM cadastro.TBPESSOA WHERE CD_PESSOA=?";
+    private static final String sqlConsultaPessoa               = "SELECT (cd_pessoa)as codigosql FROM cadastro.TBPESSOA where cd_pessoa=?";
+    private static final String sqlConsultaPessoaTransportadora = "SELECT (cd_pessoa)as codigosql FROM cadastro.TBPESSOA where FG_TRANSPORTADOR=1 AND cd_pessoa=?";
 
     public DefaultComboBoxModel getComboPessoa() {
         DefaultComboBoxModel modelo = new DefaultComboBoxModel();
@@ -187,32 +182,32 @@ public class PessoaDB extends MetodosGlobais {
         try {
             conn = Conexao.getConexao();
             pstmt = conn.prepareStatement(sqlInserir);
-            pstmt.setInt(1, pessoa.getCd_pessoa());
+            pstmt.setInt(   1, pessoa.getCd_pessoa());
             pstmt.setString(2, pessoa.getNm_pessoa());
-            pstmt.setInt(3, pessoa.getFg_cliente());
-            pstmt.setInt(4, pessoa.getFg_vendedor());
-            pstmt.setInt(5, pessoa.getFg_fornecedor());
+            pstmt.setInt(   3, pessoa.getFg_cliente());
+            pstmt.setInt(   4, pessoa.getFg_vendedor());
+            pstmt.setInt(   5, pessoa.getFg_fornecedor());
             pstmt.setString(6, pessoa.getDs_endereco());
             pstmt.setString(7, pessoa.getNr_endereco());
             pstmt.setString(8, pessoa.getDs_bairro());
             pstmt.setString(9, pessoa.getCd_estado());
-            pstmt.setInt(10, pessoa.getCd_cidade());
-            pstmt.setInt(11, pessoa.getCd_pais());
+            pstmt.setInt(   10, pessoa.getCd_cidade());
+            pstmt.setInt(   11, pessoa.getCd_pais());
             pstmt.setString(12, pessoa.getCd_cep());
             pstmt.setString(13, pessoa.getDs_email());
             pstmt.setString(14, pessoa.getNr_telefone());
             pstmt.setString(15, pessoa.getCd_cgccpf());
-            pstmt.setInt(16, pessoa.getCd_usuario());
-            pstmt.setDate(17, pessoa.getDt_alt());
-            pstmt.setTime(18, pessoa.getHr_alt());
-            pstmt.setDate(19, pessoa.getDt_cad());
-            pstmt.setTime(20, pessoa.getHr_cad());
-            pstmt.setInt(21, pessoa.getCd_filial());
+            pstmt.setInt(   16, pessoa.getCd_usuario());
+            pstmt.setDate(  17, pessoa.getDt_alt());
+            pstmt.setTime(  18, pessoa.getHr_alt());
+            pstmt.setDate(  19, pessoa.getDt_cad());
+            pstmt.setTime(  20, pessoa.getHr_cad());
+            pstmt.setInt(   21, pessoa.getCd_filial());
             pstmt.setString(22, pessoa.getNr_inscricao_estadual());
-            pstmt.setInt(23, pessoa.getTipo_consumo());
-            pstmt.setInt(24, pessoa.getRegime_tributacao());
-            pstmt.setInt(25, pessoa.getFg_transportador());
-            pstmt.setInt(26, pessoa.getFg_ativo());
+            pstmt.setInt(   23, pessoa.getTipo_consumo());
+            pstmt.setInt(   24, pessoa.getRegime_tributacao());
+            pstmt.setInt(   25, pessoa.getFg_transportador());
+            pstmt.setInt(   26, pessoa.getFg_ativo());
 
             pstmt.executeUpdate();
             inseriu = true;
@@ -369,7 +364,7 @@ public class PessoaDB extends MetodosGlobais {
                 listaPessoa.add(pessoa);
             }
         } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro no sql, getTodos(): \n" + erro.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro no sql, getTodosFornecedores(): \n" + erro.getMessage());
         } finally {
             Conexao.closeAll(conn);
         }

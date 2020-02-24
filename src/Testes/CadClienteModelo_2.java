@@ -1,12 +1,12 @@
 package Testes;
 
-import ModeloCadastro.Pessoa;
+import ModelCadastro.Pessoa;
 import ControleCadastro.PessoaDB;
 import ControleCadastro.EstadoDB;
 import ControleCadastro.MunicipioDB;
 import ControleCadastro.PaisDB;
 import VisaoConsultasCadastro.ConsultaPessoa;
-import Principal.Conexao;
+import Principal.ConexaoFirebird;
 import Principal.MetodosGlobais;
 import VisaoConsultasCadastro.ConsultaEstado;
 import java.awt.event.KeyEvent;
@@ -436,7 +436,7 @@ public class CadClienteModelo_2 extends MetodosGlobais {
         ResultSet rs = null;
         if (estadodb.getEstado(cd_estado)) {
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaNomeEstado);
                 pstmt.setString(1, cd_estado);
                 rs = pstmt.executeQuery();
@@ -448,7 +448,7 @@ public class CadClienteModelo_2 extends MetodosGlobais {
             } catch (SQLException erro) {
                 JOptionPane.showMessageDialog(null, "Erro no sql, ValidaCampoCodigoEstadoNaoNulo(): \n" + erro.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Estado nao cadastrado!");
@@ -468,7 +468,7 @@ public class CadClienteModelo_2 extends MetodosGlobais {
         ResultSet rs = null;
         if (cidadedb.getCidade(auxcd_estado, cd_municipio)) {
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaNomeCidade);
                 pstmt.setInt(1, cd_municipio);
                 pstmt.setString(2, auxcd_estado);
@@ -481,7 +481,7 @@ public class CadClienteModelo_2 extends MetodosGlobais {
             } catch (SQLException erro) {
                 JOptionPane.showMessageDialog(null, "Erro no sql, ValidaCampoCodigoCidadeNaoNulo(): \n" + erro.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Cidade nao cadastrada");
@@ -500,7 +500,7 @@ public class CadClienteModelo_2 extends MetodosGlobais {
         ResultSet rs = null;
         if (paisdb.getPais(cd_pais)) {
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaNomePais);
                 pstmt.setInt(1, cd_pais);
                 rs = pstmt.executeQuery();
@@ -512,7 +512,7 @@ public class CadClienteModelo_2 extends MetodosGlobais {
             } catch (SQLException erro) {
                 JOptionPane.showMessageDialog(null, "Erro no sql, ValidaCampoCodigoPaisNaoNulo(): \n" + erro.getMessage());
             } finally {
-                Conexao.closeAll(conn);
+                ConexaoFirebird.closeAll(conn);
             }
         } else {
             JOptionPane.showMessageDialog(null, "País nao cadastrado!");
@@ -533,7 +533,7 @@ public class CadClienteModelo_2 extends MetodosGlobais {
                 + "WHERE                 "
                 + "    ESTADO.DS_ESTADO='" + cbEstado.getSelectedItem() + "'";
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             rs.next();
@@ -558,7 +558,7 @@ public class CadClienteModelo_2 extends MetodosGlobais {
                 + "WHERE                       "
                 + "    MUNICIPIO.DS_MUNICIPIO='" + cbCidade.getSelectedItem() + "'";
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             rs.next();
@@ -584,7 +584,7 @@ public class CadClienteModelo_2 extends MetodosGlobais {
                 + "WHERE             "
                 + "    PAIS.NM_PAIS='" + cbPais.getSelectedItem() + "'";
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             rs.next();
@@ -766,7 +766,7 @@ public class CadClienteModelo_2 extends MetodosGlobais {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = Conexao.getConexao();
+            conn = ConexaoFirebird.getConexao();
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT GEN_ID(CD_PESSOA, 1) FROM RDB$DATABASE");
             while (rs.next()) {
@@ -780,7 +780,7 @@ public class CadClienteModelo_2 extends MetodosGlobais {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro de conexão! \n" + erro.getMessage());
         } finally {
-            Conexao.closeAll(conn);
+            ConexaoFirebird.closeAll(conn);
         }
     }
 
@@ -806,7 +806,7 @@ public class CadClienteModelo_2 extends MetodosGlobais {
             cbPais.setModel(paisdb.getComboPais());
             ComboBoxPais();
             try {
-                conn = Conexao.getConexao();
+                conn = ConexaoFirebird.getConexao();
                 pstmt = conn.prepareStatement(sqlBuscaPessoa);
                 pstmt.setInt(1, cd_pessoa);
                 rs = pstmt.executeQuery();
