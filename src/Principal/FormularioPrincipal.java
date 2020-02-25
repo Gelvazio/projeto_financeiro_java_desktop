@@ -3,7 +3,7 @@ package Principal;
 import VisaoCadastros.CadCor;
 import VisaoCadastros.CadMunicipio;
 import VisaoCadastros.CadEstado;
-import VisaoCadastros.CadFornecedores;
+import VisaoCadastros.CadFornecedor;
 import VisaoCadastros.CadGrupoSubGrupo;
 import VisaoCadastros.CadGrupoFiscal;
 import VisaoCadastros.CadMarca;
@@ -629,7 +629,8 @@ private void Menu_FaturamentoActionPerformed(java.awt.event.ActionEvent evt) {//
     }//GEN-LAST:event_Menu_PrincipalMouseMoved
 
     private void FornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FornecedorActionPerformed
-        CadFornecedores formulario = new CadFornecedores();
+//        CadFornecedores formulario = new CadFornecedores();
+        CadFornecedor formulario = new CadFornecedor();
         Panel_Principal.add(formulario);
         formulario.setClosable(true);
         formulario.setIconifiable(true);
