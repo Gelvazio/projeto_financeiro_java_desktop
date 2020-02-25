@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Fontes/projeto_financeiro_java_desktop/DTS_SYSTEMS_JAVA_8.0/src/Principal/Conexao.java</file>
-            <file>file:/C:/Fontes/projeto_financeiro_java_desktop/DTS_SYSTEMS_JAVA_8.0/src/Padrao/Query.java</file>
-            <file>file:/C:/Fontes/projeto_financeiro_java_desktop/DTS_SYSTEMS_JAVA_8.0/src/Principal/Login.java</file>
+            <file>file:/C:/Fontes/projeto_financeiro_java_desktop/src/VisaoCadastros/CadFornecedor.java</file>
+            <file>file:/C:/Fontes/projeto_financeiro_java_desktop/src/VisaoCadastros/pessoaPadrao.java</file>
+            <file>file:/C:/Fontes/projeto_financeiro_java_desktop/src/Principal/FormularioPrincipal.java</file>
+            <file>file:/C:/Fontes/projeto_financeiro_java_desktop/src/VisaoCadastros/CadTransportadores.java</file>
         </group>
     </open-files>
 </project-private>
