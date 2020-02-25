@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>src/JPA/CadUsuarioJPA.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>8</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/F:/TESTES/SISTEMA%20JAVA/SISTEMA%20JAVA%205.0/DTS_SYSTEMS_JAVA_5.0/src/ControleFaturamento/ParcelaDB.java</file>
+            <file>file:/F:/TESTES/SISTEMA%20JAVA/SISTEMA%20JAVA%205.0/DTS_SYSTEMS_JAVA_5.0/src/ControleCadastro/CorDB.java</file>
+            <file>file:/F:/TESTES/SISTEMA%20JAVA/SISTEMA%20JAVA%205.0/DTS_SYSTEMS_JAVA_5.0/src/VisaoFaturamento/FormularioPedidoCompleto.java</file>
+            <file>file:/F:/TESTES/SISTEMA%20JAVA/SISTEMA%20JAVA%205.0/DTS_SYSTEMS_JAVA_5.0/src/ControleCadastro/ProdutoDB.java</file>
+            <file>file:/F:/TESTES/SISTEMA%20JAVA/SISTEMA%20JAVA%205.0/DTS_SYSTEMS_JAVA_5.0/src/ModeloCadastro/ProdutoSimples.java</file>
+            <file>file:/F:/TESTES/SISTEMA%20JAVA/SISTEMA%20JAVA%205.0/DTS_SYSTEMS_JAVA_5.0/src/ModeloFaturamento/CondicaoPagamento.java</file>
+        </group>
+    </open-files>
+</project-private>
