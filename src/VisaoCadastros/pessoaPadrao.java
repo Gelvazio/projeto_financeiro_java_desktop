@@ -63,6 +63,13 @@ public class pessoaPadrao extends MetodosGlobais {
     protected JLabel getTitulo(){
         return this.titulo;
     }
+
+    protected void ValidaCodigoGenerator() {
+        int codigo = super.getProximoCodigoGenerator("CD_PESSOA");
+        String auxCodigo = "" + codigo;
+        edtCodigo.setText(auxCodigo);
+        edtCPF.grabFocus();
+    }
     
     private void AlteraParaDataHoraAtual() {
         edtDataAlteracao.setText(formatadata.format(data));
@@ -1156,30 +1163,7 @@ public class pessoaPadrao extends MetodosGlobais {
             }
         }
     }
-
-    private void ValidaCodigoGenerator() {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-            conn = Conexao.getConexao();
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT GEN_ID(CD_PESSOA, 1) FROM RDB$DATABASE");
-            while (rs.next()) {
-                int auxCodigoGenerator = rs.getInt("GEN_ID");
-                int auxCodigo = auxCodigoGenerator + 1;
-                String a;
-                a = "" + auxCodigo;
-                edtCodigo.setText(a);
-                edtCPF.grabFocus();
-            }
-        } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro de conexão! \n" + erro.getMessage());
-        } finally {
-            Conexao.closeAll(conn);
-        }
-    }
-
+  
     private void ValidaCampoCodigoNaoNulo() {
         Connection conn = null;
         PreparedStatement pstmt = null;
